@@ -79,6 +79,9 @@ try {
 app.use(routes.index, clientRouter);
 app.use(routes.admin, isAdmin, adminRouter);
 
+import { main } from "./utils/kakaoMessage";
+main();
+
 // error handler
 app.use((req, res, next) => {
   const error = new Error(`Error`);
