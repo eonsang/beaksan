@@ -1,0 +1,119 @@
+{% extends './layout/base.njk' %}
+
+{% block content %}
+
+    <!-- Start Content-->
+    <div class="container-fluid">
+
+        <!-- start page title -->
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">카테고리 관리</h4>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <div class="row mb-2">
+                            <div class="col-sm-4">
+                                <a href="/adm/category/create" class="btn btn-primary mb-2"><i class="mdi mdi-plus-circle mr-2"></i>카테고리 등록하기</a>
+                            </div>
+                            <div class="col-sm-8">
+                                <div class="text-sm-right">
+                                    <button type="button" class="btn btn-success mb-2 mr-1"><i class="mdi mdi-settings"></i></button>
+                                </div>
+                            </div><!-- end col-->
+                        </div>
+                        <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                            <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>카테고리 명</th>
+                                <th>순번</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% if objects.length > 0 %}
+                                {% for object in objects %}
+                                    <tr>
+                                        <td>{{ object.id }}</td>
+                                        <td>
+                                            <a href="" class="text-body font-weight-semibold">
+                                                {{ object.name }}
+                                            </a>
+                                        </td>
+                                        <td>
+                                            <input type="text">
+                                        </td>
+                                        <td>
+                                            <a href="/adm/qna/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <a href="javascript:removeFaq({{ object.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                        </td>
+                                    </tr>
+                                    {% if object.children %}
+                                        {% for category2 in object.children  %}
+                                            <tr>
+                                                <td>{{ category2.id }}</td>
+                                                <td>
+                                                    <a href="" class="text-body font-weight-semibold pl-2">
+                                                        {{ category2.name }}
+                                                    </a>
+                                                </td>
+                                                <td>
+                                                    <input type="text">
+                                                </td>
+                                                <td>
+                                                    <a href="/adm/qna/detail/{{ category2.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                    <a href="javascript:removeFaq({{ category2.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                </td>
+                                            </tr>
+
+                                        {% if category2.children %}
+                                            {% for category3 in category2.children  %}
+                                                <tr>
+                                                    <td>{{ category3.id }}</td>
+                                                    <td>
+                                                        <a href="" class="text-body font-weight-semibold pl-4">
+                                                            {{ category3.name }}
+                                                        </a>
+                                                    </td>
+                                                    <td>
+                                                        <input type="text">
+                                                    </td>
+                                                    <td>
+                                                        <a href="/adm/qna/detail/{{ category3.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                        <a href="javascript:removeFaq({{ category3.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        {% endif %}
+                                        {% endfor %}
+                                    {% endif %}
+                                {% endfor %}
+                            {% else %}
+                                <tr>
+                                    <td colspan="4">등록된 카테고리가 없습니다.</td>
+                                </tr>
+                            {% endif %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+      $(document).ready(function(){
+
+      });
+    </script>
+{% endblock %}

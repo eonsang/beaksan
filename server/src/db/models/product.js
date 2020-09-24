@@ -1,0 +1,89 @@
+"use strict";
+const { Model } = require("sequelize");
+module.exports = (sequelize, DataTypes) => {
+  class Product extends Model {
+    /**
+     * Helper method for defining associations.
+     * This method is not a part of Sequelize lifecycle.
+     * The `models/index` file will call this method automatically.
+     */
+    static associate(models) {
+      // define association here
+      models.Product.hasMany(models.ProductOption, {
+        onDelete: "cascade",
+      });
+      models.Product.hasMany(models.ProductImage, {
+        onDelete: "cascade",
+      });
+      models.Product.belongsToMany(models.Category, {
+        through: "ProductCategory",
+      });
+    }
+  }
+  Product.init(
+    {
+      name: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      maker: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      origin: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      brand: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      model: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      description: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
+      use: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: true,
+      },
+      memo: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      hit: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      sold_out: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      content: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
+      price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+      customer_price: {
+        type: DataTypes.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
+    },
+    {
+      sequelize,
+      modelName: "Product",
+    }
+  );
+  return Product;
+};

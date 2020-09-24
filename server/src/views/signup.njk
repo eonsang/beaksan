@@ -1,0 +1,48 @@
+{% extends 'layout/base.njk' %}
+
+{% block content %}
+    <div>
+
+        <h1>회원가입</h1>
+
+        {{ message }}
+
+        <form action="" method="POST" id="signupForm">
+            <input type="text" name="name" placeholder="name" />
+            <input type="text" name="email" placeholder="email" />
+            <input type="text" name="number" placeholder="number" />
+            <input type="text" name="password" placeholder="password" />
+            <input type="text" name="nickname" placeholder="nickname" />
+
+            <br>
+            <br>
+            <button type="submit">회원가입</button>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+<script>
+  $(function(){
+    $('#signupForm').submit(function(e){
+      e.preventDefault();
+      $.ajax({
+        url: '/accounts/signup',
+        type: 'post',
+        data: $(this).serialize(),
+      }).done(function(res){
+        if( res.success ) {
+          location.href='/accounts/complete';
+        } else {
+          alert(res.message);
+          location.href='/accounts/login';
+        }
+      }).fail(function(error) {
+        console.error(error);
+      }).always(function(res){
+      });
+    })
+  })
+</script>
+{% endblock %}

@@ -1,0 +1,92 @@
+<div class="left-side-menu">
+
+    <!-- LOGO -->
+    <a href="/" class="logo text-center logo-light">
+        <span class="logo-lg">
+            <img src="/static/admin/images/logo.png" alt="" height="16">
+        </span>
+        <span class="logo-sm">
+            <img src="/static/admin/images/logo_sm.png" alt="" height="16">
+        </span>
+    </a>
+
+    <div class="h-100" id="left-side-menu-container" data-simplebar>
+        <ul class="metismenu side-nav">
+            <li class="side-nav-title side-nav-item">Navigation</li>
+            <li class="side-nav-item">
+                <a href="/adm" class="side-nav-link">
+                    <i class="uil-home-alt"></i>
+                    <span> Dashboards </span>
+                </a>
+            </li>
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="dripicons-gear"></i>
+                    <span> 사이트관리 </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="{{ routes.adminSetting }}">사이트관리</a>
+                    </li>
+                    <li>
+                        <a href="{{ routes.adminPopup }}">팝업관리</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil uil-user"></i>
+                    <span> 회원관리 </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="/adm/users">회원관리</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="side-nav-item">
+                <a href="javascript: void(0);" class="side-nav-link">
+                    <i class="uil uil-user"></i>
+                    <span> 상점관리 </span>
+                    <span class="menu-arrow"></span>
+                </a>
+                <ul class="side-nav-second-level" aria-expanded="false">
+                    <li>
+                        <a href="/adm/category">카테고리 관리</a>
+                    </li>
+                    <li>
+                        <a href="/adm/product">상품 관리</a>
+                    </li>
+                </ul>
+            </li>
+            <li class="side-nav-item">
+                <a href="/adm/qna" class="side-nav-link">
+                    <i class="uil uil-comment-question"></i>
+                    <span> 1:1 문의 </span>
+                </a>
+            </li>
+
+
+        </ul>
+
+        <!-- Help Box -->
+        <div class="help-box text-white text-center">
+            <a href="javascript: void(0);" class="float-right close-btn text-white">
+                <i class="mdi mdi-close"></i>
+            </a>
+            <img src="/static/admin/images/help-icon.svg" height="90" alt="Helper Icon Image" />
+            <h5 class="mt-3">Unlimited Access</h5>
+            <p class="mb-3">Upgrade to plan to get access to unlimited reports</p>
+            <a href="javascript: void(0);" class="btn btn-outline-light btn-sm">Upgrade</a>
+        </div>
+        <!-- end Help Box -->
+        <!-- End Sidebar -->
+
+        <div class="clearfix"></div>
+
+    </div>
+    <!-- Sidebar -left -->
+
+</div>

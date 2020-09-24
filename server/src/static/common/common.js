@@ -1,0 +1,116 @@
+function singleUpload(file, el) {
+  var formData = new FormData();
+  formData.append("file", file);
+  $.ajax({
+    data: formData,
+    type: "POST",
+    url: "/adm/image/editor",
+    contentType: false,
+    processData: false,
+    success: function (res) {
+      if (res.success === true) {
+        $(el).summernote("editor.insertImage", res.path);
+      } else {
+        alert("이미지 업로드 실패");
+      }
+    },
+  });
+}
+
+function fileUploadForGetPath(file, el) {
+  var formData = new FormData();
+  formData.append("file", file);
+  $.ajax({
+    data: formData,
+    type: "POST",
+    url: "/adm/image/editor",
+    contentType: false,
+    processData: false,
+    success: function (res) {
+      if (res.success === true) {
+        $(el).next('[name="option_thumbnail_path"]').val(res.path);
+      } else {
+        alert("이미지 업로드 실패");
+      }
+    },
+  });
+}
+
+// cookie
+function setCookie(cookieName, value, exdays) {
+  var exdate = new Date();
+  exdate.setDate(exdate.getDate() + exdays);
+  var cookieValue =
+    escape(value) + (exdays == null ? "" : "; expires=" + exdate.toGMTString());
+  document.cookie = cookieName + "=" + cookieValue;
+}
+function deleteCookie(cookieName) {
+  var expireDate = new Date();
+  expireDate.setDate(expireDate.getDate() - 1);
+  document.cookie = cookieName + "= " + "; expires=" + expireDate.toGMTString();
+}
+function getCookie(cookieName) {
+  cookieName = cookieName + "=";
+  var cookieData = document.cookie;
+  var start = cookieData.indexOf(cookieName);
+  var cookieValue = "";
+  if (start != -1) {
+    start += cookieName.length;
+    var end = cookieData.indexOf(";", start);
+    if (end == -1) end = cookieData.length;
+    cookieValue = cookieData.substring(start, end);
+  }
+  return unescape(cookieValue);
+}
+
+function closePopup(id) {
+  $("#popup" + id).fadeOut(0);
+}
+function closePopupToday(id) {
+  setCookie("todayClose" + id, "Y", 1);
+  $("#popup" + id).fadeOut(0);
+}
+
+$(function () {
+  $(document).on("change",".custom-file-input", function () {
+    var fileName = $(this).val().split("\\").pop();
+    $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
+  });
+
+  $(".category").on("change", function () {
+    var that = $(this);
+    $.ajax({
+      type: "GET",
+      url: "/adm/category/child",
+      data: {
+        id: $(this).val(),
+      },
+    }).done(function (res) {
+      if (res.success) {
+        var options = '<option value="">선택</option>';
+        res.objects.map(function (data) {
+          options +=
+            '<option value="' + data.id + '">' + data.name + "</option>";
+        });
+        var nextSelector = that.data("next");
+        $(nextSelector).html(options);
+      } else {
+        alert("하위 카테고리 불러오기 실패");
+      }
+    });
+  });
+
+  $(".textEditor").summernote({
+    lang: "ko-KR",
+    placeholder: "",
+    height: 300,
+    callbacks: {
+      onImageUpload: function (files) {
+        console.log(files);
+        for (var i = 0; i <= files.length - 1; i++) {
+          singleUpload(files[i], this);
+        }
+      },
+    },
+  });
+});

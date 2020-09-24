@@ -1,0 +1,28 @@
+{% extends 'layout/base.njk' %}
+
+{% block content %}
+<div>
+    Hello! Client
+    {{ message }}
+</div>
+
+
+{#  팝업  #}
+{% include './components/mainPopup.njk' %}
+{#  팝업 끝  #}
+{% endblock %}
+
+{% block script %}
+<script>
+  $(function(){
+    {#  팝업  #}
+    {% for popup in popups %}
+    if (getCookie("todayClose{{ popup.id }}") != "Y") {
+      $("#popup{{ popup.id }}").fadeIn(0);
+    }
+    {#  팝업 끝  #}
+    {% endfor %}
+  })
+</script>
+{% endblock %}
+

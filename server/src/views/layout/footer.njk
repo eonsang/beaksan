@@ -1,0 +1,30 @@
+
+<div class="footer bg-gray-200 mt-10 py-2">
+    {% if defaultInfo.company_name %}
+        <p>회사명: {{ defaultInfo.company_name }}</p>
+    {% endif %}
+    {% if defaultInfo.company_owner %}
+        <p>사업자 등록번호: {{ defaultInfo.company_owner }}</p>
+    {% endif %}
+    {% if defaultInfo.company_register_number %}
+        <p>대표자명 {{ defaultInfo.company_register_number }}</p>
+    {% endif %}
+    {% if defaultInfo.company_tel %}
+        <p>전화번호 {{ defaultInfo.company_tel }}</p>
+    {% endif %}
+    {% if defaultInfo.company_fax %}
+        <p>팩스번호 {{ defaultInfo.company_fax }}</p>
+    {% endif %}
+    {% if defaultInfo.company_address %}
+        <p>회사 우편변호 {{ defaultInfo.company_address }}</p>
+    {% endif %}
+    {% if defaultInfo.company_address_code %}
+        <p>회사 주소 {{ defaultInfo.company_address_code }}</p>
+    {% endif %}
+    {% if defaultInfo.company_information_manager %}
+        <p>정보관리책임자명 {{ defaultInfo.company_information_manager }}</p>
+    {% endif %}
+    {% if defaultInfo.company_information_manager_email %}
+        <p>정보관리책임자명 이메일 {{ defaultInfo.company_information_manager_email }}</p>
+    {% endif %}
+</div>

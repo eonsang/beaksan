@@ -1,0 +1,16 @@
+{% extends 'layout/base.njk' %}
+
+{% block content %}
+    <div>
+        {{ message }}
+        <form action="" method="POST">
+            <input type="email" name="email">
+            <input type="password" name="password">
+            <button type="submit">로그인</button>
+        </form>
+
+        <a href="{{ routes.accounts + routes.kakao }}">카카오 로그인</a>
+        <a href="{{ routes.accounts + routes.naver }}">네이버 로그인</a>
+    </div>
+{% endblock %}
+

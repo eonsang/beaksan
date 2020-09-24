@@ -1,0 +1,49 @@
+{% extends 'layout/base.njk' %}
+
+{% block content %}
+    <div>
+        <h1>1:1문의
+            {% if object.id %} 수정
+            {% else %} 등록
+            {% endif %}</h1>
+        {{ message }}
+        <form action="" method="POST">
+            <input type="text" name="title" placeholder="title" value="{{ object.title }}" />
+            <div>
+                <textarea name="content" placeholder="content" cols="30" rows="10">{{ object.content }}</textarea>
+            </div>
+            <br>
+            <div class="custom-control custom-checkbox mr-2">
+                <input type="checkbox" class="custom-control-input" id="is_secret" name="is_secret" {% if object.is_secret %} checked {% endif %}>
+                <label class="custom-control-label" for="is_secret">비밀글</label>
+            </div>
+
+            <div class="flex">
+                <div class="custom-control custom-checkbox mr-2">
+                    <input type="checkbox" class="custom-control-input" id="receive_email" name="receive_email" {% if object.receive_email %} checked {% endif %}>
+                    <label class="custom-control-label" for="receive_email">이메일</label>
+                </div>
+
+                <div class="custom-control custom-checkbox mr-2">
+                    <input type="checkbox" class="custom-control-input" id="receive_sms" name="receive_sms" {% if object.receive_sms %} checked {% endif %} >
+                    <label class="custom-control-label" for="receive_sms">SMS</label>
+                </div>
+
+                <div class="custom-control custom-checkbox">
+                    <input type="checkbox" class="custom-control-input" id="receive_talk" name="receive_talk" {% if object.receive_talk %} checked {% endif %} >
+                    <label class="custom-control-label" for="receive_talk">카카오</label>
+                </div>
+            </div>
+            <br>
+            <button type="submit">
+                {% if object.id %} 수정
+                {% else %} 등록
+                {% endif %}
+            </button>
+        </form>
+    </div>
+{% endblock %}
+
+
+{% block script %}
+{% endblock %}
