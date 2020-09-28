@@ -80,6 +80,11 @@ try {
 } catch (error) {
   fs.mkdirSync("uploads");
 }
+app.get("/robots.txt", (req, res) => {
+  res.type("text/plain");
+  res.send("User-agent: *\nAllow: /\n");
+});
+
 app.use(routes.index, clientRouter);
 app.use(routes.admin, isAdmin, adminRouter);
 // main();
