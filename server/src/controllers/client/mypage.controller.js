@@ -22,6 +22,7 @@ export const index = {
   post: async (req, res, next) => {
     try {
       const { number, nickname, password } = req.body;
+      console.log(nickname);
       let updateData = {
         number,
         nickname,

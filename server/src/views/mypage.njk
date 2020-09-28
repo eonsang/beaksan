@@ -2,62 +2,75 @@
 
 {% block content %}
     {% include 'layout/header.njk' %}
-
     <div class="container">
-        <form action="" method="POST">
-            <div>
-                이름
-                <input type="text" value="{{ user.name }}" readonly>
+        <div class="accounts">
+            <div class="wrap">
+                <form action="" method="POST">
+            <div class="form">
+                <div class="form-row">
+                    <div class="row">
+                        <div class="input">
+                            <input type="text" value="{{ user.name }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row">
+                        <div class="input">
+                            <input type="email" value="{{ user.email }}" readonly>
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row">
+                        <div class="input">
+                            <input type="text" name="number" value="{{ user.number }}" placeholder="연락처">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row">
+                        <div class="input">
+                            <input type="text" name="nickname" value="{{ user.nickname }}" placeholder="닉네임">
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row">
+                        <div class="input">
+                            <input type="password" name="password" value="" placeholder="비밀번호" >
+                        </div>
+                    </div>
+                </div>
+                <div class="form-row">
+                    <div class="row">
+                        <div class="input">
+                            <input type="password" name="passwordCheck" value="" placeholder="비밀번호 확인">
+                        </div>
+                    </div>
+                </div>
             </div>
-            <hr>
-            <div>
-                이메일
-                <input type="email" value="{{ user.email }}" readonly>
+            <div class="form-btnbox">
+                <a href="/" class="cancel mr-1">취소</a>
+                <button type="submit" class="submit">정보 수정</button>
             </div>
-            <hr>
-            <div>
-                전화번호
-                <input type="text" name="number" value="{{ user.number }}">
-            </div>
-            <hr>
-            <div>
-                가입 채널
-                <input type="text" value="{{ user.provider }}" readonly>
-            </div>
-            <hr>
-            <div>
-                닉네임
-                <input type="text" name="nickname" value="{{ user.nickname }}">
-            </div>
-            <hr>
-            <div>
+
+            <div style="display: none;">
                 썸네일
                 <img src="{{ user.thumbnail }}" id="userThumbnail" alt="">
                 <input type="file" accept="image/*" name="thumbnail" onchange="changeThumbnail(this);">
             </div>
-            <hr>
-            <div>
+            <div style="display: none;">
                 마지막 로그인
                 <input type="text" value="{{ user.last_login | date('YYYY-MM-DD HH:mm:ss') }}" readonly>
             </div>
-            <hr>
-            <div>
+            <div style="display: none;">
                 회원가입일
                 <input type="text" value="{{ user.createdAt | date('YYYY-MM-DD HH:mm:ss') }}" readonly>
             </div>
-            <hr>
-            <div>
-                비밀번호
-                <input type="password" name="password" value="" >
-            </div>
-            <div>
-                비밀번호 확인
-                <input type="password" name="passwordCheck" value="" >
-            </div>
-            <br>
-            <br>
-            <button class="bg-blue-500">저장</button>
         </form>
+            </div>
+        </div>
     </div>
     {% include 'layout/footer.njk' %}
 {% endblock %}
