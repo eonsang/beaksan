@@ -1,5 +1,5 @@
 const config = require("./config");
-const Group = require("./Group");
+const Group = require("./group");
 
 module.exports = {
   config,
