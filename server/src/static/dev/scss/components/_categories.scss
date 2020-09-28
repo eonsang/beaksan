@@ -1,0 +1,17 @@
+.categories {
+  .wrap {
+    height: 60px;
+    @apply flex items-center justify-center;
+
+    a {
+      font-size: 1.25rem;
+      color:#bfbdbd;
+      margin:0 1em;
+
+      &.active {
+        color:#222;
+        font-weight: 500;
+      }
+    }
+  }
+}

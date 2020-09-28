@@ -1,12 +1,37 @@
 import { Op } from "sequelize";
 import moment from "moment";
 
-import { Popup, PopupImage } from "../../db/models";
+import {
+  Category,
+  Popup,
+  PopupImage,
+  Product,
+  ProductImage,
+  ProductOption,
+  ProductOptionDetail,
+} from "../../db/models";
 import PopupService from "../../services/Popup.service";
+import CategoryService from "../../services/Category.service";
+import ProductService from "../../services/Product.service";
+
 import routes from "../../routers/routes";
 import logger from "../../loader/winston";
 
 const PopupServiceInstance = new PopupService(Popup);
+const CategoryInstance = new CategoryService(Category);
+const ProductInstance = new ProductService(
+  Product,
+  ProductOption,
+  ProductOptionDetail,
+  ProductImage
+);
+
+function prevDay(days) {
+  var d = new Date();
+  var dayOfMonth = d.getDate();
+  d.setDate(dayOfMonth - days);
+  return d;
+}
 
 export const index = {
   get: async (req, res, next) => {
@@ -24,14 +49,92 @@ export const index = {
         include: [PopupImage],
       });
 
-      console.log(popups);
+      const { depth } = req.query;
+
+      let products = null;
+      let categories = null;
+      if (depth) {
+        products = await ProductInstance.findAll({
+          include: [
+            {
+              model: ProductImage,
+            },
+            {
+              model: Category,
+              where: {
+                id: depth,
+              },
+            },
+          ],
+        });
+        categories = await CategoryInstance.findAll({
+          order: [["order", "DESC"]],
+          where: {
+            CategoryId: depth,
+          },
+          include: [
+            {
+              model: Category,
+              as: "children",
+            },
+          ],
+        });
+      } else {
+        products = await ProductInstance.findAll({
+          include: [
+            {
+              model: ProductImage,
+            },
+            {
+              model: Category,
+            },
+          ],
+        });
+      }
 
       return res.render("index", {
         message: req.flash("message"),
         popups,
+        products,
+        categories,
+        depth,
+        today: prevDay(7),
       });
     } catch (error) {
       logger.error("메인 로딩 실패");
+      return next(error);
+    }
+  },
+};
+
+export const product = {
+  get: async (req, res, next) => {
+    try {
+      const { id } = req.params;
+      const product = await ProductInstance.findByPk(id, {
+        include: [
+          {
+            model: Category,
+          },
+          {
+            model: ProductOption,
+            include: [
+              {
+                model: ProductOptionDetail,
+              },
+            ],
+          },
+          {
+            model: ProductImage,
+          },
+        ],
+      });
+      return res.json({
+        success: true,
+        product,
+      });
+    } catch (error) {
+      logger.error("상품상세 가져오기 실패");
       return next(error);
     }
   },

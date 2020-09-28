@@ -1,8 +1,16 @@
 import express from "express";
-import { index } from "../../controllers/client/index.controller";
+import {
+  index,
+  orderDetail,
+  orderList,
+  product,
+} from "../../controllers/client/index.controller";
+import { isLoggedIn } from "../../middlewares/auth";
 
 const router = express.Router();
 
-router.get("/", index.get);
+router.get("/", isLoggedIn, index.get);
+
+router.get("/product/:id", isLoggedIn, product.get);
 
 export default router;

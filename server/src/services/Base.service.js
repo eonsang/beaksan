@@ -7,7 +7,10 @@ export default class BaseService {
     return this.Model.findAll(options);
   }
 
-  getAllCount() {
+  getAllCount(option) {
+    if (option) {
+      return this.Model.count(option);
+    }
     return this.Model.count();
   }
 

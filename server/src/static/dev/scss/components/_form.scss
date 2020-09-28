@@ -1,0 +1,90 @@
+.form-row {
+
+  .input {
+    @apply flex-1;
+    input {
+      padding:0 1em;
+      font-size: 1rem;
+      background:#f3f3f4;
+      border-radius: 10px;
+      height: 55px;
+      width: 100%;
+    }
+  }
+
+  .textarea {
+    @apply flex-1;
+    textarea {
+      height: 300px;
+      padding:1em;
+      font-size: 1rem;
+      background:#f3f3f4;
+      border-radius: 10px;
+      width: 100%;
+    }
+  }
+
+  .form-label {
+    @apply text-gray-600 block;
+    margin-bottom: 5px;
+    padding-left: 1rem;
+  }
+}
+
+
+.form-btnbox {
+  margin-top: 30px;
+  @apply flex;
+  .submit {
+    @apply flex-1;
+    background:#1b1be4;
+    color:#fff;
+    line-height: 60px;
+    border-radius: 10px;
+  }
+  .cancel {
+    @apply bg-gray-500;
+    width: 120px;
+    flex: none;
+    color:#fff;
+    line-height: 60px;
+    border-radius: 10px;
+    text-align: center;
+  }
+}
+
+
+.checkbox {
+  @apply flex items-center;
+  cursor: pointer;
+  span {
+    flex: none;
+    width: 1.25rem;
+    height: 1.25rem;
+    border: 1px solid #1b1be4;
+    transition: all .3s;
+  }
+  input:checked + span {
+    background:#1b1be4 url('../../images/icon-check.png') no-repeat center;
+    background-size: auto 1rem;
+  }
+}
+
+
+.form-info {
+  @apply text-sm text-gray-500 mt-1;
+}
+
+
+.complete-message {
+  h1 {
+    font-size: 1.5rem;
+  }
+  div {
+    @apply bg-gray-100;
+    padding: 1rem;
+    margin-top: 1em;
+  }
+  p {
+  }
+}

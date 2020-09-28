@@ -11,6 +11,7 @@ module.exports = (sequelize, DataTypes) => {
       models.User.hasMany(models.Qna, {
         onDelete: "cascade",
       });
+      models.Order.hasMany(models.Order);
     }
   }
   User.init(

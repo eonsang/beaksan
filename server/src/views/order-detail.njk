@@ -1,0 +1,97 @@
+{% extends 'layout/base.njk' %}
+
+{% block content %}
+
+    {% include 'layout/header.njk' %}
+
+    <div class="container">
+        <div class="board">
+            <div class="wrap">
+                <h1 class="board__title">주문 상세 내역</h1>
+
+                <div class="board__table2">
+                    <table>
+                        <colgroup>
+                            <col width="120">
+                            <col>
+                        </colgroup>
+                        <tbody>
+                        <tr>
+                            <th>주문번호</th>
+                            <td>{{ object.id }}</td>
+                        </tr>
+                        <tr>
+                            <th>주문 일시</th>
+                            <td>{{ object.createdAt | date("YYYY-MM-DD") }}</td>
+                        </tr>
+                        <tr>
+                            <th>성함</th>
+                            <td>{{ object.name }}</td>
+                        </tr>
+                        <tr>
+                            <th>연락처</th>
+                            <td>{{ object.number }}</td>
+                        </tr>
+                        <tr>
+                            <th>주소</th>
+                            <td>
+                                [{{ object.zipcode }}] {{ object.addr1 }} {{ object.addr2 }} {{ object.addr3 }}
+                            </td>
+                        </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <hr class="mt-4 mb-8 ">
+                <h1 class="board__title">주문 상품</h1>
+                {% for cart in object.Carts %}
+                    <div class="board__table2 mb-1">
+                        <table>
+                            <colgroup>
+                                <col width="120">
+                                <col>
+                            </colgroup>
+                            <tbody>
+                            <tr>
+                                <th>상품명</th>
+                                <td>{{ cart.Product.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>상품이미지</th>
+                                <td><img src="{{ cart.ProductOptionDetail.path }}" alt="" style="max-width: 300px;width: 100%;"></td>
+                            </tr>
+                            <tr>
+                                <th>옵션명</th>
+                                <td>[{{ cart.ProductOption.name }}] {{ cart.ProductOptionDetail.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>수량</th>
+                                <td>{{ cart.quantity }} 개</td>
+                            </tr>
+                            <tr>
+                                <th>가격</th>
+                                <td>{{ ((cart.Product.customer_price + cart.ProductOptionDetail.price) * cart.quantity)|comma }} 원</td>
+                            </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                {% endfor %}
+                <div class="board__btnbox">
+                    <a href="/order" class="button mr-1">목록</a>
+                    <a href="/qna/create" class="button mr-1">1:1 문의하기</a>
+                </div>
+            </div>
+
+
+        </div>
+    </div>
+
+    {% include 'layout/footer.njk' %}
+{% endblock %}
+
+{% block script %}
+    <script>
+      $(function(){
+      })
+    </script>
+{% endblock %}
+

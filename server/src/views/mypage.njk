@@ -1,60 +1,65 @@
 {% extends 'layout/base.njk' %}
 
 {% block content %}
-    <form action="" method="POST">
-        <div>
-            이름
-            <input type="text" value="{{ user.name }}" readonly>
-        </div>
-        <hr>
-        <div>
-            이메일
-            <input type="email" value="{{ user.email }}" readonly>
-        </div>
-        <hr>
-        <div>
-            전화번호
-            <input type="text" name="number" value="{{ user.number }}">
-        </div>
-        <hr>
-        <div>
-            가입 채널
-            <input type="text" value="{{ user.provider }}" readonly>
-        </div>
-        <hr>
-        <div>
-            닉네임
-            <input type="text" name="nickname" value="{{ user.nickname }}">
-        </div>
-        <hr>
-        <div>
-            썸네일
-            <img src="{{ user.thumbnail }}" id="userThumbnail" alt="">
-            <input type="file" accept="image/*" name="thumbnail" onchange="changeThumbnail(this);">
-        </div>
-        <hr>
-        <div>
-            마지막 로그인
-            <input type="text" value="{{ user.last_login | date('YYYY-MM-DD HH:mm:ss') }}" readonly>
-        </div>
-        <hr>
-        <div>
-            회원가입일
-            <input type="text" value="{{ user.createdAt | date('YYYY-MM-DD HH:mm:ss') }}" readonly>
-        </div>
-        <hr>
-        <div>
-            비밀번호
-            <input type="password" name="password" value="" >
-        </div>
-        <div>
-            비밀번호 확인
-            <input type="password" name="passwordCheck" value="" >
-        </div>
-        <br>
-        <br>
-        <button class="bg-blue-500">저장</button>
-    </form>
+    {% include 'layout/header.njk' %}
+
+    <div class="container">
+        <form action="" method="POST">
+            <div>
+                이름
+                <input type="text" value="{{ user.name }}" readonly>
+            </div>
+            <hr>
+            <div>
+                이메일
+                <input type="email" value="{{ user.email }}" readonly>
+            </div>
+            <hr>
+            <div>
+                전화번호
+                <input type="text" name="number" value="{{ user.number }}">
+            </div>
+            <hr>
+            <div>
+                가입 채널
+                <input type="text" value="{{ user.provider }}" readonly>
+            </div>
+            <hr>
+            <div>
+                닉네임
+                <input type="text" name="nickname" value="{{ user.nickname }}">
+            </div>
+            <hr>
+            <div>
+                썸네일
+                <img src="{{ user.thumbnail }}" id="userThumbnail" alt="">
+                <input type="file" accept="image/*" name="thumbnail" onchange="changeThumbnail(this);">
+            </div>
+            <hr>
+            <div>
+                마지막 로그인
+                <input type="text" value="{{ user.last_login | date('YYYY-MM-DD HH:mm:ss') }}" readonly>
+            </div>
+            <hr>
+            <div>
+                회원가입일
+                <input type="text" value="{{ user.createdAt | date('YYYY-MM-DD HH:mm:ss') }}" readonly>
+            </div>
+            <hr>
+            <div>
+                비밀번호
+                <input type="password" name="password" value="" >
+            </div>
+            <div>
+                비밀번호 확인
+                <input type="password" name="passwordCheck" value="" >
+            </div>
+            <br>
+            <br>
+            <button class="bg-blue-500">저장</button>
+        </form>
+    </div>
+    {% include 'layout/footer.njk' %}
 {% endblock %}
 
 {% block script %}

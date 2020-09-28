@@ -17,7 +17,6 @@ export const index = {
           },
         ],
       });
-
       return res.render("qna_list", {
         objects,
       });

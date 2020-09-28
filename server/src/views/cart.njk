@@ -1,0 +1,272 @@
+{% extends 'layout/base.njk' %}
+
+{% set count = 0 %}
+{% set totalPrice = 0 %}
+{% block content %}
+    {% include 'layout/header.njk' %}
+    <div class="container">
+        <div class="cart">
+            <div class="cart__title">
+                장바구니({{ objects | length }})
+            </div>
+            <div class="cart__list">
+                <div class="cart__item cart__item--header">
+                    <div class="row">
+                        <div class="check">
+                            <label for="all" class="checkbox">
+                                <input type="checkbox" hidden id="all" checked>
+                                <span></span>
+                            </label>
+                        </div>
+                        <div class="thumb text-center">
+                            사진
+                        </div>
+                        <div class="info flex-1">
+                            상품명
+                        </div>
+                        <div class="price">
+                            단가
+                        </div>
+                        <div class="count">
+                            수량
+                        </div>
+                        <div class="total-price">
+                            금액
+                        </div>
+                        <div class="actions">
+
+                        </div>
+                    </div>
+                </div>
+                {% if objects | length %}
+                    {% for object in objects %}
+                        <div class="cart__item">
+                            <div class="row">
+                                <div class="check">
+                                    <label for="{{ object.id }}" class="checkbox">
+                                        <input type="checkbox" hidden id="{{ object.id }}" data-id="{{ object.id }}" checked class="item-check">
+                                        <span></span>
+                                    </label>
+                                </div>
+                                <div class="thumb">
+                                    <img src="{{ object.ProductOptionDetail.path }}" alt="">
+                                </div>
+                                <div class="info flex-1">
+                                    <label for="" class="label">상품명 / 옵션</label>
+                                    <h3>{{ object.Product.name }}</h3>
+                                    <p>{{ object.ProductOptionDetail.name }}</p>
+                                </div>
+                                <div class="price">
+                                    <label for="" class="label">단가</label>
+                                    <input type="hidden" class="price-value" value="{{ (object.Product.price + object.ProductOptionDetail.price) }}">
+                                    <span id="price">{{ (object.Product.price + object.ProductOptionDetail.price)|comma }}</span> 원
+                                </div>
+                                <div class="count">
+                                    <div class="reglist__item">
+                                        <label for="" class="label">수량</label>
+                                        <div class="form">
+                                            <button class="dec" data-cart-id="{{ object.id }}">-</button>
+                                            <input type="text" value="{{ object.quantity }}" class="cnt" readonly>
+                                            <button class="inc" data-cart-id="{{ object.id }}">+</button>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="total-price">
+                                    <label for="" class="label">금액</label>
+                                    <input type="hidden" class="total-price-value" value="{{ ((object.Product.price + object.ProductOptionDetail.price) * object.quantity) }}">
+                                    <span class="total-price-text">{{ ((object.Product.price + object.ProductOptionDetail.price) * object.quantity)|comma }}</span> 원
+                                </div>
+                                <div class="actions">
+                                    <button class="btn" data-id="{{ object.id }}">삭제</button>
+                                </div>
+                            </div>
+                        </div>
+                        {% set count = count + object.quantity %}
+                        {% set totalPrice = totalPrice + ((object.Product.price + object.ProductOptionDetail.price) * object.quantity) %}
+                    {% endfor %}
+                {% else %}
+                    <p class="text-center py-20 mx-auto border-b border-gray-200">장바구니에 담긴 상품이 없습니다.</p>
+                {% endif %}
+            </div>
+
+            <div class="cart__footer">
+                <div class="count">
+                    <label for="" class="label">총 수량</label>
+                    <p class="allCount value" id="allCount">{{ count }}</p>
+                </div>
+                <div class="calculator">
+                    <div class="row">
+                        <div class="col">
+                            <label for="" class="label">총 주문금액</label>
+                            <p class="allPrice value" id="allPrice">￦ {{ totalPrice|comma }}</p>
+                        </div>
+                        <div class="col op">+</div>
+                        <div class="col">
+                            <label for="" class="label">배송비</label>
+                            <p class=" value">￦ 2,500</p>
+                        </div>
+                        <div class="col op">=</div>
+                        <div class="col">
+                            <label for="" class="label">총결제 금액</label>
+                            <p class="allPricePlusDeliver value" id="allPricePlusDeliver">￦ {{ (totalPrice + 2500)|comma }}</p>
+                        </div>
+                    </div>
+                </div>
+                <button class="submit" onclick="$('#orderform').show();">주문하기</button>
+            </div>
+        </div>
+    </div>
+    {% include 'layout/footer.njk' %}
+    {% include 'components/orderform.njk' %}
+{% endblock %}
+{% block script %}
+    <script>
+      function submitOrder() {
+        // validation 체크
+        var formdata = new FormData();
+        formdata.append('name', $('#name').val());
+        formdata.append('number', $('#number').val());
+        formdata.append('zipcode', $('#zipcode').val());
+        formdata.append('addr1', $('#addr1').val());
+        formdata.append('addr2', $('#addr2').val());
+        formdata.append('addr3', $('#addr3').val());
+        var checkedItemId = [];
+        $('.cart__item:not(".cart__item--header")').each(function(idx, el) {
+          var isChecked = $(el).find('.item-check').is(':checked')
+          if(isChecked) {
+            checkedItemId.push($(el).find('.item-check').data('id'));
+          }
+        });
+        formdata.append('checkedItem', JSON.stringify(checkedItemId));
+        if(checkedItemId.length === 0) {
+          alert('최소 하나이상의 상품을 선택해주세요.')
+          return;
+        }
+        if(!$('#name').val()) {
+          alert('이름을 입력해주세요.');
+          return;
+        }
+        if(!$('#number').val()) {
+          alert('연락처를 입력해주세요.');
+          return;
+        }
+        if(!$('#addr3').val()) {
+          alert('주소를 입력해주세요.');
+          return;
+        }
+
+        // ajax 주문서 생성 후 장바구니 orderId 넣기
+        $.ajax({
+          type: 'POST',
+          url: '/order',
+          data: formdata,
+          processData: false,
+          contentType: false,
+        }).done(function(res) {
+          if(res.success) {
+            alert('주문해주셔서 감사합니다.\n 빠른시일 내에 연락드리겠습니다.');
+            location.href='/order/detail/' + res.result.id;
+          }
+        });
+      }
+      function checkCart() {
+        var totalCount = 0;
+        var totalPrice = 0;
+        $('.cart__item:not(".cart__item--header")').each(function(idx, el) {
+          var isChecked = $(el).find('.item-check').is(':checked')
+          var count = $(el).find('.cnt').val();
+          var price = $(el).find('.price-value').val();
+
+          $(el).find('.total-price-value').val(numberWithCommas(count * price));
+          $(el).find('.total-price-text').text(numberWithCommas(count * price));
+
+          if(isChecked) {
+            totalCount += parseInt(count, 10);
+            totalPrice += parseInt(price, 10) * parseInt(count, 10);
+          }
+        });
+        $('#allCount').text(numberWithCommas(totalCount));
+        $('#allPrice').text('￦ '+ numberWithCommas(totalPrice));
+        $('#allPricePlusDeliver').text('￦ '+ numberWithCommas(totalPrice + 2500));
+      };
+      $(function(){
+        $('#all').on('change', function(){
+          $('[type="checkbox"]').prop('checked', $(this).prop("checked"));
+          checkCart();
+        });
+        $('.item-check').on('change', function(){
+          checkCart();
+        });
+
+        $('.actions .btn').on('click', function(){
+          var that = $(this);
+          if(confirm('삭제 하시겠습니까?')) {
+            $.ajax({
+              type: 'POST',
+              url: '/cart/delete/' + that.data('id'),
+            }).done(function(res){
+                if(res.success) {
+                  that.parents('.cart__item').remove();
+                  checkCart();
+                }
+            }).fail(function(error) {
+              alert('관리자에게 문의주세요.')
+            }).always(function(res){
+            });
+          };
+        });
+
+
+        $(document).on('click', '.inc', function(){
+          var value = $(this).parents('.form').find('.cnt').val();
+          var formData = new FormData();
+          var that = $(this);
+          formData.append('quantity', parseInt(value, 10) + 1);
+          $.ajax({
+            url: '/cart/quantity/' + $(this).data('cartId'),
+            type: 'POST',
+            data: formData,
+            contentType: false,
+            processData: false
+          }).done(function(res){
+            if(res.success) {
+              that.parents('.form').find('.cnt').val(parseInt(value, 10) + 1);
+
+              checkCart();
+            }
+          }).fail(function(error) {
+            console.log(error);
+            alert('관리자에게 문의주세요.')
+          }).always(function(res){
+          });
+        });
+        $(document).on('click', '.dec', function(){
+          var value = $(this).parents('.form').find('.cnt').val();
+          if(parseInt(value, 10) - 1 < 1) {
+            alert('1보다 작을 수는 없습니다.')
+          } else {
+            var formData = new FormData();
+            var that = $(this);
+            formData.append('quantity', parseInt(value, 10) - 1);
+            $.ajax({
+              url: '/cart/quantity/' + $(this).data('cartId'),
+              type: 'POST',
+              data: formData,
+              contentType: false,
+              processData: false
+            }).done(function (res) {
+              if (res.success) {
+                that.parents('.form').find('.cnt').val(parseInt(value, 10) - 1);
+                checkCart();
+              }
+            }).fail(function (error) {
+              console.log(error);
+              alert('관리자에게 문의주세요.')
+            }).always(function (res) {
+            });
+          }
+        });
+      })
+    </script>
+{% endblock %}
+

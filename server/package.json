@@ -69,6 +69,7 @@
     "nodemailer": "^6.4.11",
     "nodemailer-smtp-transport": "^2.7.4",
     "nunjucks": "^3.2.2",
+    "nunjucks-comma-filter": "^1.0.0",
     "nunjucks-date-filter": "^0.1.1",
     "passport": "^0.4.1",
     "passport-google-oauth": "^2.0.0",

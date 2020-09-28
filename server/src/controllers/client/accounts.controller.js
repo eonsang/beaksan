@@ -35,7 +35,11 @@ export const login = {
         }
         logger.info(`${user.name} 로그인`);
         await AccountsServiceInstance.update(user.id, { last_login: moment() });
-        return res.redirect("/");
+        return res.json({
+          success: true,
+          message: "로그인 완료",
+          name: user.name,
+        });
       });
     })(req, res, next);
   },
@@ -87,16 +91,14 @@ export const signup = {
         subject: "이메일 인증을 진행해주세요.",
         html: `<h1>이메일 인증을 위해 URL을 클릭해주세요.</h1><br><a href='${url}'>인증가기</a>`,
       };
-
-      smtpTransport.sendMail(mailOpt, function (err, res) {
-        if (err) {
-          logger.warn(`${name}에게 이메일 인증메일 실패`);
-        } else {
-          logger.info(`${name}에게 이메일 인증메일 발송`);
-        }
-        smtpTransport.close();
-      });
-
+      // smtpTransport.sendMail(mailOpt, function (err, res) {
+      //   if (err) {
+      //     logger.warn(`${name}에게 이메일 인증메일 실패`);
+      //   } else {
+      //     logger.info(`${name}에게 이메일 인증메일 발송`);
+      //   }
+      //   smtpTransport.close();
+      // });
       req.flash("username", user.name);
       return res.json({
         success: true,

@@ -18,35 +18,22 @@
     <meta property="og:description" content="{{ defaultInfo.og_description }}">
     {{ defaultInfo.add_meta | safe }}
 
+    <link rel="stylesheet" href="/static/plugins/slick/slick.css">
     <link rel="stylesheet" href="/static/dist/css/main.css">
 
     {{ defaultInfo.add_script | safe }}
 </head>
 <body>
 
-
-<h1>{{ defaultInfo.title }}</h1>
-{% if not loginUser %}
-    <a href={{ routes.accounts + routes.login }}>로그인</a>
-    <a href={{ routes.accounts + routes.signup }}>회원가입</a>
-{% else %}
-    <a href={{ routes.mypage }}>마이페이지</a>
-    <a href={{ routes.accounts + routes.logout }}>로그아웃</a>
-    {% if loginUser.role === 'admin' or loginUser.role === 'manager'  %}
-        <a href={{ routes.admin }}>관리자사이트</a>
-    {% endif %}
-{% endif %}
-<a href="/qna">1:1 문의</a>
-
-<hr>
-{% block content %}
-{% endblock %}
-
-{% include './footer.njk' %}
+<div class="wrapper">
+    {% block content %}
+    {% endblock %}
+</div>
 
 <script src="https://code.jquery.com/jquery-3.5.1.js"
         integrity="sha256-QWo7LDvxbWT2tbbQ97B53yJnYU3WhH/C8ycbRAkjPDc="
         crossorigin="anonymous"></script>
+<script src="/static/plugins/slick/slick.js"></script>
 <script src="/static/common/common.js"></script>
 {% block script %}
 {% endblock %}

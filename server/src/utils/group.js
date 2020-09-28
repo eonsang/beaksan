@@ -1,22 +1,23 @@
-'use strict'
+"use strict";
 
 /**
  * @author Henry Kim <henry@nurigo.net>
  */
 
-const os = require('os')
-const qs = require('qs')
-const { asyncRequest } = require('./utils')
-const { getAuth } = require('./config')
+const os = require("os");
+const qs = require("qs");
+const { asyncRequest } = require("./utils");
+const { getAuth } = require("./config");
 
 module.exports = class Group {
-  constructor ({ agent = {}, groupId } = {}) {
-    if (!agent) throw new Error('agent는 object 타입 이어야 됩니다.')
-    this.groupId = groupId
-    this.agent = agent
-    this.agent.osPlatform = os.platform()
-    this.agent.sdkVersion = 'JS 4.0.0'
+  constructor({ agent = {}, groupId } = {}) {
+    if (!agent) throw new Error("agent는 object 타입 이어야 됩니다.");
+    this.groupId = groupId;
+    this.agent = agent;
+    this.agent.osPlatform = os.platform();
+    this.agent.sdkVersion = "JS 4.0.0";
   }
+
   /**
    * 그룹 생성을 요청합니다.
    *
@@ -27,11 +28,16 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  async createGroup () {
-    if (this.groupId) return
-    this.groupData = await asyncRequest('post', 'https://api.solapi.com/messages/v4/groups', { headers: { Authorization: getAuth() }, form: this.agent })
-    this.groupId = this.groupData.groupId
+  async createGroup() {
+    if (this.groupId) return;
+    this.groupData = await asyncRequest(
+      "post",
+      "https://api.solapi.com/messages/v4/groups",
+      { headers: { Authorization: getAuth() }, form: this.agent }
+    );
+    this.groupId = this.groupData.groupId;
   }
+
   /**
    * 그룹에 메시지를 추가합니다.
    *
@@ -57,15 +63,22 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  addGroupMessage (messages) {
-    if (!Array.isArray(messages)) messages = [messages]
-    messages.forEach(message => {
-      if (typeof message !== 'object') throw new Error('message 는 객체여야 합니다.')
-      if (!message.autoTypeDetect && !message.type) throw new Error('autoTypeDetect 또는 type 을 입력해주세요.')
-    })
-    messages = JSON.stringify(messages)
-    return asyncRequest('put', `https://api.solapi.com/messages/v4/groups/${this.getGroupId()}/messages`, { headers: { Authorization: getAuth() }, form: { messages } })
+  addGroupMessage(messages) {
+    if (!Array.isArray(messages)) messages = [messages];
+    messages.forEach((message) => {
+      if (typeof message !== "object")
+        throw new Error("message 는 객체여야 합니다.");
+      if (!message.autoTypeDetect && !message.type)
+        throw new Error("autoTypeDetect 또는 type 을 입력해주세요.");
+    });
+    messages = JSON.stringify(messages);
+    return asyncRequest(
+      "put",
+      `https://api.solapi.com/messages/v4/groups/${this.getGroupId()}/messages`,
+      { headers: { Authorization: getAuth() }, form: { messages } }
+    );
   }
+
   /**
    * 추가된 메시지들을 발송 요청합니다.
    *
@@ -75,9 +88,14 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  sendMessages () {
-    return asyncRequest('post', `https://api.solapi.com/messages/v4/groups/${this.getGroupId()}/send`, { headers: { Authorization: getAuth() } })
+  sendMessages() {
+    return asyncRequest(
+      "post",
+      `https://api.solapi.com/messages/v4/groups/${this.getGroupId()}/send`,
+      { headers: { Authorization: getAuth() } }
+    );
   }
+
   /**
    * 그룹에 추가된 메시지들을 불러옵니다.
    *
@@ -88,26 +106,30 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  getMessageList (queryObject = { groupId: this.getGroupId() }) {
+  getMessageList(queryObject = { groupId: this.getGroupId() }) {
     const obj = {
       criteria: [],
       value: [],
       cond: [],
       startKey: queryObject.startKey || undefined,
-      limit: queryObject.limit || 20
-    }
-    delete queryObject.startKey
-    delete queryObject.limit
-    Object.keys(queryObject).forEach(key => {
-      obj.criteria.push(key)
-      obj.value.push(queryObject[key])
-      obj.cond.push('eq')
-    })
-    obj.criteria = obj.criteria.join(',')
-    obj.value = obj.value.join(',')
-    obj.cond = obj.cond.join(',')
-    const query = `?${qs.stringify(obj)}`
-    return asyncRequest('get', `https://api.solapi.com/messages/v4/list${query}`, { headers: { Authorization: getAuth() } })
+      limit: queryObject.limit || 20,
+    };
+    delete queryObject.startKey;
+    delete queryObject.limit;
+    Object.keys(queryObject).forEach((key) => {
+      obj.criteria.push(key);
+      obj.value.push(queryObject[key]);
+      obj.cond.push("eq");
+    });
+    obj.criteria = obj.criteria.join(",");
+    obj.value = obj.value.join(",");
+    obj.cond = obj.cond.join(",");
+    const query = `?${qs.stringify(obj)}`;
+    return asyncRequest(
+      "get",
+      `https://api.solapi.com/messages/v4/list${query}`,
+      { headers: { Authorization: getAuth() } }
+    );
   }
 
   /**
@@ -120,9 +142,14 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  static deleteGroup (groupId) {
-    return asyncRequest('delete', `https://api.solapi.com/messages/v4/groups/${groupId}`, { headers: { Authorization: getAuth() } })
+  static deleteGroup(groupId) {
+    return asyncRequest(
+      "delete",
+      `https://api.solapi.com/messages/v4/groups/${groupId}`,
+      { headers: { Authorization: getAuth() } }
+    );
   }
+
   /**
    * 그룹의 정보를 조회합니다.
    *
@@ -133,8 +160,12 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  static async getInfo (groupId) {
-    return asyncRequest('get', `https://api.solapi.com/messages/v4/groups/${groupId}`, { headers: { Authorization: getAuth() } })
+  static async getInfo(groupId) {
+    return asyncRequest(
+      "get",
+      `https://api.solapi.com/messages/v4/groups/${groupId}`,
+      { headers: { Authorization: getAuth() } }
+    );
   }
 
   /**
@@ -146,16 +177,27 @@ module.exports = class Group {
    *  console.log(body)
    * })
    */
-  static async getMyGroupList (query) {
-    query = qs.stringify(query)
-    return asyncRequest('get', `https://api.solapi.com/messages/v4/groups?${query}`, { headers: { Authorization: getAuth() } })
+  static async getMyGroupList(query) {
+    query = qs.stringify(query);
+    return asyncRequest(
+      "get",
+      `https://api.solapi.com/messages/v4/groups?${query}`,
+      { headers: { Authorization: getAuth() } }
+    );
   }
 
   /**
    * 등록된 그룹의 메시지를 삭제합니다
    */
-  async deleteGroupMessages (messageId) {
-    return asyncRequest('delete', `https://api.solapi.com/messages/v4/groups/${this.getGroupId()}/messages`, { headers: { Authorization: getAuth() }, form: { messageIds: [messageId] } })
+  async deleteGroupMessages(messageId) {
+    return asyncRequest(
+      "delete",
+      `https://api.solapi.com/messages/v4/groups/${this.getGroupId()}/messages`,
+      {
+        headers: { Authorization: getAuth() },
+        form: { messageIds: [messageId] },
+      }
+    );
   }
 
   /**
@@ -175,13 +217,19 @@ module.exports = class Group {
    * console.log(body)
    * })
    */
-  static sendSimpleMessage (message = {}, agent = {}) {
-    if (typeof message !== 'object') throw new Error('message 는 객체여야 합니다.')
-    if (!message.autoTypeDetect && !message.type) throw new Error('autoTypeDetect 또는 type 을 입력해주세요.')
-    return asyncRequest('post', `https://api.solapi.com/messages/v4/send`, { headers: { Authorization: getAuth() }, form: { message, agent } })
+  static sendSimpleMessage(message = {}, agent = {}) {
+    if (typeof message !== "object")
+      throw new Error("message 는 객체여야 합니다.");
+    if (!message.autoTypeDetect && !message.type)
+      throw new Error("autoTypeDetect 또는 type 을 입력해주세요.");
+    return asyncRequest("post", `https://api.solapi.com/messages/v4/send`, {
+      headers: { Authorization: getAuth() },
+      form: { message, agent },
+    });
   }
-  getGroupId () {
-    if (!this.groupId) throw new Error('그룹을 생성하고 사용해주세요.')
-    return this.groupId
+
+  getGroupId() {
+    if (!this.groupId) throw new Error("그룹을 생성하고 사용해주세요.");
+    return this.groupId;
   }
-}
+};

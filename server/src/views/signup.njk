@@ -1,23 +1,65 @@
 {% extends 'layout/base.njk' %}
 
+
 {% block content %}
-    <div>
-
-        <h1>회원가입</h1>
-
-        {{ message }}
-
-        <form action="" method="POST" id="signupForm">
-            <input type="text" name="name" placeholder="name" />
-            <input type="text" name="email" placeholder="email" />
-            <input type="text" name="number" placeholder="number" />
-            <input type="text" name="password" placeholder="password" />
-            <input type="text" name="nickname" placeholder="nickname" />
-
-            <br>
-            <br>
-            <button type="submit">회원가입</button>
-        </form>
+    <div class="accounts">
+        <div class="wrap">
+            <div class="accounts__logo">
+                <img src="/static/images/logo.png" alt="백산광학">
+            </div>
+            {{ message }}
+            <form action="" method="POST" id="signupForm">
+               <div class="form">
+                   <div class="form-row">
+                       <div class="row">
+                           <div class="input">
+                               <input type="text" name="name" placeholder="이름" id="name" required/>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-row">
+                       <div class="row">
+                           <div class="input">
+                               <input type="email" name="email" id="email" placeholder="이메일" required/>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-row">
+                       <div class="row">
+                           <div class="input">
+                               <input type="text" name="number" id="number" placeholder="연락처" maxlength="11" required/>
+                           </div>
+                       </div>
+                       <p class="form-info">- 없이 연락처를 입력해주세요.</p>
+                   </div>
+                   <div class="form-row">
+                       <div class="row">
+                           <div class="input">
+                               <input type="password" name="password" id="password" placeholder="비밀번호" required/>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-row">
+                       <div class="row">
+                           <div class="input">
+                               <input type="password" id="password-check" placeholder="비밀번호 확인" required/>
+                           </div>
+                       </div>
+                   </div>
+                   <div class="form-row">
+                       <div class="row">
+                           <div class="input">
+                               <input type="text" name="nickname" id="nickname" placeholder="닉네임" required/>
+                           </div>
+                       </div>
+                   </div>
+               </div>
+                <div class="form-btnbox">
+                    <a href="/" class="cancel mr-1">취소</a>
+                    <button type="submit" class="submit">회원가입</button>
+                </div>
+            </form>
+        </div>
     </div>
 {% endblock %}
 
@@ -27,6 +69,14 @@
   $(function(){
     $('#signupForm').submit(function(e){
       e.preventDefault();
+      var password = $('#password').val();
+      var passwordCheck = $('#password-check').val();
+      if(password !== passwordCheck) {
+        alert('비밀번호가 같지않습니다.');
+        $('#password').val('');
+        $('#password-check').val('');
+        return;
+      }
       $.ajax({
         url: '/accounts/signup',
         type: 'post',

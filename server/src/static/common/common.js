@@ -36,6 +36,10 @@ function fileUploadForGetPath(file, el) {
   });
 }
 
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
 // cookie
 function setCookie(cookieName, value, exdays) {
   var exdate = new Date();
@@ -72,7 +76,15 @@ function closePopupToday(id) {
 }
 
 $(function () {
-  $(document).on("change",".custom-file-input", function () {
+  $(window).scroll(function () {
+    var h = $("html, body").scrollTop();
+    if (h > 10) {
+      $(".wrapper").addClass("scrolled");
+    } else {
+      $(".wrapper").removeClass("scrolled");
+    }
+  });
+  $(document).on("change", ".custom-file-input", function () {
     var fileName = $(this).val().split("\\").pop();
     $(this).siblings(".custom-file-label").addClass("selected").html(fileName);
   });

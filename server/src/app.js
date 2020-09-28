@@ -7,6 +7,7 @@ import session from "express-session";
 import flash from "connect-flash";
 import nunjucks from "nunjucks";
 import dateFilter from "nunjucks-date-filter";
+import commaFilter from "nunjucks-comma-filter";
 import passport from "passport";
 import expressip from "express-ip";
 
@@ -18,6 +19,8 @@ import routes from "./routers/routes";
 import logger from "./loader/winston";
 import createDefaultData from "./loader/createDefaultData";
 import { isAdmin } from "./middlewares/auth";
+
+import { main } from "./utils/kakaoMessage";
 
 require("dotenv").config();
 
@@ -42,6 +45,7 @@ const env = nunjucks.configure(path.join(__dirname, "views"), {
   watch: true,
 });
 env.addFilter("date", dateFilter);
+env.addFilter("comma", commaFilter);
 
 app.use(morgan("dev"));
 app.use(expressip().getIpInfoMiddleware);
@@ -78,9 +82,7 @@ try {
 }
 app.use(routes.index, clientRouter);
 app.use(routes.admin, isAdmin, adminRouter);
-
-import { main } from "./utils/kakaoMessage";
-main();
+// main();
 
 // error handler
 app.use((req, res, next) => {
