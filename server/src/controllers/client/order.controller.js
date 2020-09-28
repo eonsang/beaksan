@@ -31,7 +31,6 @@ export const order = {
         },
       ],
     });
-    console.log(objects[0].Carts[0]);
     return res.render("order", {
       objects,
     });
