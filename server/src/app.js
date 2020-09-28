@@ -28,7 +28,7 @@ const app = express();
 
 passportConfig();
 
-const devForce = false;
+const devForce = true;
 const force = process.env.NODE_ENV === "production" ? false : devForce;
 sequelize
   .sync({ force })

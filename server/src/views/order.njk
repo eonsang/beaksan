@@ -24,6 +24,7 @@
                         </tr>
                         </thead>
                         <tbody>
+                        {% if objects|length %}
                         {% for object in objects %}
                             <tr>
                                 <td>{{ object.id }}</td>
@@ -35,6 +36,13 @@
                                 <td>{{ object.createdAt | date("MM.DD") }}</td>
                             </tr>
                         {% endfor %}
+                        {% else %}
+                            <tr>
+                                <td colspan="3">
+                                    <p class="text-center">등록된 주문내역이 없습니다.</p>
+                                </td>
+                            </tr>
+                        {% endif %}
                         </tbody>
                     </table>
                 </div>
