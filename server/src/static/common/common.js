@@ -112,17 +112,19 @@ $(function () {
     });
   });
 
-  $(".textEditor").summernote({
-    lang: "ko-KR",
-    placeholder: "",
-    height: 300,
-    callbacks: {
-      onImageUpload: function (files) {
-        console.log(files);
-        for (var i = 0; i <= files.length - 1; i++) {
-          singleUpload(files[i], this);
-        }
+  if ($(".textEditor").length > 0) {
+    $(".textEditor").summernote({
+      lang: "ko-KR",
+      placeholder: "",
+      height: 300,
+      callbacks: {
+        onImageUpload: function (files) {
+          console.log(files);
+          for (var i = 0; i <= files.length - 1; i++) {
+            singleUpload(files[i], this);
+          }
+        },
       },
-    },
-  });
+    });
+  }
 });

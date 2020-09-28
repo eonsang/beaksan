@@ -1,5 +1,20 @@
 {% extends 'layout/base.njk' %}
 
+{% block style %}
+<style>
+    @media screen and (max-width: 460px) {
+        .board__table colgroup col:nth-child(3),
+        .board__table colgroup col:nth-child(5),
+        .board__table th:nth-child(3),
+        .board__table th:nth-child(5),
+        .board__table td:nth-child(3),
+        .board__table td:nth-child(5) {
+            display: none;
+        }
+    }
+</style>
+{% endblock %}
+
 {% block content %}
     {% include 'layout/header.njk' %}
     <div class="container">
@@ -15,7 +30,7 @@
                             <col width="50">
                             <col>
                             <col width="100">
-                            <col width="100">
+                            <col width="80">
                             <col width="80">
                         </colgroup>
                         <thead>

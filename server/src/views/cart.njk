@@ -52,7 +52,6 @@
                                     <img src="{{ object.ProductOptionDetail.path }}" alt="">
                                 </div>
                                 <div class="info flex-1">
-                                    <label for="" class="label">상품명 / 옵션</label>
                                     <h3>{{ object.Product.name }}</h3>
                                     <p>{{ object.ProductOptionDetail.name }}</p>
                                 </div>
@@ -63,7 +62,6 @@
                                 </div>
                                 <div class="count">
                                     <div class="reglist__item">
-                                        <label for="" class="label">수량</label>
                                         <div class="form">
                                             <button class="dec" data-cart-id="{{ object.id }}">-</button>
                                             <input type="text" value="{{ object.quantity }}" class="cnt" readonly>
@@ -72,7 +70,6 @@
                                     </div>
                                 </div>
                                 <div class="total-price">
-                                    <label for="" class="label">금액</label>
                                     <input type="hidden" class="total-price-value" value="{{ ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) }}">
                                     <span class="total-price-text">{{ ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity)|comma }}</span> 원
                                 </div>
