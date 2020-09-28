@@ -98,112 +98,67 @@
                 </div>
             </div>
             <div class="col-8">
-                <div class="card text-center">
+                <div class="card">
                     <div class="card-body">
-                        <img src="assets/images/users/avatar-1.jpg" class="rounded-circle avatar-lg img-thumbnail"
-                             alt="profile-image">
-
-                        <h4 class="mb-0 mt-2">Dominic Keller</h4>
-                        <p class="text-muted font-14">Founder</p>
-
-                        <button type="button" class="btn btn-success btn-sm mb-2">Follow</button>
-                        <button type="button" class="btn btn-danger btn-sm mb-2">Message</button>
-
-                        <div class="text-left mt-3">
-                            <h4 class="font-13 text-uppercase">About Me :</h4>
-                            <p class="text-muted font-13 mb-3">
-                                Hi I'm Johnathn Deo,has been the industry's standard dummy text ever since the
-                                1500s, when an unknown printer took a galley of type.
-                            </p>
-                            <p class="text-muted mb-2 font-13"><strong>Full Name :</strong> <span class="ml-2">Geneva
-                                                    D. McKnight</span></p>
-
-                            <p class="text-muted mb-2 font-13"><strong>Mobile :</strong><span class="ml-2">(123)
-                                                    123 1234</span></p>
-
-                            <p class="text-muted mb-2 font-13"><strong>Email :</strong> <span class="ml-2 ">user@email.domain</span></p>
-
-                            <p class="text-muted mb-1 font-13"><strong>Location :</strong> <span class="ml-2">USA</span></p>
+                        <h4 class="header-title my-2">주문 내역</h4>
+                        <div class="table-responsive">
+                            <table class="table table-centered table-nowrap table-hover mb-0">
+                                <tbody>
+                                {% if user.Orders | length %}
+                                    {% for order in user.Orders %}
+                                    <tr>
+                                        <td>
+                                            <h5 class="font-14 my-1 font-weight-normal">{{ order.id }}</h5>
+                                            <span class="text-muted font-13">주문 번호</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 font-weight-normal">
+                                                <img src="{{ order.Carts[0].ProductOptionDetail.path }}" alt="" style="width: 60px;">
+                                            </h5>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 font-weight-normal">
+                                                <a href="/adm/order/detail/{{ order.id }}">
+                                                    {{ order.Carts[0].Product.name }} 등
+                                                </a>
+                                            </h5>
+                                            <span class="text-muted font-13">제품 명</span>
+                                        </td>
+                                        <td>
+                                            <h5 class="font-14 my-1 font-weight-normal">{{ order.createdAt|date("YYYY-MM-DD") }}</h5>
+                                            <span class="text-muted font-13">주문 일시</span>
+                                        </td>
+                                    </tr>
+                                    {% endfor %}
+                                {% else %}
+                                    <tr>
+                                        <td colspan="4" class="text-center">주문내역이 없습니다.</td>
+                                    </tr>
+                                {% endif %}
+                                </tbody>
+                            </table>
                         </div>
-
-                        <ul class="social-list list-inline mt-3 mb-0">
-                            <li class="list-inline-item">
-                                <a href="javascript: void(0);" class="social-list-item border-primary text-primary"><i
-                                            class="mdi mdi-facebook"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="javascript: void(0);" class="social-list-item border-danger text-danger"><i
-                                            class="mdi mdi-google"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="javascript: void(0);" class="social-list-item border-info text-info"><i
-                                            class="mdi mdi-twitter"></i></a>
-                            </li>
-                            <li class="list-inline-item">
-                                <a href="javascript: void(0);" class="social-list-item border-secondary text-secondary"><i
-                                            class="mdi mdi-github-circle"></i></a>
-                            </li>
-                        </ul>
-                    </div> <!-- end card-body -->
+                        <!-- end table-responsive-->
+                    </div>
                 </div> <!-- end card -->
                 <!-- Messages-->
                 <div class="card">
                     <div class="card-body">
-                        <div class="dropdown float-right">
-                            <a href="#" class="dropdown-toggle arrow-none card-drop" data-toggle="dropdown" aria-expanded="false">
-                                <i class="mdi mdi-dots-vertical"></i>
-                            </a>
-                            <div class="dropdown-menu dropdown-menu-right">
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Settings</a>
-                                <!-- item-->
-                                <a href="javascript:void(0);" class="dropdown-item">Action</a>
-                            </div>
-                        </div>
-                        <h4 class="header-title mb-3">Messages</h4>
-
+                        <h4 class="header-title my-2">QnA</h4>
                         <div class="inbox-widget">
-                            <div class="inbox-item">
-                                <div class="inbox-item-img"><img src="assets/images/users/avatar-2.jpg" class="rounded-circle" alt=""></div>
-                                <p class="inbox-item-author">Tomaslau</p>
-                                <p class="inbox-item-text">I've finished it! See you so...</p>
-                                <p class="inbox-item-date">
-                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
-                                </p>
-                            </div>
-                            <div class="inbox-item">
-                                <div class="inbox-item-img"><img src="assets/images/users/avatar-3.jpg" class="rounded-circle" alt=""></div>
-                                <p class="inbox-item-author">Stillnotdavid</p>
-                                <p class="inbox-item-text">This theme is awesome!</p>
-                                <p class="inbox-item-date">
-                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
-                                </p>
-                            </div>
-                            <div class="inbox-item">
-                                <div class="inbox-item-img"><img src="assets/images/users/avatar-4.jpg" class="rounded-circle" alt=""></div>
-                                <p class="inbox-item-author">Kurafire</p>
-                                <p class="inbox-item-text">Nice to meet you</p>
-                                <p class="inbox-item-date">
-                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
-                                </p>
-                            </div>
-
-                            <div class="inbox-item">
-                                <div class="inbox-item-img"><img src="assets/images/users/avatar-5.jpg" class="rounded-circle" alt=""></div>
-                                <p class="inbox-item-author">Shahedk</p>
-                                <p class="inbox-item-text">Hey! there I'm available...</p>
-                                <p class="inbox-item-date">
-                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
-                                </p>
-                            </div>
-                            <div class="inbox-item">
-                                <div class="inbox-item-img"><img src="assets/images/users/avatar-6.jpg" class="rounded-circle" alt=""></div>
-                                <p class="inbox-item-author">Adhamdannaway</p>
-                                <p class="inbox-item-text">This theme is awesome!</p>
-                                <p class="inbox-item-date">
-                                    <a href="#" class="btn btn-sm btn-link text-info font-13"> Reply </a>
-                                </p>
-                            </div>
+                            {% if user.Orders | length %}
+                                {% for qna in user.Qnas %}
+                                <div class="inbox-item">
+                                    <p class="inbox-item-author">{{ qna.title }}</p>
+                                    <p class="inbox-item-text">{{ qna.content }}</p>
+                                    <p class="inbox-item-date">
+                                        <a href="/adm/qna/detail/{{ qna.id }}" class="btn btn-sm btn-link text-info font-13">자세히 보기</a>
+                                    </p>
+                                </div>
+                                {% endfor %}
+                            {% else %}
+                                <p class="text-center">등록된 QnA가 없습니다.</p>
+                            {% endif %}
                         </div> <!-- end inbox-widget -->
                     </div> <!-- end card-body-->
                 </div> <!-- end card-->

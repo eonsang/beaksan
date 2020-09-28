@@ -21,7 +21,7 @@
                                     <input type="text" class="form-control" id="name" placeholder="카테고리 명" name="name" value="{{ object.name }}" >
                                 </div>
                             </div>
-                            <div class="col-2">
+                            <div class="col-2" style="display: none;">
                                 <div class="form-group">
                                     <label for="order">순서</label>
                                     <input type="number" class="form-control" id="order" placeholder="순서" name="order" value="{{ object.order }}">
@@ -61,45 +61,46 @@
             </div>
         </div>
     </div>
-    {% endblock %}
+</div>
+{% endblock %}
 
-    {% block script %}
-        <script>
-          $(function(){
-            $('.category').on('change', function(){
-              var that = $(this);
-              $.ajax({
-                type: 'GET',
-                url: '/adm/category/child',
-                data: {
-                  id: $(this).val()
-                }
-              }).done(function(res) {
-                if(res.success) {
-                    var options = '<option value="">선택</option>';
-                    res.objects.map(function(data){
-                      options += '<option value="'+data.id+'">'+data.name+'</option>';
-                    });
-                    var nextSelector = that.data('next');
-                    $(nextSelector).html(options);
-                } else {
-                  alert('하위 카테고리 불러오기 실패');
-                }
-              })
-            });
-            $('#delete').on('click', function(){
-              if(confirm('삭제 하시겠습니까?')) {
-                $.ajax({
-                  url: '/adm/popup/remove/{{ object.id }}',
-                  type: 'post',
-                }).done(function(res) {
-                  if(res.success) {
-                    alert('삭제 되었습니다.')
-                    location.href = '{{ routes.adminPopup }}'
-                  }
-                })
+{% block script %}
+    <script>
+      $(function(){
+        $('.category').on('change', function(){
+          var that = $(this);
+          $.ajax({
+            type: 'GET',
+            url: '/adm/category/child',
+            data: {
+              id: $(this).val()
+            }
+          }).done(function(res) {
+            if(res.success) {
+                var options = '<option value="">선택</option>';
+                res.objects.map(function(data){
+                  options += '<option value="'+data.id+'">'+data.name+'</option>';
+                });
+                var nextSelector = that.data('next');
+                $(nextSelector).html(options);
+            } else {
+              alert('하위 카테고리 불러오기 실패');
+            }
+          })
+        });
+        $('#delete').on('click', function(){
+          if(confirm('삭제 하시겠습니까?')) {
+            $.ajax({
+              url: '/adm/popup/remove/{{ object.id }}',
+              type: 'post',
+            }).done(function(res) {
+              if(res.success) {
+                alert('삭제 되었습니다.')
+                location.href = '{{ routes.adminPopup }}'
               }
             })
-          })
-        </script>
-    {% endblock %}
+          }
+        })
+      })
+    </script>
+{% endblock %}

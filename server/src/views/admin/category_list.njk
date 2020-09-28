@@ -30,11 +30,15 @@
                             </div><!-- end col-->
                         </div>
                         <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                            <colgroup>
+                                <col width="50">
+                                <col >
+                                <col width="100">
+                            </colgroup>
                             <thead>
                             <tr>
                                 <th>ID</th>
                                 <th>카테고리 명</th>
-                                <th>순번</th>
                                 <th>Action</th>
                             </tr>
                             </thead>
@@ -47,9 +51,6 @@
                                             <a href="" class="text-body font-weight-semibold">
                                                 {{ object.name }}
                                             </a>
-                                        </td>
-                                        <td>
-                                            <input type="text">
                                         </td>
                                         <td>
                                             <a href="/adm/qna/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
@@ -66,9 +67,6 @@
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <input type="text">
-                                                </td>
-                                                <td>
                                                     <a href="/adm/qna/detail/{{ category2.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                                     <a href="javascript:removeFaq({{ category2.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                                 </td>
@@ -82,9 +80,6 @@
                                                         <a href="" class="text-body font-weight-semibold pl-4">
                                                             {{ category3.name }}
                                                         </a>
-                                                    </td>
-                                                    <td>
-                                                        <input type="text">
                                                     </td>
                                                     <td>
                                                         <a href="/adm/qna/detail/{{ category3.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>

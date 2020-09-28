@@ -16,6 +16,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: false,
       },
+      memo: {
+        type: Sequelize.TEXT,
+        allowNull: true,
+      },
       zipcode: {
         type: Sequelize.STRING,
         allowNull: false,

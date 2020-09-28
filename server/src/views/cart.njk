@@ -58,8 +58,8 @@
                                 </div>
                                 <div class="price">
                                     <label for="" class="label">단가</label>
-                                    <input type="hidden" class="price-value" value="{{ (object.Product.price + object.ProductOptionDetail.price) }}">
-                                    <span id="price">{{ (object.Product.price + object.ProductOptionDetail.price)|comma }}</span> 원
+                                    <input type="hidden" class="price-value" value="{{ (object.Product.customer_price + object.ProductOptionDetail.price) }}">
+                                    <span id="price">{{ (object.Product.customer_price + object.ProductOptionDetail.price)|comma }}</span> 원
                                 </div>
                                 <div class="count">
                                     <div class="reglist__item">
@@ -73,8 +73,8 @@
                                 </div>
                                 <div class="total-price">
                                     <label for="" class="label">금액</label>
-                                    <input type="hidden" class="total-price-value" value="{{ ((object.Product.price + object.ProductOptionDetail.price) * object.quantity) }}">
-                                    <span class="total-price-text">{{ ((object.Product.price + object.ProductOptionDetail.price) * object.quantity)|comma }}</span> 원
+                                    <input type="hidden" class="total-price-value" value="{{ ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) }}">
+                                    <span class="total-price-text">{{ ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity)|comma }}</span> 원
                                 </div>
                                 <div class="actions">
                                     <button class="btn" data-id="{{ object.id }}">삭제</button>
@@ -82,7 +82,7 @@
                             </div>
                         </div>
                         {% set count = count + object.quantity %}
-                        {% set totalPrice = totalPrice + ((object.Product.price + object.ProductOptionDetail.price) * object.quantity) %}
+                        {% set totalPrice = totalPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
                     {% endfor %}
                 {% else %}
                     <p class="text-center py-20 mx-auto border-b border-gray-200">장바구니에 담긴 상품이 없습니다.</p>

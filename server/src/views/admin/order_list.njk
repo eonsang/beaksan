@@ -1,0 +1,95 @@
+{% extends './layout/base.njk' %}
+
+{% block content %}
+    <div class="container-fluid">
+        <div class="row">
+            <div class="col-12">
+                <div class="page-title-box">
+                    <h4 class="page-title">주문 내역 관리</h4>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-12">
+                <div class="card">
+                    <div class="card-body">
+                        <table id="basic-datatable" class="table dt-responsive nowrap w-100">
+                            <thead>
+                            <tr>
+                                <th>주문번호</th>
+                                <th>상품</th>
+                                <th>이름</th>
+                                <th>연락처</th>
+                                <th>주소</th>
+                                <th>주문일시</th>
+                                <th>Action</th>
+                            </tr>
+                            </thead>
+                            <tbody>
+                            {% for object in objects %}
+                                <tr>
+                                    <td>{{ object.id }}</td>
+                                    <td>
+                                        <a href="/adm/order/detail/{{ object.id }}" class="text-body font-weight-semibold">
+                                            {{ object.Carts[0].Product.name }} 등
+                                        </a>
+                                    </td>
+                                    <td>
+                                        {{ object.name }}
+                                    </td>
+                                    <td>
+                                        {{ object.number }}
+                                    </td>
+                                    <td>
+                                        [{{ object.zipcode }}] {{ object.addr1 }} {{ object.addr2 }} {{ object.addr3 }}
+                                    </td>
+                                    <td>
+                                        {{ object.createdAt | date("YYYY-MM-DD HH:mm:ss")   }}
+                                    </td>
+                                    <td>
+                                        <a href="/adm/qna/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                    </td>
+                                </tr>
+                            {% endfor %}
+                            </tbody>
+                        </table>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block script %}
+    <script>
+      function removeFaq(id) {
+        if(confirm('삭제 하시겠습니까?')) {
+          $.ajax({
+            url: '/adm/qna/remove/' + id,
+            type: 'post',
+          }).done(function(res) {
+            if(res.success) {
+              alert('삭제 되었습니다.')
+              location.href = '/adm/qna'
+            }
+          })
+        }
+      };
+
+      $(document).ready(function(){
+        $("#basic-datatable").DataTable({
+          pageLength:10,
+          columns:[
+            { orderable: 1 },
+            { orderable: 1 },
+            { orderable: 1 },
+            { orderable: 1 },
+            { orderable: !1 },
+            { orderable: 1 },
+            { orderable: !1 },
+          ]
+        });
+      });
+    </script>
+{% endblock %}

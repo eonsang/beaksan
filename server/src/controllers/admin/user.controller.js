@@ -1,4 +1,12 @@
-import { User } from "../../db/models";
+import {
+  User,
+  Qna,
+  Order,
+  Cart,
+  Product,
+  ProductOption,
+  ProductOptionDetail,
+} from "../../db/models";
 import AccountsService from "../../services/Accounts.service";
 import logger from "../../loader/winston";
 import bcrypt from "bcrypt";
@@ -9,8 +17,34 @@ const AccountsServiceInstance = new AccountsService(User);
 export const detail = {
   get: async (req, res, next) => {
     const { id } = req.params;
-    const user = await AccountsServiceInstance.findByPk(id);
+    const user = await AccountsServiceInstance.findByPk(id, {
+      include: [
+        {
+          model: Qna,
+        },
+        {
+          model: Order,
+          include: [
+            {
+              model: Cart,
+              include: [
+                {
+                  model: Product,
+                },
+                {
+                  model: ProductOption,
+                },
+                {
+                  model: ProductOptionDetail,
+                },
+              ],
+            },
+          ],
+        },
+      ],
+    });
 
+    console.log("user", user);
     return res.render("admin/user_detail", {
       user,
       message: req.flash("message"),

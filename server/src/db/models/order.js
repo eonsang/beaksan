@@ -29,6 +29,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: false,
       },
+      memo: {
+        type: DataTypes.TEXT,
+        allowNull: true,
+      },
       zipcode: {
         type: DataTypes.STRING,
         allowNull: false,
