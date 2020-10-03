@@ -51,6 +51,7 @@ export const create = {
         maker: productDto.maker,
         origin: productDto.origin,
         brand: productDto.brand,
+        entertainer: productDto.entertainer,
         model: productDto.model,
         description: productDto.description,
         memo: productDto.memo,
@@ -95,7 +96,7 @@ export const create = {
         });
       });
 
-      if(req.body.optionInfo) {
+      if (req.body.optionInfo) {
         JSON.parse(req.body.optionInfo).map(async (option) => {
           const object = await ProductInstance.createProductOption({
             name: option.name,
@@ -188,7 +189,6 @@ export const update = async (req, res, next) => {
       ],
     });
 
-    console.log(product);
     await product.setCategories([category1]);
     if (productDto.category2) {
       const category2 = await CategoryInstance.findByPk(productDto.category2);
@@ -199,8 +199,7 @@ export const update = async (req, res, next) => {
       }
     }
 
-
-    if ( files ) {
+    if (files) {
       files.map(async (file) => {
         await ProductInstance.createProductImage({
           path: file.path,
@@ -212,7 +211,7 @@ export const update = async (req, res, next) => {
         });
       });
     }
-    if(req.body.optionInfo) {
+    if (req.body.optionInfo) {
       JSON.parse(req.body.optionInfo).map(async (option) => {
         if (!option.id) {
           const object = await ProductInstance.createProductOption({
@@ -258,7 +257,6 @@ export const update = async (req, res, next) => {
         }
       });
     }
-
 
     return res.json({
       success: true,
@@ -314,11 +312,11 @@ export const detail = async (req, res, next) => {
     });
 
     if (!product) {
-      return res.redirect('/adm/product')
+      return res.redirect("/adm/product");
     }
     return res.render("admin/product_detail", {
       product,
-      categories
+      categories,
     });
   } catch (error) {
     logger.error("상품 가져오기 에러");
@@ -332,12 +330,64 @@ export const remove = async (req, res, next) => {
     await ProductInstance.destroy(id);
     logger.error("상품 삭제 완료");
     return res.json({
-      success: true
+      success: true,
     });
   } catch (error) {
     logger.error("상품 삭제 에러");
     return next(error);
   }
+};
+
+export const removeChecked = {
+  post: async (req, res, next) => {
+    try {
+      const { checkedProduct } = req.body;
+
+      // 1개에는 문자열
+      if (typeof checkedProduct === "string") {
+        const result = await ProductInstance.destroy(checkedProduct);
+
+        if (result) {
+          logger.info(`[ 아이디: ${checkedProduct} ] 상품 삭제`);
+          return res.json({
+            success: true,
+            message: "상품 삭제 완료",
+            removedUsers: checkedProduct,
+          });
+        } else {
+          logger.error(`[ 아이디: ${checkedProduct} ] 상품 실패`);
+          return res.json({
+            success: false,
+            message: "상품 삭제 실패",
+          });
+        }
+      } else {
+        // 2개 이상에서는 배열
+        let result = true;
+        for (const userId of checkedProduct) {
+          if (!(await ProductInstance.destroy(userId))) {
+            result = false;
+          }
+        }
+        if (result) {
+          logger.info(`[ 아이디: ${checkedProduct} ] 상품 삭제`);
+          return res.json({
+            success: true,
+            message: "상품 삭제 완료",
+            removedUsers: checkedProduct,
+          });
+        } else {
+          logger.error(`[ 아이디: ${checkedProduct} ] 상품 실패`);
+          return res.json({
+            success: false,
+            message: "상품 삭제 실패",
+          });
+        }
+      }
+    } catch (error) {
+      return next(error);
+    }
+  },
 };
 
 export const removeImage = async (req, res, next) => {
@@ -378,6 +428,37 @@ export const removeOptionDetail = async (req, res, next) => {
     });
   } catch (error) {
     logger.error("옵션상세 삭제 에러");
+    return next(error);
+  }
+};
+
+export const changeUse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { use } = req.body;
+    await ProductInstance.updateProduct(id, {
+      use,
+    });
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    logger.error("옵션상세 수정 에러");
+    return next(error);
+  }
+};
+export const changeSoldout = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { sold_out } = req.body;
+    await ProductInstance.updateProduct(id, {
+      sold_out,
+    });
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    logger.error("옵션상세 수정 에러");
     return next(error);
   }
 };

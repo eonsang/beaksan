@@ -2,6 +2,7 @@ import { Qna, User } from "../../db/models";
 import QnaService from "../../services/Qna.service";
 import AccountsService from "../../services/Accounts.service";
 import logger from "../../loader/winston";
+import { sendTalk } from "../../utils/kakaoMessage";
 
 const QnaServiceInstance = new QnaService(Qna);
 const AccountsServiceInstance = new AccountsService(User);
@@ -125,6 +126,27 @@ export const create = {
         UserId: req.user.id,
       };
       const object = await QnaServiceInstance.create(dto);
+      // 문의 후 알림톡
+      sendTalk(
+        "KA01TP200924072408084rEeKUFafX1i", // 템플릿 아이디
+        `${req.user.name}님 문의해주셔서 감사합니다.\n이른 시일 내에 연락드리겠습니다.`, // 내용
+        `${req.user.number}`, // 상대 연락처
+        [
+          // 버튼
+          {
+            buttonName: "홈페이지 바로가기",
+            buttonType: "WL",
+            linkMo: "http://baeksanmall.com",
+            linkPc: "http://baeksanmall.com",
+          },
+        ]
+      );
+
+      sendTalk(
+        "KA01TP200928231044553SatFWpC2ZNU", // 템플릿 아이디
+        `[백산안경} ${req.user.name} 고객이 1:1문의를 등록했습니다.\n제목: ${object.title}`, // 내용
+        "01025734692" // 상대 연락처
+      );
       return res.redirect(`/qna/detail/${object.id}`);
     } catch (error) {
       logger.error("생성 후 상세 화면 불러오기 실패");

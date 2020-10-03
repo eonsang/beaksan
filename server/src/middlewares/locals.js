@@ -36,7 +36,7 @@ const localsMiddleware = async (req, res, next) => {
   res.locals.siteName = "오늘기록";
   res.locals.routes = routes;
   if (req.user) {
-    res.locals.cartCount = await CartInstance.getAllCount({
+    res.locals.cartCount = await CartInstance.findAll({
       where: {
         UserId: req.user.id,
         OrderId: null,

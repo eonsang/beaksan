@@ -17,4 +17,12 @@ export default class AccountsService extends BaseService {
       },
     });
   }
+
+  findByCompanyCode(code) {
+    return this.Model.findOne({
+      where: {
+        companyCode: code,
+      },
+    });
+  }
 }

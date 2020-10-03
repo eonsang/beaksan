@@ -53,6 +53,59 @@ export const child = async (req, res, next) => {
   }
 };
 
+export const detail = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const object = await CategoryInstance.findByPk(id);
+    const category = await CategoryInstance.findAll({
+      where: {
+        CategoryId: null,
+      },
+    });
+    console.log(object);
+    return res.render("admin/category_detail", {
+      object,
+      category,
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
+export const update = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    const { name, order, category1 } = req.body;
+    let CategoryId = null;
+    if (category1) {
+      CategoryId = category1;
+    }
+    await CategoryInstance.update(id, {
+      name,
+      order: order || 0,
+      CategoryId: CategoryId || null,
+    });
+    return res.redirect(`/adm/category/detail/${id}`);
+  } catch (error) {
+    logger.error("카테고리 수정 실패");
+    return next(error);
+  }
+};
+
+export const remove = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await CategoryInstance.destroy(id);
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    logger.error("카테고리 삭제 실패");
+    return next(error);
+  }
+};
+
 export const create = {
   get: async (req, res, next) => {
     try {

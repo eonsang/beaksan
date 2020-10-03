@@ -34,6 +34,10 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
+      entertainer: {
+        type: DataTypes.STRING,
+        allowNull: true,
+      },
       brand: {
         type: DataTypes.STRING,
         allowNull: true,

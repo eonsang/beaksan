@@ -11,6 +11,7 @@ import {
   naver,
   naverCallback,
   snsLoginRedirectHome,
+  checkCompanyCode,
 } from "../../controllers/client/accounts.controller";
 import routes from "../routes";
 import { isNotLoggedIn, isLoggedIn } from "../../middlewares/auth";
@@ -34,6 +35,8 @@ router
   .route(routes.signup)
   .get(isNotLoggedIn, signup.get)
   .post(isNotLoggedIn, signup.post);
+
+router.post("/checkCompanyCode", checkCompanyCode);
 
 router.get(routes.complete, isNotLoggedIn, complete);
 

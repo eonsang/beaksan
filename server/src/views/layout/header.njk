@@ -7,7 +7,11 @@
             <img src="/static/images/logo.png" alt="">
         </a>
         <a href="/cart" class="header__cart" id="cart-count" title="장바구니">
-            {{ cartCount }}
+            {% set count = 0 %}
+            {% for item in cartCount %}
+                {% set count = count + item.quantity %}
+            {% endfor %}
+            {{ count }}
         </a>
     </div>
 </header>
@@ -41,8 +45,9 @@
             </div>
 
             <div class="row flex-col">
-                <h2>1:1 문의</h2>
+                <h2>고객센터</h2>
                 <div class="depth">
+                    <a href="/board/notice">공지사항</a>
                     <a href="/qna">1:1 문의</a>
                 </div>
             </div>

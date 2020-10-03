@@ -1,4 +1,5 @@
 import {
+  User,
   Cart,
   Order,
   Product,
@@ -74,6 +75,9 @@ export const detail = async (req, res, next) => {
     const object = await OrderInstance.findByPk(id, {
       include: [
         {
+          model: User,
+        },
+        {
           model: Cart,
           include: [
             {
@@ -89,6 +93,8 @@ export const detail = async (req, res, next) => {
         },
       ],
     });
+
+    console.log(object);
 
     return res.render("admin/order_detail", {
       object,

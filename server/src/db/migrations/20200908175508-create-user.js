@@ -28,7 +28,27 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
-      nickname: {
+      companyName: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      companyCode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      companyAddrCode: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      companyAddr1: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      companyAddr2: {
+        type: Sequelize.STRING,
+        allowNull: false,
+      },
+      companyAddr3: {
         type: Sequelize.STRING,
         allowNull: false,
       },
@@ -41,15 +61,6 @@ module.exports = {
         allowNull: false,
         defaultValue: "local",
       },
-      verified: {
-        type: Sequelize.BOOLEAN,
-        defaultValue: false,
-        allowNull: false,
-      },
-      verifyKey: {
-        type: Sequelize.STRING(10),
-        allowNull: false,
-      },
       snsId: {
         type: Sequelize.STRING(30),
         allowNull: true,
@@ -58,6 +69,11 @@ module.exports = {
         type: Sequelize.ENUM,
         values: ["user", "manager", "admin"],
         defaultValue: "user",
+      },
+      verified: {
+        type: Sequelize.BOOLEAN,
+        defaultValue: false,
+        allowNull: false,
       },
       last_login: {
         type: Sequelize.DATE,

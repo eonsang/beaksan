@@ -5,11 +5,15 @@
 {% block content %}
     <div class="container-fluid">
         <div class="row">
-            <div class="col-12">
+            <div class="col-12 d-flex align-items-center">
                 <div class="page-title-box">
                     <h4 class="page-title">주문 내역 상세</h4>
                 </div>
+                <button type="button" class="btn btn-success ml-auto" style="height:50px;" id="print">
+                    <i class="mdi mdi-printer"></i>
+                </button>
             </div>
+
         </div>
 
         <div class="row">
@@ -72,21 +76,17 @@
                                 <thead class="thead-light">
                                 <tr>
                                     <th>Description</th>
-                                    <th>Price</th>
+                                    <th>Value</th>
                                 </tr>
                                 </thead>
                                 <tbody>
                                 <tr>
+                                    <td>전체 상품 수 :</td>
+                                    <td>{{ count }} 개</td>
+                                </tr>
+                                <tr>
                                     <td>전체 상품 총액 :</td>
-                                    <td>{{ totalPrice|comma }}</td>
-                                </tr>
-                                <tr>
-                                    <td>배송비 :</td>
-                                    <td>2,500</td>
-                                </tr>
-                                <tr>
-                                    <th>총액 :</th>
-                                    <td>{{ (totalPrice + 2500)|comma }}</td>
+                                    <td>{{ totalPrice|comma }} 원</td>
                                 </tr>
                                 </tbody>
                             </table>
@@ -97,18 +97,31 @@
         </div>
 
         <div class="row">
-            <div class="col-12">
+            <div class="col-6">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title mb-3">주문자 정보</h4>
-
                         <h5>{{ object.name }}</h5>
-
                         <address class="mb-0 font-14 address-lg">
                             [{{ object.zipcode }}] {{ object.addr1 }} {{ object.addr2 }} {{ object.addr3 }}<br/>
-                            <abbr title="Mobile">M:</abbr> {{ object.number }}
+                            - 연락처:  {{ object.number }}<br/>
+                            - 주문일시: {{ object.createdAt }}
                         </address>
 
+                    </div>
+                </div>
+            </div> <!-- end col -->
+            <div class="col-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-3">예약 계정 정보</h4>
+                        <h5>{{ object.User.companyName }} ( {{ object.User.name }} )</h5>
+                        <h6>{{ object.User.email }}</h6>
+                        <address class="mb-0 font-14 address-lg">
+                            [{{ object.User.companyAddrCode }}] {{ object.User.companyAddr1 }} {{ object.User.companyAddr2 }} {{ object.User.companyAddr3 }}<br/>
+                            - 연락처:  {{ object.User.number }}<br/>
+                            - 가입일시: {{ object.User.createdAt }}
+                        </address>
                     </div>
                 </div>
             </div> <!-- end col -->
@@ -133,7 +146,9 @@
 {% block script %}
     <script>
       $(function(){
-
-      });
+        $('#print').on('click', function(){
+          window.print();
+        })
+      })
     </script>
 {% endblock %}

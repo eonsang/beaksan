@@ -40,9 +40,10 @@
                                 <th>이름</th>
                                 <th>권한</th>
                                 <th>이메일</th>
-                                <th>이메일 인증</th>
-                                <th>닉네임</th>
-                                <th>가입채널</th>
+                                <th>연락처</th>
+                                <th>관리자 인증</th>
+                                <th>사업자명</th>
+                                <th>사업자번호</th>
                                 <th>가입일</th>
                                 <th style="width: 75px;">Action</th>
                             </tr>
@@ -78,19 +79,23 @@
                                         {{ user.email }}
                                     </td>
                                     <td>
-                                        {{ user.verified }}
+                                        {{ user.number }}
                                     </td>
                                     <td>
-                                        {{ user.nickname }}
-                                    </td>
-                                    <td>
-                                        {% if user.provider === 'kakao' %}
-                                            <h5><span class="badge badge-warning">{{ user.provider }}</span></h5>
-                                        {% elseif user.provider === 'naver' %}
-                                            <h5><span class="badge badge-success">{{ user.provider }}</span></h5>
-                                        {% else %}
-                                            <h5><span class="badge badge-light">{{ user.provider }}</span></h5>
+                                        {% if user.name != '최고관리자' or user.id != '1' %}
+                                            <span hidden>{{ user.verified }}</span>
+                                            <div class="custom-checkbox mt-1">
+                                                <input type="checkbox" class="is_verified" id="is_verified-{{ user.id }}" name="is_verified" data-id="{{ user.id }}" {% if user.verified %} checked {% endif %} data-switch="primary"/>
+                                                <label for="is_verified-{{ user.id }}" data-on-label="On" data-off-label="Off"></label>
+                                            </div>
                                         {% endif %}
+
+                                    </td>
+                                    <td>
+                                        {{ user.companyName }}
+                                    </td>
+                                    <td>
+                                        {{ user.companyCode }}
                                     </td>
                                     <td>
                                         {{ user.createdAt | date("YYYY-MM-DD HH:mm:ss")   }}
@@ -174,6 +179,17 @@
     removeUserAjax(checkedUser);
   }
   $(document).ready(function(){
+    $('.is_verified').on('change', function(e){
+      var isChecked = e.target.checked;
+      var id = $(this).data('id');
+      $.ajax({
+        type: 'post',
+        url: '/adm/user/'+id,
+        data: {
+          verified: isChecked
+        }
+      })
+    })
       $("#products-datatable").DataTable({
           language:{
             paginate:{
@@ -206,6 +222,7 @@
                 selectAllRender:'<div class="custom-control custom-checkbox"><input type="checkbox" class="custom-control-input dt-checkboxes"><label class="custom-control-label">&nbsp;</label></div>'
               }
             },
+            {orderable:!0},
             {orderable:!0},
             {orderable:!0},
             {orderable:!0},

@@ -18,38 +18,40 @@
                             <div class="col-6">
                                 <div class="form-group">
                                     <label for="name">카테고리 명</label>
-                                    <input type="text" class="form-control" id="name" placeholder="카테고리 명" name="name" value="{{ object.name }}" >
-                                </div>
-                            </div>
-                            <div class="col-2" style="display: none;">
-                                <div class="form-group">
-                                    <label for="order">순서</label>
-                                    <input type="number" class="form-control" id="order" placeholder="순서" name="order" value="{{ object.order }}">
+                                    <input type="text" class="form-control" id="name" placeholder="카테고리 명" name="name" value="{{ object.name }}">
                                 </div>
                             </div>
 
-                        </div>
-                        <div class="row">
-                            <div class="col-3">
+                            <div class="col-6">
                                 <div class="form-group">
-                                    <label for="category1">1차 카테고리</label>
+                                    <label for="category1">부모 카테고리</label>
                                     <select class="form-control category" data-toggle="select2" name="category1" id="category1" data-next="#category2">
                                         <option value="">선택</option>
                                         {% for obj in category %}
-                                            <option value="{{ obj.id }}">{{ obj.name }}</option>
+                                            <option value="{{ obj.id }}" {% if object.CategoryId === obj.id %} selected {% endif %}>{{ obj.name }}</option>
                                         {% endfor %}
                                     </select>
                                     <span class="font-13 text-muted">1차 카테고리를 선택하지 않으면 최상단 카테고리로 등록됩니다.</span>
                                 </div>
                             </div>
-                            <div class="col-3">
-                                <div class="form-group">
-                                    <label for="category2">2차 카테고리</label>
-                                    <select class="form-control category" data-toggle="select2" name="category2" id="category2" data-next="#category3">
-                                        <option value="">선택</option>
-                                    </select>
-                                </div>
-                            </div>
+{#                            <div class="col-2" style="display: none;">#}
+{#                                <div class="form-group">#}
+{#                                    <label for="order">순서</label>#}
+{#                                    <input type="number" class="form-control" id="order" placeholder="순서" name="order" value="{{ object.order }}">#}
+{#                                </div>#}
+{#                            </div>#}
+
+                        </div>
+                        <div class="row">
+
+{#                            <div class="col-3">#}
+{#                                <div class="form-group">#}
+{#                                    <label for="category2">2차 카테고리</label>#}
+{#                                    <select class="form-control category" data-toggle="select2" name="category2" id="category2" data-next="#category3">#}
+{#                                        <option value="">선택</option>#}
+{#                                    </select>#}
+{#                                </div>#}
+{#                            </div>#}
                         </div>
                         <div class="mt-3 d-flex">
                             <a href="/adm/category" class="btn btn-secondary">뒤로가기</a>
@@ -91,12 +93,12 @@
         $('#delete').on('click', function(){
           if(confirm('삭제 하시겠습니까?')) {
             $.ajax({
-              url: '/adm/popup/remove/{{ object.id }}',
+              url: '/adm/category/delete/{{ object.id }}',
               type: 'post',
             }).done(function(res) {
               if(res.success) {
                 alert('삭제 되었습니다.')
-                location.href = '{{ routes.adminPopup }}'
+                location.href = '/adm/category'
               }
             })
           }

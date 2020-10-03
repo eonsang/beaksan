@@ -21,11 +21,24 @@ export const index = {
   },
   post: async (req, res, next) => {
     try {
-      const { number, nickname, password } = req.body;
-      console.log(nickname);
+      const {
+        number,
+        password,
+        companyName,
+        companyCode,
+        companyAddrCode,
+        companyAddr1,
+        companyAddr2,
+        companyAddr3,
+      } = req.body;
       let updateData = {
         number,
-        nickname,
+        companyName,
+        companyCode,
+        companyAddrCode,
+        companyAddr1,
+        companyAddr2,
+        companyAddr3,
       };
       if (password) {
         const hash = await bcrypt.hash(password, 12);
@@ -68,4 +81,16 @@ export const thumbnail = {
       });
     }
   },
+};
+
+export const getAddr = async (req, res, next) => {
+  try {
+    const user = await AccountsServiceInstance.findByPk(req.user.id);
+    return res.json({
+      success: true,
+      user,
+    });
+  } catch (error) {
+    return next(error);
+  }
 };

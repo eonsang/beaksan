@@ -1,7 +1,7 @@
 {% extends 'layout/base.njk' %}
 
 {% block content %}
-    <div class="accounts">
+    <div class="accounts accounts--login">
         <div class="wrap">
             <div class="accounts__logo">
                 <img src="/static/images/logo.png" alt="백산광학">
@@ -61,6 +61,11 @@
             data: $(this).serialize(),
           }).done(function(res){
             if( res.success ) {
+              if(!res.verified) {
+                //인증이 안된거면
+                alert('관리자 인증이 되지 않았습니다.\n빠른시일 내에 처리하겠습니다.');
+                return;
+              }
               if($('#savelogin').is(':checked') === true) {
                 setCookie("saveEmail", $('#email').val(), 30);
               } else {

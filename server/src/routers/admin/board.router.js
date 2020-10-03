@@ -1,24 +1,17 @@
 import express from "express";
+
 import {
-  cart,
-  all,
-  add,
-  quantityChange,
+  index,
+  create,
+  detail,
+  update,
   remove,
-  clear,
-} from "../../controllers/client/cart.controller";
-import { isLoggedIn } from "../../middlewares/auth";
+  removeChecked,
+} from "../../controllers/admin/board.controller";
 import multer from "multer";
 import path from "path";
 
 const router = express.Router();
-
-router.get("/", isLoggedIn, cart.get);
-router.post("/", isLoggedIn, cart.post);
-
-router.get("/all", isLoggedIn, all);
-
-router.post("/clear", isLoggedIn, clear);
 
 const upload = multer({
   storage: multer.diskStorage({
@@ -35,10 +28,15 @@ const upload = multer({
   }),
 });
 
-router.post("/add", isLoggedIn, upload.none(), add);
+router.get("/:name", index);
 
-router.post("/quantity/:id", isLoggedIn, upload.none(), quantityChange);
+router.get("/:name/detail/:id", detail);
+router.post("/:name/detail/:id", upload.none(), update);
 
-router.post("/delete/:id", isLoggedIn, upload.none(), remove);
+router.post("/:name/delete/:id", upload.none(), remove);
+router.post("/:name/delete", upload.none(), removeChecked.post);
+
+router.get("/:name/create", create.get);
+router.post("/:name/create", upload.none(), create.post);
 
 export default router;

@@ -20,8 +20,6 @@ import logger from "./loader/winston";
 import createDefaultData from "./loader/createDefaultData";
 import { isAdmin } from "./middlewares/auth";
 
-import { main } from "./utils/kakaoMessage";
-
 require("dotenv").config();
 
 const app = express();

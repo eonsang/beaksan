@@ -20,6 +20,10 @@ module.exports = {
         type: Sequelize.STRING,
         allowNull: true,
       },
+      entertainer: {
+        type: Sequelize.STRING,
+        allowNull: true,
+      },
       brand: {
         type: Sequelize.STRING,
         allowNull: true,

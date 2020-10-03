@@ -1,5 +1,9 @@
 import express from "express";
-import { index, thumbnail } from "../../controllers/client/mypage.controller";
+import {
+  index,
+  thumbnail,
+  getAddr,
+} from "../../controllers/client/mypage.controller";
 import { isLoggedIn } from "../../middlewares/auth";
 import multer from "multer";
 import path from "path";
@@ -22,6 +26,8 @@ const upload = multer({
 });
 
 router.route("/").get(isLoggedIn, index.get).post(isLoggedIn, index.post);
+
+router.get("/address", isLoggedIn, getAddr);
 
 router.post(
   "/thumbnail",

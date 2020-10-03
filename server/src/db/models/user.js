@@ -36,7 +36,28 @@ module.exports = (sequelize, DataTypes) => {
         type: DataTypes.STRING,
         allowNull: true,
       },
-      nickname: {
+      companyName: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+
+      companyCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      companyAddrCode: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      companyAddr1: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      companyAddr2: {
+        type: DataTypes.STRING,
+        allowNull: false,
+      },
+      companyAddr3: {
         type: DataTypes.STRING,
         allowNull: false,
       },
@@ -61,10 +82,6 @@ module.exports = (sequelize, DataTypes) => {
       verified: {
         type: DataTypes.BOOLEAN,
         defaultValue: false,
-        allowNull: false,
-      },
-      verifyKey: {
-        type: DataTypes.STRING(10),
         allowNull: false,
       },
       last_login: {

@@ -51,13 +51,15 @@ export const detail = {
     });
   },
   post: async (req, res, next) => {
-    const { id, nickname, role, number, password } = req.body;
+    const { id } = req.params;
+    const { nickname, role, number, password, verified } = req.body;
     let data = {
       nickname,
       number,
       role,
+      verified,
     };
-    if (password !== "") {
+    if (password && password !== "") {
       const hash = await bcrypt.hash(password, 12);
       data = {
         ...data,

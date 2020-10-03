@@ -55,6 +55,9 @@ export const index = {
       let categories = null;
       if (depth) {
         products = await ProductInstance.findAll({
+          where: {
+            use: true,
+          },
           include: [
             {
               model: ProductImage,
@@ -81,6 +84,9 @@ export const index = {
         });
       } else {
         products = await ProductInstance.findAll({
+          where: {
+            use: true,
+          },
           include: [
             {
               model: ProductImage,

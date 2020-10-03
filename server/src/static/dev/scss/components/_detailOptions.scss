@@ -114,7 +114,7 @@
   flex: 1;
 }
 .reglist__item {
-  @apply flex;
+  @apply flex items-center;
   padding: 10px 0;
   .info {
     flex: 1;
@@ -129,6 +129,11 @@
       font-size: 12px;
       line-height: 16px;
     }
+  }
+  .delete {
+    @apply bg-red-500 text-white text-sm ml-2 self-stretch;
+    width: 40px;
+
   }
   .form {
     @apply flex items-center bg-white;

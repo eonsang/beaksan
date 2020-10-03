@@ -8,6 +8,7 @@ import routes from "../../routers/routes";
 import createKey from "../../utils/createKey";
 import smtpTransport from "../../utils/mailer";
 import logger from "../../loader/winston";
+import { sendTalk } from "../../utils/kakaoMessage";
 
 const AccountsServiceInstance = new AccountsService(User);
 
@@ -29,6 +30,16 @@ export const login = {
         req.flash("message", info.message);
         return res.redirect("/accounts/login");
       }
+
+      console.log(!user.verified);
+      if (!user.verified) {
+        // 인증이 안된 회원
+        return res.json({
+          success: true,
+          verified: false,
+        });
+      }
+
       return req.login(user, async (loginError) => {
         if (loginError) {
           return next(loginError);
@@ -37,6 +48,7 @@ export const login = {
         await AccountsServiceInstance.update(user.id, { last_login: moment() });
         return res.json({
           success: true,
+          verified: true,
           message: "로그인 완료",
           name: user.name,
         });
@@ -59,7 +71,18 @@ export const signup = {
   },
   post: async (req, res, next) => {
     try {
-      const { name, email, number, password, nickname } = req.body;
+      const {
+        name,
+        email,
+        number,
+        password,
+        companyName,
+        companyCode,
+        companyAddrCode,
+        companyAddr1,
+        companyAddr2,
+        companyAddr3,
+      } = req.body;
 
       const existUser = await AccountsServiceInstance.findByEmail(email);
       if (existUser) {
@@ -71,40 +94,35 @@ export const signup = {
       }
 
       const hash = await bcrypt.hash(password, 12);
-      const verifyKey = await createKey();
       const user = await AccountsServiceInstance.create({
         name,
         email,
         number,
         password: hash,
-        nickname,
         verified: false,
-        verifyKey,
+        companyName,
+        companyCode,
+        companyAddrCode,
+        companyAddr1,
+        companyAddr2,
+        companyAddr3,
       });
       logger.info(`${name} local 회원가입`);
-      const url = `http://${req.get(
-        "host"
-      )}/accounts/vertify?key=${verifyKey}&id=${user.id}`;
-      const mailOpt = {
-        from: process.env.MAIL_USER,
-        to: user.email,
-        subject: "이메일 인증을 진행해주세요.",
-        html: `<h1>이메일 인증을 위해 URL을 클릭해주세요.</h1><br><a href='${url}'>인증가기</a>`,
-      };
-      // smtpTransport.sendMail(mailOpt, function (err, res) {
-      //   if (err) {
-      //     logger.warn(`${name}에게 이메일 인증메일 실패`);
-      //   } else {
-      //     logger.info(`${name}에게 이메일 인증메일 발송`);
-      //   }
-      //   smtpTransport.close();
-      // });
+
       req.flash("username", user.name);
+
+      await sendTalk(
+        "KA01TP200928231328447p2BaiyFDnmO", // 템플릿 아이디
+        `${user.name} 고객님 안녕하세요. 백산안경에 정상적으로 가입이 완료 되었습니다.`, // 내용
+        `${user.number}` // 상대 연락처
+      );
+
       return res.json({
         success: true,
         message: "회원가입 성공",
       });
     } catch (err) {
+      console.error(err);
       return next(err);
     }
   },
@@ -185,4 +203,24 @@ export const snsLoginRedirectHome = async (req, res, next) => {
   logger.info(`${req.user.name} ${req.user.provider} 로그인`);
   await AccountsServiceInstance.update(req.user.id, { last_login: moment() });
   return res.redirect("/");
+};
+
+export const checkCompanyCode = async (req, res, next) => {
+  try {
+    const { code } = req.body;
+    const result = await AccountsServiceInstance.findByCompanyCode(code);
+    if (!result) {
+      return res.json({
+        success: true,
+        message: "중복된 코드가 없습니다.",
+      });
+    } else {
+      return res.json({
+        success: false,
+        message: "중복된 코드가 있습니다.",
+      });
+    }
+  } catch (error) {
+    return next(error);
+  }
 };

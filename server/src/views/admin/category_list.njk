@@ -31,7 +31,7 @@
                         </div>
                         <table id="basic-datatable" class="table dt-responsive nowrap w-100">
                             <colgroup>
-                                <col width="50">
+                                <col width="70">
                                 <col >
                                 <col width="100">
                             </colgroup>
@@ -48,27 +48,27 @@
                                     <tr>
                                         <td>{{ object.id }}</td>
                                         <td>
-                                            <a href="" class="text-body font-weight-semibold">
+                                            <a href="/adm/category/detail/{{ object.id }}" class="text-body font-weight-semibold">
                                                 {{ object.name }}
                                             </a>
                                         </td>
                                         <td>
-                                            <a href="/adm/qna/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                            <a href="javascript:removeFaq({{ object.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                            <a href="/adm/category/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                            <a href="javascript:removeCategory({{ object.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                         </td>
                                     </tr>
                                     {% if object.children %}
                                         {% for category2 in object.children  %}
                                             <tr>
-                                                <td>{{ category2.id }}</td>
+                                                <td>{{ object.id }}-{{ loop.index }}</td>
                                                 <td>
-                                                    <a href="" class="text-body font-weight-semibold pl-2">
-                                                        {{ category2.name }}
+                                                    <a href="/adm/category/detail/{{ category2.id }}" class="text-body font-weight-semibold pl-2">
+                                                        ㄴ {{ category2.name }}
                                                     </a>
                                                 </td>
                                                 <td>
-                                                    <a href="/adm/qna/detail/{{ category2.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                                    <a href="javascript:removeFaq({{ category2.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                    <a href="/adm/category/detail/{{ category2.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                    <a href="javascript:removeCategory({{ category2.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                                 </td>
                                             </tr>
 
@@ -82,8 +82,8 @@
                                                         </a>
                                                     </td>
                                                     <td>
-                                                        <a href="/adm/qna/detail/{{ category3.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
-                                                        <a href="javascript:removeFaq({{ category3.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
+                                                        <a href="/adm/category/detail/{{ category3.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                                        <a href="javascript:removeCategory({{ category3.id }})" id="delete" class="action-icon"> <i class="mdi mdi-delete"></i></a>
                                                     </td>
                                                 </tr>
                                             {% endfor %}
@@ -107,6 +107,19 @@
 
 {% block script %}
     <script>
+      function removeCategory(id) {
+        if(confirm('삭제 하시겠습니까?')) {
+          $.ajax({
+            url: '/adm/category/delete/' + id,
+            type: 'post',
+          }).done(function(res) {
+            if(res.success) {
+              alert('삭제 되었습니다.')
+              location.href = '/adm/category'
+            }
+          })
+        }
+      };
       $(document).ready(function(){
 
       });

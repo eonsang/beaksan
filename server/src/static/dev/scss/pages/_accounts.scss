@@ -1,5 +1,10 @@
 .accounts {
-  @apply flex w-full h-full items-center justify-center;
+  @apply flex w-full items-center justify-center;
+  overflow: auto;
+  padding:2rem 0;
+  &.accounts--login {
+    @apply h-full
+  }
 
   .accounts__logo {
     @apply text-center;

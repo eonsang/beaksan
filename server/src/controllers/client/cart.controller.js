@@ -139,3 +139,24 @@ export const remove = async (req, res, next) => {
     return next(error);
   }
 };
+
+export const clear = async (req, res, next) => {
+  try {
+    const objects = await CartInstance.findAll({
+      where: {
+        UserId: req.user.id,
+        OrderId: null,
+      },
+    });
+    objects.map(async (object) => {
+      await CartInstance.destroy(object.id);
+    });
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    logger.error("삭제하기 에러");
+    return next(error);
+  }
+};

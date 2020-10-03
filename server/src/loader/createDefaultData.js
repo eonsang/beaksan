@@ -19,10 +19,14 @@ export default async () => {
       name: "최고관리자",
       email: "admin@admin.com",
       password: hash,
-      nickname: "최고관리자",
       role: "admin",
       verified: true,
-      verifyKey,
+      companyName: "-",
+      companyCode: "-",
+      companyAddrCode: "-",
+      companyAddr1: "-",
+      companyAddr2: "-",
+      companyAddr3: "-",
     });
   }
 

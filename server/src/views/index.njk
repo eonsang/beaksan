@@ -26,12 +26,17 @@
                                 <img src="/{{ product.ProductImages[0].path }}" alt="{{ product.name }}">
                                 <div class="item__actions">
                                     <a href="javascript:showDetailImage({{ product.id }});" class="item__detail">자세히보기</a>
+
+                                  {% if not product.sold_out %}
                                     <a href="javascript:showDetailOption({{ product.id }});" class="item__cart">장바구니</a>
+                                  {% endif %}
                                 </div>
                             </div>
                             <div class="item__info">
                                 <h3 class="item__name">{{ product.name }}</h3>
                                 <p class="item__subname">{{ product.description }}</p>
+                                <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
+                              {% if not product.sold_out %}
                                 <div class="item__price">
                                     <span>{{ product.price|comma }}</span>
                                     <h3>{{ product.customer_price|comma }}</h3>
@@ -41,6 +46,11 @@
                                         <span class="new">NEW</span>
                                     {% endif %}
                                 </div>
+                              {% else %}
+                                <div class="item__price">
+                                  <h3>품절</h3>
+                                </div>
+                                {% endif %}
                             </div>
                         </div>
                     {% endfor %}
@@ -80,11 +90,12 @@
             '                            <h3>'+item.Product.name+'</h3>\n' +
             '                            <p>'+item.ProductOptionDetail.name+'</p>\n' +
             '                        </div>\n' +
-            '                        <div class="form" data-price="'+item.ProductOptionDetail.price+'" data-parents-price="'+item.Product.price+'">\n' +
+            '                        <div class="form" data-price="'+item.ProductOptionDetail.price+'" data-parents-price="'+item.Product.customer_price+'">\n' +
             '                            <button class="dec" data-cart-id="'+item.id+'">-</button>\n' +
             '                            <input type="text" value="'+item.quantity+'" class="cnt" readonly>\n' +
             '                            <button class="inc" data-cart-id="'+item.id+'">+</button>\n' +
             '                        </div>\n' +
+            '                        <button class="delete" data-cart-id="'+item.id+'">삭제</button>' +
             '                    </div>';
         })
 
@@ -153,43 +164,65 @@
           res.product.ProductImages.map(function(img){
             html += '<div class="img"><img src="/'+img.path+'" alt=""></div>';
           })
-          $('#imageSlider .slider-for').html('').html(html);
-          $('#imageSlider .slider-nav').html('').html(html);
+          $('#imageSlider .slider-for').html(html);
+          $('#imageSlider .slider-nav').html(html);
         } else {
+          alert('이미지를 불러오는데 실패했습니다.');
         }
       }).fail(function(error) {
         alert('관리자에게 문의주세요.')
       }).always(function(res){
-        setTimeout(function(){
-          $('#imageSlider').show();
-          $('.slider-for').slick({
-            slidesToShow: 1,
-            slidesToScroll: 1,
-            arrows: false,
-            fade: true,
-            asNavFor: '.slider-nav'
-          });
-          $('.slider-nav').slick({
-            slidesToShow: 3,
-            slidesToScroll: 1,
-            asNavFor: '.slider-for',
-            dots: false,
-            arrows: true,
-            centerMode: true,
-            focusOnSelect: true,
-            responsive: [
-              {
-                breakpoint: 650,
-                settings: {
-                  slidesToShow: 1,
-                }
+        $('#imageSlider').show();
+        $('.slider-for').slick({
+          slidesToShow: 1,
+          slidesToScroll: 1,
+          arrows: false,
+          fade: true,
+          asNavFor: '.slider-nav'
+        });
+        $('.slider-nav').slick({
+          slidesToShow: 3,
+          slidesToScroll: 1,
+          asNavFor: '.slider-for',
+          dots: false,
+          arrows: true,
+          centerMode: true,
+          focusOnSelect: true,
+          responsive: [
+            {
+              breakpoint: 650,
+              settings: {
+                slidesToShow: 1,
               }
-            ]
-          });
-        }, 0)
+            }
+          ]
+        });
       });
   }
+
+  function checkCart() {
+    var totalCount = 0;
+    var totalPrice = 0;
+    $('.reglist__item').each(function(idx, el) {
+      var count = $(el).find('.cnt').val();
+      var price = parseInt($(el).find('.form').data('price'), 10) + parseInt($(el).find('.form').data('parentsPrice'), 10);
+      totalCount += parseInt(count, 10);
+      totalPrice += parseInt(price, 10) * parseInt(count, 10);
+    });
+    $('#totalCount').val(totalCount);
+    $('#optionCount').text(numberWithCommas(totalCount));
+
+    $('#totalPrice').val(totalPrice);
+    $('#optionTotalPrice').text(numberWithCommas(totalPrice));
+  };
   $(function(){
+    // 이미지 슬라이드 팝업 닫기
+    // slick 초가화
+    $('#imageSlider .close').on('click', function(){
+      $('#imageSlider .slider-for').removeClass('slick-initialized slick-slider').html('');
+      $('#imageSlider .slider-nav').removeClass('slick-initialized slick-slider').html('');
+      $('#imageSlider').hide();
+    })
     {% for popup in popups %}
     if (getCookie("todayClose{{ popup.id }}") != "Y") {
       $("#popup{{ popup.id }}").fadeIn(0);
@@ -214,8 +247,8 @@
           contentType: false,
           processData: false
         }).done(function(res){
-          console.log(res);
           if(res.success) {
+            console.log(that.data('parentsPrice'));
             var html = '';
             html += ' <div class="reglist__item" id="prd'+that.data('id')+'">\n' +
               '                        <div class="info">\n' +
@@ -227,6 +260,7 @@
               '                            <input type="text" value="1" class="cnt" readonly>\n' +
               '                            <button class="inc" data-cart-id="'+res.data.id+'">+</button>\n' +
               '                        </div>\n' +
+              '                        <button class="delete" data-cart-id="'+res.data.id+'">삭제</button>' +
               '                    </div>';
 
             var addProductPrice = parseInt(that.data('parentsPrice'), 10) + parseInt(that.data('price'), 10);
@@ -240,6 +274,8 @@
             $('#optionTotalPrice').text(numberWithCommas(totalPrice));
 
             $('#reglist').append(html);
+            var count = $('#cart-count').text();
+            $('#cart-count').text(parseInt(count, 10) + 1);
           }
         }).fail(function(error) {
           console.log(error);
@@ -262,25 +298,39 @@
       }).done(function(res){
         if(res.success) {
           that.parents('.form').find('.cnt').val(parseInt(value, 10) + 1);
-          var price = parseInt(that.parents('.form').data('price'), 10) + parseInt(that.parents('.form').data('parentsPrice'), 10);
-
-          var totalPrice = parseInt($('#totalPrice').val(), 10) + price;
-          var totalCount = parseInt($('#totalCount').val(), 10);
-
-          $('#totalCount').val(totalCount + 1);
-          $('#optionCount').text(numberWithCommas(totalCount + 1));
-
-          $('#totalPrice').val(totalPrice);
-          $('#optionTotalPrice').text(numberWithCommas(totalPrice));
-
+          checkCart();
         }
       }).fail(function(error) {
         console.log(error);
         alert('관리자에게 문의주세요.')
       }).always(function(res){
+        var count = $('#cart-count').text();
+        $('#cart-count').text(parseInt(count, 10) + 1);
       });
     });
 
+
+    $(document).on('click', '.delete', function() {
+      // 삭제
+      var that = $(this);
+      $.ajax({
+        type: 'POST',
+        url: '/cart/delete/' + that.data('cartId'),
+      }).done(function(res){
+        if(res.success) {
+          var cnt = that.parents('.reglist__item').find('.cnt').val();
+          var count = $('#cart-count').text();
+          $('#cart-count').text(parseInt(count, 10) - parseInt(cnt, 10));
+
+          that.parents('.reglist__item').remove();
+
+        }
+      }).fail(function(error) {
+        alert('관리자에게 문의주세요.')
+      }).always(function(res){
+        checkCart();
+      });
+    });
     $(document).on('click', '.dec', function(){
       var value = $(this).parents('.form').find('.cnt').val();
       if(parseInt(value, 10) - 1 < 1) {
@@ -298,23 +348,14 @@
         }).done(function(res){
           if(res.success) {
             that.parents('.form').find('.cnt').val(parseInt(value, 10) - 1);
-            var price = parseInt(that.parents('.form').data('price'), 10) + parseInt(that.parents('.form').data('parentsPrice'), 10);
-
-            console.log(parseInt(that.parents('.form').data('price'), 10) + parseInt(that.parents('.form').data('parentsPrice'), 10));
-
-            var totalPrice = parseInt($('#totalPrice').val(), 10) - price;
-            var totalCount = parseInt($('#totalCount').val(), 10);
-
-            $('#totalCount').val(totalCount - 1);
-            $('#optionCount').text(numberWithCommas(totalCount - 1));
-
-            $('#totalPrice').val(totalPrice);
-            $('#optionTotalPrice').text(numberWithCommas(totalPrice));
+            checkCart();
           }
         }).fail(function(error) {
           console.log(error);
           alert('관리자에게 문의주세요.')
         }).always(function(res){
+          var count = $('#cart-count').text();
+          $('#cart-count').text(parseInt(count, 10) - 1);
         });
       }
     });
