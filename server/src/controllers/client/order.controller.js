@@ -15,6 +15,8 @@ import { sendTalk } from "../../utils/kakaoMessage";
 const CartInstance = new CartService(Cart);
 const OrderInstance = new OrderService(Order);
 
+require("dotenv").config();
+
 export const order = {
   get: async (req, res, next) => {
     const objects = await OrderInstance.findAll({
@@ -84,7 +86,7 @@ export const order = {
       sendTalk(
         "KA01TP200928230940795W5RWrkEK7Vw", // 템플릿 아이디
         `[백산안경] ${req.user.name} 고객이 ${product.Product.name} 상품 외 ${checkedItems.length}건을 주문 주문했습니다.`, // 내용
-        "01025734692" // 상대 연락처
+        `${process.env.TALK_FORM_NUMBER}` // 상대 연락처
       );
 
       return res.json({

@@ -7,6 +7,8 @@ import { sendTalk } from "../../utils/kakaoMessage";
 const QnaServiceInstance = new QnaService(Qna);
 const AccountsServiceInstance = new AccountsService(User);
 
+require("dotenv").config();
+
 export const index = {
   get: async (req, res, next) => {
     try {
@@ -145,7 +147,7 @@ export const create = {
       sendTalk(
         "KA01TP200928231044553SatFWpC2ZNU", // 템플릿 아이디
         `[백산안경} ${req.user.name} 고객이 1:1문의를 등록했습니다.\n제목: ${object.title}`, // 내용
-        "01025734692" // 상대 연락처
+        `${process.env.TALK_FORM_NUMBER}` // 상대 연락처
       );
       return res.redirect(`/qna/detail/${object.id}`);
     } catch (error) {

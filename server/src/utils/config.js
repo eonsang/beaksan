@@ -12,7 +12,7 @@ const config = {
   apiSecret: process.env.KAKAOMESSAGE_APISECRET,
   accessToken: "",
   to: "",
-  from: "01025734692",
+  from: `${process.env.TALK_FORM_NUMBER}`,
 };
 let { apiKey, apiSecret, accessToken, to, from } = config;
 module.exports = {
