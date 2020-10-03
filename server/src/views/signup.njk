@@ -121,7 +121,7 @@
             <h2>개인정보 처리방침</h2>
             <button onclick="$('.pop').removeClass('active');">닫기</button>
             <div class="text">
-                {{ defaultInfo.privacy }}
+                {{ defaultInfo.privacy | safe }}
             </div>
         </div>
     </div>
@@ -131,7 +131,7 @@
             <h2>서비스 이용약관</h2>
             <button onclick="$('.pop').removeClass('active');">닫기</button>
             <div class="text">
-                {{ defaultInfo.stipulation }}
+                {{ defaultInfo.stipulation | safe }}
             </div>
         </div>
     </div>
