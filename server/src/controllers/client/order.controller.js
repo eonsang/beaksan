@@ -65,7 +65,6 @@ export const order = {
           },
         ],
       });
-      console.log(product);
 
       sendTalk(
         "KA01TP200928231224725fQDYrkK7bBD", // 템플릿 아이디

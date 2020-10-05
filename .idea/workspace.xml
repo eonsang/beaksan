@@ -1,0 +1,109 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="BranchesTreeState">
+    <expand>
+      <path>
+        <item name="ROOT" type="e8cecc67:BranchNodeDescriptor" />
+        <item name="LOCAL_ROOT" type="e8cecc67:BranchNodeDescriptor" />
+      </path>
+    </expand>
+    <select />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="8eaac02c-720e-4aac-8463-d5e4650f4e85" name="Default Changelist" comment="">
+      <change beforePath="$PROJECT_DIR$/server/src/controllers/client/order.controller.js" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/controllers/client/order.controller.js" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/static/dev/scss/pages/_list.scss" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/static/dev/scss/pages/_list.scss" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/static/dist/css/main.css" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/static/dist/css/main.css" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/views/index.njk" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/views/index.njk" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/server/src/views/layout/base.njk" beforeDir="false" afterPath="$PROJECT_DIR$/server/src/views/layout/base.njk" afterDir="false" />
+    </list>
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="Git.Settings">
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="ProjectId" id="1huGCm0fet8vTCymuUEbPFv3UN3" />
+  <component name="ProjectLevelVcsManager">
+    <ConfirmationsSetting value="2" id="Add" />
+  </component>
+  <component name="ProjectViewState">
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent">
+    <property name="RunOnceActivity.OpenProjectViewOnStart" value="true" />
+    <property name="WebServerToolWindowFactoryState" value="true" />
+    <property name="js.linters.configure.manually.selectedeslint" value="true" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="node.js.detected.package.eslint" value="true" />
+    <property name="node.js.detected.package.standard" value="true" />
+    <property name="node.js.path.for.package.eslint" value="project" />
+    <property name="node.js.path.for.package.standard" value="project" />
+    <property name="node.js.selected.package.eslint" value="$PROJECT_DIR$/server/node_modules/eslint" />
+    <property name="node.js.selected.package.standard" value="" />
+    <property name="nodejs_package_manager_path" value="npm" />
+    <property name="settings.editor.selected.configurable" value="settings.javascript.linters.eslint" />
+    <property name="vue.rearranger.settings.migration" value="true" />
+  </component>
+  <component name="RecentsManager">
+    <key name="CopyFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/src/routers/admin" />
+      <recent name="$PROJECT_DIR$/server/src/controllers/admin" />
+      <recent name="$PROJECT_DIR$/server/src/static" />
+      <recent name="$PROJECT_DIR$/server/src/static/images" />
+    </key>
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/server/src/static" />
+    </key>
+  </component>
+  <component name="SpellCheckerSettings" RuntimeDictionaries="0" Folders="0" CustomDictionaries="0" DefaultDictionary="application-level" UseSingleDictionary="true" transferred="true" />
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="8eaac02c-720e-4aac-8463-d5e4650f4e85" name="Default Changelist" comment="" />
+      <created>1600853438752</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1600853438752</updated>
+      <workItem from="1600853439814" duration="17690000" />
+      <workItem from="1600923661694" duration="2585000" />
+      <workItem from="1601003294706" duration="635000" />
+      <workItem from="1601266862021" duration="51780000" />
+      <workItem from="1601391482737" duration="16000" />
+      <workItem from="1601708066824" duration="28320000" />
+      <workItem from="1601868464044" duration="1399000" />
+    </task>
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="2388" y="310" key="SettingsEditor" timestamp="1600930936943">
+      <screen x="1920" y="143" width="1920" height="1057" />
+    </state>
+    <state x="2388" y="310" key="SettingsEditor/1920.143.1920.1057/0.23.1920.1177@1920.143.1920.1057" timestamp="1600930936943" />
+    <state x="2586" y="416" width="588" height="538" key="find.popup" timestamp="1601758424101">
+      <screen x="1920" y="143" width="1920" height="1057" />
+    </state>
+    <state x="2586" y="416" width="588" height="538" key="find.popup/1920.143.1920.1057/0.23.1920.1177@1920.143.1920.1057" timestamp="1601758424101" />
+    <state x="2543" y="376" width="672" height="678" key="search.everywhere.popup" timestamp="1601301819328">
+      <screen x="1920" y="143" width="1920" height="1057" />
+    </state>
+    <state x="2543" y="376" width="672" height="678" key="search.everywhere.popup/1920.143.1920.1057/0.23.1920.1177@1920.143.1920.1057" timestamp="1601301819328" />
+  </component>
+</project>

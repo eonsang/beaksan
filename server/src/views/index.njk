@@ -216,13 +216,6 @@
     $('#optionTotalPrice').text(numberWithCommas(totalPrice));
   };
   $(function(){
-    $('.products .item__thumb').on('click', function(){
-      $('.item__actions').removeClass('active');
-      $(this).find('.item__actions').toggleClass('active');
-    });
-    $('.products .item__info').on('click', function(){
-      $('.item__actions').removeClass('active');
-    });
     // 이미지 슬라이드 팝업 닫기
     // slick 초가화
     $('#imageSlider .close').on('click', function(){

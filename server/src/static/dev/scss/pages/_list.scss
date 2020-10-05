@@ -36,8 +36,6 @@
 
     &:hover {
       .item__actions {
-        //@apply flex;
-        //background: rgba(255,255,255,.7);
       }
     }
   }
@@ -50,14 +48,11 @@
     }
   }
   .item__actions {
-    display: none;
+    display: flex;
     @apply absolute items-center justify-center;
     right: 0;
     bottom: -5rem;
     z-index: 10;
-    &.active {
-      display: flex;
-    }
     a {
       width: 3rem;
       height: 3rem;
@@ -84,6 +79,7 @@
   .item__info {
     margin-top: 2rem;
     letter-spacing: -.025em;
+    padding-right: 7rem;
   }
   .item__name{
     color:#595959;
