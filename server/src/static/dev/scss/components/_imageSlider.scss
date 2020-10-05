@@ -27,13 +27,6 @@
 
   .slider-for {
     @apply relative;
-    &:after {
-      content:'';
-      display: block;
-      @apply absolute left-0 top-0 w-full h-full;
-      z-index: 3000;
-
-    }
     img {
       max-width: 500px;
       width: 100%;

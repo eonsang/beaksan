@@ -161,11 +161,13 @@
       }).done(function(res){
         if( res.success ) {
           var html = '';
+          var nav = '';
           res.product.ProductImages.map(function(img){
             html += '<div class="img"><a href="/'+img.path+'"><img src="/'+img.path+'" alt=""></a></div>';
+            nav += '<div class="img"><img src="/'+img.path+'" alt=""></div>';
           })
           $('#imageSlider .slider-for').html(html);
-          $('#imageSlider .slider-nav').html(html);
+          $('#imageSlider .slider-nav').html(nav);
         } else {
           alert('이미지를 불러오는데 실패했습니다.');
         }
