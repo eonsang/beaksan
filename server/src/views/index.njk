@@ -75,8 +75,9 @@
 <script>
 
   function showImageLayer(path) {
+    $('html, body').css('overflow', 'hidden');
     $('body').append('<div class="imgLayer" id="imgLayer">\n' +
-            '    <button class="close" onclick="$(\'#imgLayer\').remove();">닫기</button>\n' +
+            '    <button class="close">닫기</button>\n' +
             '    <img src="'+path+'" alt="">\n' +
             '  </div>');
   }
@@ -236,6 +237,10 @@
     $(document).on('click', '#detailOptions .optionlist__thumb', function(){
       var path = $(this).data('path');
       showImageLayer(path)
+    })
+    $(document).on('click', '#imgLayer .close', function(){
+      $('html, body').css('overflow', 'auto');
+      $('#imgLayer').remove();
     })
     // 이미지 슬라이드 팝업 닫기
     // slick 초가화
