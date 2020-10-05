@@ -94,7 +94,14 @@ export const detail = async (req, res, next) => {
       ],
     });
 
-    console.log(object);
+    object.Carts = object.Carts.map((obj) => {
+      if (obj.lens_option) {
+        obj.lens_option = JSON.parse(obj.lens_option);
+        return obj;
+      } else {
+        return obj;
+      }
+    });
 
     return res.render("admin/order_detail", {
       object,

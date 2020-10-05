@@ -73,6 +73,13 @@ export const create = {
           use: productDto.use === "on",
         };
       }
+      if (productDto.is_lens) {
+        data = {
+          ...data,
+          is_lens: productDto.is_lens === "on",
+        };
+      }
+
       const product = await ProductInstance.createProduct(data);
       const category1 = await CategoryInstance.findByPk(productDto.category1);
       await product.addCategory(category1);
@@ -176,6 +183,13 @@ export const update = async (req, res, next) => {
       data = {
         ...data,
         use: productDto.use === "on",
+      };
+    }
+
+    if (productDto.is_lens) {
+      data = {
+        ...data,
+        is_lens: productDto.is_lens === "on",
       };
     }
 

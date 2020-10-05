@@ -46,6 +46,18 @@
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
+                                    <label for="is_lens">렌즈 여부 <span class="text-danger">*</span></label>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="is_lens" id="is_lens" {% if product.is_lens %} checked {% endif %}>
+                                        <label class="custom-control-label" for="is_lens" >렌즈 상품 여부</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
                                     <label for="title">상품명 <span class="text-danger">*</span></label>
                                     <input class="form-control" type="text" placeholder="상품명" name="title" id="title" value="{{ product.name }}">
                                 </div>
@@ -175,10 +187,8 @@
                                 </div>
                             </div>
                         </div>
-
                         <hr>
-
-                        <div class="row">
+                        <div class="row" id="optionArea">
                             <div class="col-12">
                                 <div class="d-flex align-items-center">
                                     <label for="">상품 옵션관리</label>
@@ -251,7 +261,6 @@
             </div>
         </div>
     </div>
-
 {% endblock %}
 
 {% block css %}
@@ -320,8 +329,6 @@
       });
     }
 
-
-
     $('.textEditor').eq(0).summernote('code', '{{ product.content | safe }}')
     $(document).on('change', '.option_thumbnail', function(e){
       fileUploadForGetPath(e.target.files[0], this);
@@ -374,6 +381,12 @@
       } else {
         formData.append('sold_out', 'off');
       }
+      if($('#is_lens').is(':checked')) {
+        formData.append('is_lens', 'on');
+      } else {
+        formData.append('is_lens', 'off');
+      }
+
 
       var optionsArr = [];
       $('.optionItem').each(function(){
@@ -554,5 +567,17 @@
       console.error(error);
     });
   }
+
+  // is_lens
+  $(function(){
+    $('#is_lens').on('change', function(e){
+      var isChecked = e.target.checked;
+      // if(isChecked) {
+      //   $('#optionArea').hide();
+      // } else {
+      //   $('#optionArea').show();
+      // }
+    })
+  })
 </script>
 {% endblock %}

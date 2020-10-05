@@ -12,6 +12,19 @@
     }
   }
 
+  .select {
+    @apply flex-1;
+    select {
+      padding:0 1em;
+      background:#f3f3f4 url('../../images/select-arrow.png') no-repeat calc(100% - 1em) center;
+      border-radius: 10px;
+      height: 45px;
+      width: 100%;
+      font-size: 14px;
+      appearance: none;
+    }
+  }
+
   .textarea {
     @apply flex-1;
     textarea {

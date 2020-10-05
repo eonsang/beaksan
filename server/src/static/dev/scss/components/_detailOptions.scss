@@ -3,6 +3,45 @@
     z-index: 7000;
     background: rgba(0,0,0,0.5);
 
+  &.is_lens {
+    // 렌즈 상품
+
+    .detailOptions__content {
+      background: #fff;
+      width: 100%;
+    }
+
+    .optionlist__item {
+      width: 100%;
+    }
+
+    .optionlist__imgbox {
+      flex: 1;
+    }
+    .optionlist__optionbox {
+      padding-top: 42px;
+      width: 250px;
+      flex: none;
+    }
+    @media screen and (max-width: 1000px) {
+
+      .optionlist__item {
+        flex-direction: column;
+      }
+      .optionlist__optionbox {
+        padding-top: 20px;
+        width: 100%;
+        flex: 1;
+        margin: 0;
+      }
+    }
+    @media screen and (max-width: 768px) {
+      .optionlist {
+        height: auto !important;
+      }
+    }
+  }
+
   .detailOptions__content {
     background:#fff;
     width: 100%;

@@ -42,9 +42,18 @@
                                             <img src="{{ cart.ProductOptionDetail.path }}" alt="" class="mr-2" style="width: 60px;">
                                             {{ cart.Product.name }}
                                         </div>
-
                                     </td>
-                                    <td style="vertical-align: middle">[{{ cart.ProductOption.name }}] {{ cart.ProductOptionDetail.name }}</td>
+                                    <td style="vertical-align: middle">
+                                        {% if cart.lens_option %}
+                                            sph: {{ cart.lens_option.sph }} <br/>
+                                            cyl: {{ cart.lens_option.cyl }} <br/>
+                                            add: {{ cart.lens_option.add }} <br/>
+                                            axis: {{ cart.lens_option.axis }} <br/>
+                                            bc: {{ cart.lens_option.bc }}
+                                        {% else %}
+                                            [{{ cart.ProductOption.name }}] {{ cart.ProductOptionDetail.name }}
+                                        {% endif %}
+                                    </td>
                                     <td style="vertical-align: middle">{{ cart.quantity }}</td>
                                     <td style="vertical-align: middle">{{ (cart.Product.customer_price + cart.ProductOptionDetail.price)|comma }}</td>
                                     <td style="vertical-align: middle">{{ ((cart.Product.customer_price + cart.ProductOptionDetail.price) * cart.quantity)|comma }}</td>

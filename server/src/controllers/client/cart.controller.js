@@ -25,7 +25,7 @@ const CartInstance = new CartService(Cart);
 export const cart = {
   get: async (req, res, next) => {
     try {
-      const objects = await CartInstance.findAll({
+      let objects = await CartInstance.findAll({
         include: [
           {
             model: Product,
@@ -41,6 +41,15 @@ export const cart = {
           UserId: req.user.id,
           OrderId: null,
         },
+      });
+
+      objects = objects.map((object) => {
+        if (object.lens_option) {
+          object.lens_option = JSON.parse(object.lens_option);
+          return object;
+        } else {
+          return object;
+        }
       });
 
       return res.render("cart", {
@@ -96,6 +105,7 @@ export const add = async (req, res, next) => {
       ProductOptionId: req.body.optionId,
       ProductOptionDetailId: req.body.optionDetailId,
       quantity: 1,
+      lens_option: req.body.lens_option,
     });
     return res.json({
       success: true,

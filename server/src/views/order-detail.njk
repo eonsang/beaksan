@@ -61,7 +61,17 @@
                             </tr>
                             <tr>
                                 <th>옵션명</th>
-                                <td>[{{ cart.ProductOption.name }}] {{ cart.ProductOptionDetail.name }}</td>
+                                <td>
+                                    {% if cart.lens_option %}
+                                        {{ cart.lens_option.sph }} /
+                                        {{ cart.lens_option.cyl }} /
+                                        {{ cart.lens_option.add }} /
+                                        {{ cart.lens_option.axis }} /
+                                        {{ cart.lens_option.bc }}
+                                    {% else %}
+                                        [{{ cart.ProductOption.name }}] {{ cart.ProductOptionDetail.name }}
+                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <th>수량</th>

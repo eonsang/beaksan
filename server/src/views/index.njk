@@ -91,16 +91,23 @@
     }).done(function(res){
       if(res.success) {
         var html = '';
-        console.log(res);
         var totalPrice = 0;
         var totalCount = 0;
         res.data.map(function(item) {
+          var optionText = '';
+          if(item.lens_option) {
+            var option = JSON.parse(item.lens_option);
+            optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc;
+          } else {
+            optionText = item.ProductOptionDetail.name;
+          }
           totalPrice += (parseInt(item.Product.customer_price, 10) + parseInt(item.ProductOptionDetail.price, 10)) * item.quantity;
           totalCount += parseInt(item.quantity, 10);
+
           html += ' <div class="reglist__item" id="prd'+item.ProductOptionDetail.id+'">\n' +
             '                        <div class="info">\n' +
             '                            <h3>'+item.Product.name+'</h3>\n' +
-            '                            <p>'+item.ProductOptionDetail.name+'</p>\n' +
+            '                            <p>'+optionText+'</p>\n' +
             '                        </div>\n' +
             '                        <div class="form" data-price="'+item.ProductOptionDetail.price+'" data-parents-price="'+item.Product.customer_price+'">\n' +
             '                            <button class="dec" data-cart-id="'+item.id+'">-</button>\n' +
@@ -130,36 +137,117 @@
     }).done(function(res){
       if( res.success ) {
         var html = '';
-        res.product.ProductOptions.map(function(option){
-          option.ProductOptionDetails.map(function(optionDetail){
-            html += ' <div class="optionlist__item">\n' +
-              '                        <div class="optionlist__header">\n' +
-              '                            <h3>'+optionDetail.name+'</h3>\n' +
-              '                            <button class="addOption" ' +
-              'data-parents-id="'+res.product.id+'" ' + // 부모 아이디
-              'data-parents-name="'+res.product.name+'" ' + // 부모 아이디
-              'data-parents-price="'+res.product.customer_price+'" ' + // 부모 아이디
-              'data-option-id="'+option.id+'" ' + // 옵션 아이디
-              'data-option-name="'+option.name+'" ' + // 부모 아이디
-              'data-price="'+optionDetail.price+'" ' + // 옵션 추가 가격
-              'data-name="'+optionDetail.name+'" ' + // 옵션 명
-              'data-id="'+optionDetail.id+'"' + // 옵션 아이디
-              '>장바구니</button>\n' +
-              '                        </div>\n' +
-              '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
-              '                            <img src="'+optionDetail.path+'" alt="">\n' +
-              '                        </div>\n' +
-              '                    </div>';
+        if(!res.product.is_lens) {
+          // 안경
+          res.product.ProductOptions.map(function(option){
+            option.ProductOptionDetails.map(function(optionDetail){
+              html += ' <div class="optionlist__item">\n' +
+                      '                        <div class="optionlist__header">\n' +
+                      '                            <h3>'+optionDetail.name+'</h3>\n' +
+                      '                            <button class="addOption" ' +
+                      'data-parents-id="'+res.product.id+'" ' + // 부모 아이디
+                      'data-isLens="'+res.product.is_lens+'" ' + // 렌즈 여부
+                      'data-parents-name="'+res.product.name+'" ' + // 부모 아이디
+                      'data-parents-price="'+res.product.customer_price+'" ' + // 부모 아이디
+                      'data-option-id="'+option.id+'" ' + // 옵션 아이디
+                      'data-option-name="'+option.name+'" ' + // 부모 아이디
+                      'data-price="'+optionDetail.price+'" ' + // 옵션 추가 가격
+                      'data-name="'+optionDetail.name+'" ' + // 옵션 명
+                      'data-id="'+optionDetail.id+'"' + // 옵션 아이디
+                      '>장바구니</button>\n' +
+                      '                        </div>\n' +
+                      '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
+                      '                            <img src="'+optionDetail.path+'" alt="">\n' +
+                      '                        </div>\n' +
+                      '                    </div>';
+            })
           })
-        })
+        } else {
+          // 렌즈
+          res.product.ProductOptions.map(function(option){
+            option.ProductOptionDetails.map(function(optionDetail){
+              html += ' <div class="optionlist__item row">' +
+                      '<div class="optionlist__imgbox">\n' +
+                      '                        <div class="optionlist__header">\n' +
+                      '                            <h3>'+optionDetail.name+'</h3>\n' +
+                      '                            <button class="addOption" ' +
+                      'data-parents-id="'+res.product.id+'" ' + // 부모 아이디
+                      'data-isLens="'+res.product.is_lens+'" ' + // 렌즈 여부
+                      'data-parents-name="'+res.product.name+'" ' + // 부모 아이디
+                      'data-parents-price="'+res.product.customer_price+'" ' + // 부모 아이디
+                      'data-option-id="'+option.id+'" ' + // 옵션 아이디
+                      'data-option-name="'+option.name+'" ' + // 부모 아이디
+                      'data-price="'+optionDetail.price+'" ' + // 옵션 추가 가격
+                      'data-name="'+optionDetail.name+'" ' + // 옵션 명
+                      'data-id="'+optionDetail.id+'"' + // 옵션 아이디
+                      '>장바구니</button>\n' +
+                      '                        </div>\n' +
+                      '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
+                      '                            <img src="'+optionDetail.path+'" alt="">\n' +
+                      '                        </div>\n' +
+                      '</div>' +
+                      '      <div class="optionlist__optionbox flex-1 ml-4">' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">SPH</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="input"><input type="text" name="sph" id="sph"></div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">CYL</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="input"><input type="text" name="cyl" id="cyl"></div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">ADD</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="add" id="add">' +
+                      '                          <option value="add1">ADD1</option>' +
+                      '                       </select>' +
+                      '                    </div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">AXIS</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="axis" id="axis">' +
+                      '                          <option value="axis1">axis1</option>' +
+                      '                       </select>' +
+                      '                    </div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">B.C</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="bc" id="bc">' +
+                      '                          <option value="bc1">bc1</option>' +
+                      '                       </select>' +
+                      '                    </div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '       </div>' +
+                      '      </div>';
+            })
+          })
+        }
+
         $('#optionlist').html('').html(html);
-        // $('#imageSlider .slider-nav').html('').html(html);
       } else {
       }
     }).fail(function(error) {
       alert('관리자에게 문의주세요.')
     }).always(function(res){
+      if(res.product.is_lens) {
+        $('#detailOptions').addClass('is_lens');
+      } else {
+        $('#detailOptions').removeClass('is_lens');
+      }
       setTimeout(function(){
+
         $('#detailOptions').show();
       }, 0)
     });
@@ -257,6 +345,7 @@
 
     $(document).on('click', '.addOption', function(){
       var prdId = $(this).data('id');
+      var isLens = $(this).data('islens');
       var that = $(this);
       if($('#prd' + prdId).length > 0 ) {
         alert('이미 등록된 상품입니다.');
@@ -266,6 +355,20 @@
         formData.append('productId', $(this).data('parentsId'));
         formData.append('optionId', $(this).data('optionId'));
         formData.append('optionDetailId', $(this).data('id'));
+        console.log('isLens', isLens);
+
+        if(isLens) {
+        // 렌즈일 경우
+          var option = {};
+          option.sph = $('#sph').val();
+          option.cyl = $('#cyl').val();
+          option.add = $('#add').val();
+          option.axis = $('#axis').val();
+          option.bc = $('#bc').val();
+          // 텍스트로 변환해서 전달
+          formData.append('lens_option', JSON.stringify(option));
+        }
+
         $.ajax({
           url: '/cart/add',
           type: 'POST',
@@ -273,13 +376,20 @@
           contentType: false,
           processData: false
         }).done(function(res){
+
           if(res.success) {
-            console.log(that.data('parentsPrice'));
+            var optionText = '';
+            if(res.data.lens_option) {
+              // 렌즈일 경우
+              var option = JSON.parse(res.data.lens_option);
+              optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc;
+            }
             var html = '';
+            var optionText = res.data.lens_option ? optionText : that.data('name');
             html += ' <div class="reglist__item" id="prd'+that.data('id')+'">\n' +
               '                        <div class="info">\n' +
               '                            <h3>'+that.data('parentsName')+'</h3>\n' +
-              '                            <p>'+that.data('name')+'</p>\n' +
+              '                            <p>'+ optionText +'</p>\n' +
               '                        </div>\n' +
               '                        <div class="form" data-price="'+that.data('price')+'" data-parents-price="'+that.data('parentsPrice')+'">\n' +
               '                            <button class="dec" data-cart-id="'+res.data.id+'">-</button>\n' +

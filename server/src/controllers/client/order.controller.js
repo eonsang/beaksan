@@ -34,6 +34,7 @@ export const order = {
         },
       ],
     });
+
     return res.render("order", {
       objects,
     });
@@ -121,6 +122,15 @@ export const detail = async (req, res, next) => {
           ],
         },
       ],
+    });
+
+    object.Carts = object.Carts.map((obj) => {
+      if (obj.lens_option) {
+        obj.lens_option = JSON.parse(obj.lens_option);
+        return obj;
+      } else {
+        return obj;
+      }
     });
 
     return res.render("order-detail.njk", {

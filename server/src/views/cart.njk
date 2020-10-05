@@ -53,7 +53,17 @@
                                 </div>
                                 <div class="info flex-1">
                                     <h3>{{ object.Product.name }}</h3>
-                                    <p>{{ object.ProductOptionDetail.name }}</p>
+                                    <p>
+                                        {% if object.lens_option %}
+                                            {{ object.lens_option.sph }} /
+                                            {{ object.lens_option.cyl }} /
+                                            {{ object.lens_option.add }} /
+                                            {{ object.lens_option.axis }} /
+                                            {{ object.lens_option.bc }}
+                                        {% else %}
+                                            {{ object.ProductOptionDetail.name }}
+                                        {% endif %}
+                                    </p>
                                 </div>
                                 <div class="price">
                                     <label for="" class="label">단가</label>
