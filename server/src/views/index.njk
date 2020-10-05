@@ -67,10 +67,21 @@
     {% include './components/mainPopup.njk' %}
     {% include './components/imageSlider.njk' %}
     {% include './components/detailOptions.njk' %}
+
+
 {% endblock %}
 
 {% block script %}
 <script>
+
+  function showImageLayer(path) {
+    $('body').append('<div class="imgLayer" id="imgLayer">\n' +
+            '    <button class="close" onclick="$(\'#imgLayer\').remove();">닫기</button>\n' +
+            '    <img src="'+path+'" alt="">\n' +
+            '  </div>');
+  }
+
+
   function showDetailOption(id) {
     // 회원 장바구니 가져와서 넣어주기
     $.ajax({
@@ -118,7 +129,6 @@
     }).done(function(res){
       if( res.success ) {
         var html = '';
-        console.log(res);
         res.product.ProductOptions.map(function(option){
           option.ProductOptionDetails.map(function(optionDetail){
             html += ' <div class="optionlist__item">\n' +
@@ -135,7 +145,7 @@
               'data-id="'+optionDetail.id+'"' + // 옵션 아이디
               '>장바구니</button>\n' +
               '                        </div>\n' +
-              '                        <div class="optionlist__thumb">\n' +
+              '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
               '                            <img src="'+optionDetail.path+'" alt="">\n' +
               '                        </div>\n' +
               '                    </div>';
@@ -163,7 +173,7 @@
           var html = '';
           var nav = '';
           res.product.ProductImages.map(function(img){
-            html += '<div class="img"><a href="/'+img.path+'"><img src="/'+img.path+'" alt=""></a></div>';
+            html += '<div class="img" data-path="'+img.path+'"><img src="/'+img.path+'" alt=""></div>';
             nav += '<div class="img"><img src="/'+img.path+'" alt=""></div>';
           })
           $('#imageSlider .slider-for').html(html);
@@ -218,6 +228,15 @@
     $('#optionTotalPrice').text(numberWithCommas(totalPrice));
   };
   $(function(){
+
+    $(document).on('click', '#imageSlider .slider-for .img', function(){
+      var path = $(this).data('path');
+      showImageLayer('/'+path)
+    })
+    $(document).on('click', '#detailOptions .optionlist__thumb', function(){
+      var path = $(this).data('path');
+      showImageLayer(path)
+    })
     // 이미지 슬라이드 팝업 닫기
     // slick 초가화
     $('#imageSlider .close').on('click', function(){
