@@ -1,0 +1,28 @@
+{% extends 'layout/base.njk' %}
+
+{% block style %}
+    <style>
+        .showImage {
+            max-width: 768px;
+            margin:0 auto;
+            padding-bottom: 40px;
+        }
+        .showImage .img {
+        }
+        .mobileclose {
+            position: fixed;
+            left: 0;
+            bottom: 0;
+
+            display: block;width: 100%;height: 40px;text-align: center;color:#fff;background:#222;margin-top: 20px;
+        }
+    </style>
+{% endblock %}
+{% block content %}
+<div class="showImage">
+    <div class="img">
+        <img src="{{ path }}" alt="">
+    </div>
+    <button class="mobileclose" onclick="window.close()">닫기</button>
+</div>
+{% endblock %}

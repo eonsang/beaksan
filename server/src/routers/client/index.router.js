@@ -13,4 +13,11 @@ router.get("/", isLoggedIn, index.get);
 
 router.get("/product/:id", isLoggedIn, product.get);
 
+router.get("/showImage", isLoggedIn, (req, res, next) => {
+  const { path } = req.query;
+  return res.render("showImage", {
+    path,
+  });
+});
+
 export default router;
