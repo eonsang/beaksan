@@ -1,11 +1,12 @@
 import BaseService from "./Base.service";
 
 export default class CategoryService extends BaseService {
-  constructor(Model, OptionModel, OptionDetailModel, ImageModel) {
+  constructor(Model, OptionModel, OptionDetailModel, ImageModel, DiaModel) {
     super(Model);
     this.OptionModel = OptionModel;
     this.OptionDetailModel = OptionDetailModel;
     this.ImageModel = ImageModel;
+    this.DiaModel = DiaModel;
   }
 
   createProduct(data) {
@@ -74,6 +75,26 @@ export default class CategoryService extends BaseService {
 
   destroyOptionDetail(id) {
     return this.OptionDetailModel.destroy({
+      where: {
+        id,
+      },
+    });
+  }
+
+  createDiaOptions(data) {
+    return this.DiaModel.create(data);
+  }
+
+  updateOptionDia(id, data) {
+    return this.DiaModel.update(data, {
+      where: {
+        id,
+      },
+    });
+  }
+
+  destroyOptionDia(id) {
+    return this.DiaModel.destroy({
       where: {
         id,
       },

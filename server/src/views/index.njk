@@ -97,7 +97,7 @@
           var optionText = '';
           if(item.lens_option) {
             var option = JSON.parse(item.lens_option);
-            optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc;
+            optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc + ' / ' + option.dia;
           } else {
             optionText = item.ProductOptionDetail.name;
           }
@@ -173,19 +173,10 @@
                 i += 5;
               }
 
-              var cylHtml = '';
-              var j = -10.00;
-              while(j <= 10.00) {
-                cylHtml += '<option value="'+j+'">'+j+'</option>';
-                j += 0.25;
-              }
-
-              var sphHtml = '';
-              var k = -25.00;
-              while(k <= 15.00) {
-                sphHtml += '<option value="'+k+'">'+k+'</option>';
-                k += 0.25;
-              }
+              var diaHtml = '';
+              optionDetail.LensDiaOptions.map(function(diaoption){
+                diaHtml += '<option value="'+diaoption.name+'">'+diaoption.name+'</option>';
+              })
               html += ' <div class="optionlist__item row">' +
                       '<div class="optionlist__imgbox">\n' +
                       '                        <div class="optionlist__header">\n' +
@@ -208,31 +199,23 @@
                       '</div>' +
                       '      <div class="optionlist__optionbox flex-1 ml-4">' +
                       '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">SPH <span class="text-xs">(0기준점 / 0.25단위)</span></label>\n' +
+                      '                <label for="name" class="form-label">SPH(근시) <span class="text-xs text-gray-500">0기준점 / 0.25단위</span></label>\n' +
                       '                <div class="row">\n' +
-                      '                    <div class="select">' +
-                      '                       <select name="sph" id="sph">' + sphHtml + '</select>' +
+                      '                    <div class="input">' +
+                      '                       <input name="sph" id="sph" type="text" />' +
                       '                    </div>\n' +
                       '                </div>\n' +
                       '            </div>' +
                       '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">CYL <span class="text-xs">(0 기준점 / 0.25단위)</span></label>\n' +
+                      '                <label for="name" class="form-label">CYL(난시) <span class="text-xs text-gray-500">0 기준점 / 0.25단위</span></label>\n' +
                       '                <div class="row">\n' +
-                      '                    <div class="select">' +
-                      '                       <select name="cyl" id="cyl">' + cylHtml + '</select>' +
+                      '                    <div class="input">' +
+                      '                       <input name="cyl" id="cyl" type="text" />' +
                       '                    </div>\n' +
                       '                </div>\n' +
                       '            </div>' +
                       '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">AXIS <span class="text-xs">(5도 단위)</span></label>\n' +
-                      '                <div class="row">\n' +
-                      '                    <div class="select">' +
-                      '                       <select name="axis" id="axis">' + axisHtml + '</select>' +
-                      '                    </div>\n' +
-                      '                </div>\n' +
-                      '            </div>' +
-                      '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">ADD</label>\n' +
+                      '                <label for="name" class="form-label">ADD(가입도)</label>\n' +
                       '                <div class="row">\n' +
                       '                    <div class="select">' +
                       '                       <select name="add" id="add">' +
@@ -244,9 +227,25 @@
                       '                </div>\n' +
                       '            </div>' +
                       '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">B.C</label>\n' +
+                      '                <label for="name" class="form-label">AXIS(축)</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="axis" id="axis">' + axisHtml + '</select>' +
+                      '                    </div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">B.C(베이스커브)</label>\n' +
                       '                <div class="row">\n' +
                       '                    <div class="input"><input type="text" name="bc" id="bc"></div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">DIA(렌즈 직경)</label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="dia" id="dia">' + diaHtml + '</select>' +
+                      '                    </div>\n' +
                       '                </div>\n' +
                       '            </div>' +
                       '       </div>' +
@@ -350,9 +349,13 @@
       $('html, body').css('overflow', 'auto');
       $('#imgLayer').remove();
     })
+    $(document).on('click', '#imgLayer .mobileclose', function(){
+      $('html, body').css('overflow', 'auto');
+      $('#imgLayer').remove();
+    })
     // 이미지 슬라이드 팝업 닫기
     // slick 초가화
-    $('#imageSlider .close').on('click', function(){
+    $('#imageSlider .close').add('#imageSlider .mobileclose').on('click', function(){
       $('#imageSlider .slider-for').removeClass('slick-initialized slick-slider').html('');
       $('#imageSlider .slider-nav').removeClass('slick-initialized slick-slider').html('');
       $('#imageSlider').hide();
@@ -385,6 +388,7 @@
           option.add = $('#add').val();
           option.axis = $('#axis').val();
           option.bc = $('#bc').val();
+          option.dia = $('#dia').val();
           // 텍스트로 변환해서 전달
           formData.append('lens_option', JSON.stringify(option));
         }
@@ -402,7 +406,7 @@
             if(res.data.lens_option) {
               // 렌즈일 경우
               var option = JSON.parse(res.data.lens_option);
-              optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc;
+              optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc + ' / ' + option.dia;
             }
             var html = '';
             var optionText = res.data.lens_option ? optionText : that.data('name');

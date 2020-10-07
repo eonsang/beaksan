@@ -14,6 +14,7 @@ import {
   removeChecked,
   changeUse,
   changeSoldout,
+  removeOptionDia,
 } from "../../controllers/admin/product.controller";
 
 const router = express.Router();
@@ -48,6 +49,7 @@ router.route("/remove").post(removeChecked.post);
 router.post("/image/delete/:id", removeImage);
 router.post("/option/delete/:id", removeOption);
 router.post("/optionDetail/delete/:id", removeOptionDetail);
+router.post("/optionDetailDIA/delete/:id", removeOptionDia);
 
 router.post("/detail/:id/use", changeUse);
 router.post("/detail/:id/soldout", changeSoldout);

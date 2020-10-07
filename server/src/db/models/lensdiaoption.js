@@ -1,44 +1,32 @@
 "use strict";
 const { Model } = require("sequelize");
 module.exports = (sequelize, DataTypes) => {
-  class ProductOptionDetail extends Model {
+  class LensDiaOption extends Model {
     /**
      * Helper method for defining associations.
      * This method is not a part of Sequelize lifecycle.
      * The `models/index` file will call this method automatically.
      */
     static associate(models) {
-      models.ProductOptionDetail.belongsTo(models.ProductOption, {
+      models.LensDiaOption.belongsTo(models.ProductOptionDetail, {
         onDelete: "cascade",
         foreignKey: {
           allowNull: false,
         },
       });
-      models.ProductOptionDetail.hasMany(models.LensDiaOption, {
-        onDelete: "cascade",
-      });
     }
   }
-  ProductOptionDetail.init(
+  LensDiaOption.init(
     {
       name: {
         type: DataTypes.STRING,
         allowNull: false,
       },
-      path: {
-        type: DataTypes.STRING,
-        allowNull: true,
-      },
-      price: {
-        type: DataTypes.INTEGER,
-        allowNull: false,
-        defaultValue: 0,
-      },
     },
     {
       sequelize,
-      modelName: "ProductOptionDetail",
+      modelName: "LensDiaOption",
     }
   );
-  return ProductOptionDetail;
+  return LensDiaOption;
 };

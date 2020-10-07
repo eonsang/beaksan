@@ -4,6 +4,7 @@ import {
   ProductOptionDetail,
   ProductImage,
   Category,
+  LensDiaOption,
 } from "../../db/models";
 import ProductService from "../../services/Product.service";
 import CategoryService from "../../services/Category.service";
@@ -14,7 +15,8 @@ const ProductInstance = new ProductService(
   Product,
   ProductOption,
   ProductOptionDetail,
-  ProductImage
+  ProductImage,
+  LensDiaOption
 );
 
 const CategoryInstance = new CategoryService(Category);
@@ -110,12 +112,23 @@ export const create = {
             ProductId: product.id,
           });
           option.list.map(async (obj) => {
-            await ProductInstance.createProductOptionDetail({
-              name: obj.name,
-              path: obj.path,
-              price: obj.price,
-              ProductOptionId: object.id,
-            });
+            const optionDetail = await ProductInstance.createProductOptionDetail(
+              {
+                name: obj.name,
+                path: obj.path,
+                price: obj.price,
+                ProductOptionId: object.id,
+              }
+            );
+
+            if (req.body.diaOptionInfo) {
+              JSON.parse(req.body.diaOptionInfo).map(async (option) => {
+                await ProductInstance.createDiaOptions({
+                  name: option.name,
+                  ProductOptionDetailId: optionDetail.id,
+                });
+              });
+            }
           });
         });
       }
@@ -266,6 +279,23 @@ export const update = async (req, res, next) => {
                 path: obj.path,
                 price: obj.price,
               });
+
+              // 수정
+              if (req.body.diaOptionInfo) {
+                JSON.parse(req.body.diaOptionInfo).map(async (option) => {
+                  console.log(option);
+                  if (!option.id) {
+                    await ProductInstance.createDiaOptions({
+                      name: option.name,
+                      ProductOptionDetailId: obj.id,
+                    });
+                  } else {
+                    await ProductInstance.updateOptionDia(option.id, {
+                      name: option.name,
+                    });
+                  }
+                });
+              }
             }
           });
         }
@@ -296,6 +326,11 @@ export const detail = async (req, res, next) => {
           include: [
             {
               model: ProductOptionDetail,
+              include: [
+                {
+                  model: LensDiaOption,
+                },
+              ],
             },
           ],
         },
@@ -436,6 +471,20 @@ export const removeOptionDetail = async (req, res, next) => {
   try {
     const { id } = req.params;
     await ProductInstance.destroyOptionDetail(id);
+    logger.error("옵션상세 삭제 완료");
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    logger.error("옵션상세 삭제 에러");
+    return next(error);
+  }
+};
+
+export const removeOptionDia = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+    await ProductInstance.destroyOptionDia(id);
     logger.error("옵션상세 삭제 완료");
     return res.json({
       success: true,

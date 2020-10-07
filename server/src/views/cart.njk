@@ -55,11 +55,12 @@
                                     <h3>{{ object.Product.name }}</h3>
                                     <p>
                                         {% if object.lens_option %}
-                                            {{ object.lens_option.sph }} /
-                                            {{ object.lens_option.cyl }} /
-                                            {{ object.lens_option.add }} /
-                                            {{ object.lens_option.axis }} /
-                                            {{ object.lens_option.bc }}
+                                            <strong class="text-black font-normal">SPH</strong>: {{ object.lens_option.sph }} /
+                                            <strong class="text-black font-normal">CYL</strong>: {{ object.lens_option.cyl }} /
+                                            <strong class="text-black font-normal">AXIS</strong>: {{ object.lens_option.add }}<br/>
+                                            <strong class="text-black font-normal">ADD</strong>: {{ object.lens_option.axis }} /
+                                            <strong class="text-black font-normal">B.C</strong>: {{ object.lens_option.bc }} /
+                                            <strong class="text-black font-normal">DIA</strong>: {{ object.lens_option.dia }}
                                         {% else %}
                                             {{ object.ProductOptionDetail.name }}
                                         {% endif %}

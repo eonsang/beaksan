@@ -63,11 +63,12 @@
                                 <th>옵션명</th>
                                 <td>
                                     {% if cart.lens_option %}
-                                        {{ cart.lens_option.sph }} /
-                                        {{ cart.lens_option.cyl }} /
-                                        {{ cart.lens_option.add }} /
-                                        {{ cart.lens_option.axis }} /
-                                        {{ cart.lens_option.bc }}
+                                        <strong class="text-black font-normal">SPH</strong>: {{ cart.lens_option.sph }}<br/>
+                                        <strong class="text-black font-normal">CYL</strong>: {{ cart.lens_option.cyl }}<br/>
+                                        <strong class="text-black font-normal">AXIS</strong>: {{ cart.lens_option.add }}<br/>
+                                        <strong class="text-black font-normal">ADD</strong>: {{ cart.lens_option.axis }}<br/>
+                                        <strong class="text-black font-normal">B.C</strong>: {{ cart.lens_option.bc }}<br/>
+                                        <strong class="text-black font-normal">DIA</strong>: {{ cart.lens_option.dia }}
                                     {% else %}
                                         [{{ cart.ProductOption.name }}] {{ cart.ProductOptionDetail.name }}
                                     {% endif %}

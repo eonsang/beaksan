@@ -3,6 +3,7 @@ import moment from "moment";
 
 import {
   Category,
+  LensDiaOption,
   Popup,
   PopupImage,
   Product,
@@ -23,7 +24,8 @@ const ProductInstance = new ProductService(
   Product,
   ProductOption,
   ProductOptionDetail,
-  ProductImage
+  ProductImage,
+  LensDiaOption
 );
 
 function prevDay(days) {
@@ -127,6 +129,11 @@ export const product = {
             include: [
               {
                 model: ProductOptionDetail,
+                include: [
+                  {
+                    model: LensDiaOption,
+                  },
+                ],
               },
             ],
           },

@@ -196,57 +196,92 @@
                                 </div>
                                 <div id="optionList" class="optionList mt-2">
                                     {% for productOption in product.ProductOptions %}
-                                    <div class="card optionItem" id="optionItem{{ productOption.id }}">
-                                        <input type="hidden" name="optionItemId" value="{{ productOption.id }}">
-                                        <div class="card-body">
-                                            <div class="row">
-                                                <div class="col-3">
-                                                    <div class="form-group">
-                                                        <label for="billing-email-address">옵션제목</label>
-                                                        <input class="form-control" type="text" placeholder="상품 소개글" name="option_name" value="{{ productOption.name }}">
-                                                        <span class="font-13 text-muted">ex) 컬러, 사이즈 등</span>
+                                        <div class="card optionItem" id="optionItem{{ productOption.id }}">
+                                            <input type="hidden" name="optionItemId" value="{{ productOption.id }}">
+                                            <div class="card-body">
+                                                <div class="row">
+                                                    <div class="col-3">
+                                                        <div class="form-group">
+                                                            <label for="billing-email-address">옵션제목</label>
+                                                            <input class="form-control" type="text" placeholder="상품 소개글" name="option_name" value="{{ productOption.name }}">
+                                                            <span class="font-13 text-muted">ex) 컬러, 사이즈 등</span>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="col-9">
-                                                    <label for="">옵션별 상세</label>
-                                                    <div class="optionListDetail">
-                                                        {% for option in productOption.ProductOptionDetails %}
-                                                        <div class="row" id="row{{ option.id }}">
-                                                            <input type="hidden" name="option_id" value="{{ option.id }}">
-                                                            <div class="col-5">
-                                                                <div class="form-group">
-                                                                    <input class="form-control" type="text" placeholder="옵션명" name="option_name" value="{{ option.name }}">
-                                                                </div>
-                                                            </div>
-                                                            <div class="col-3">
-                                                                <div class="form-group">
-                                                                    <div class="input-group">
-                                                                        <div class="custom-file">
-                                                                            <input type="file" class="custom-file-input option_thumbnail" name="option_thumbnail">
-                                                                            <input type="hidden" name="option_thumbnail_path" value="{{ option.path }}">
-                                                                            <label class="custom-file-label" for="option_thumbnail">{{ option.path }}</label>
+                                                    <div class="col-9">
+                                                        <label for="">옵션별 상세</label>
+                                                        <div class="optionListDetail">
+                                                            {% for option in productOption.ProductOptionDetails %}
+                                                                <div class="row" id="row{{ option.id }}">
+                                                                    <input type="hidden" name="option_id" value="{{ option.id }}">
+                                                                    <div class="col-5">
+                                                                        <div class="form-group">
+                                                                            <input class="form-control" type="text" placeholder="옵션명" name="option_name" value="{{ option.name }}">
                                                                         </div>
                                                                     </div>
+                                                                    <div class="col-3">
+                                                                        <div class="form-group">
+                                                                            <div class="input-group">
+                                                                                <div class="custom-file">
+                                                                                    <input type="file" class="custom-file-input option_thumbnail" name="option_thumbnail">
+                                                                                    <input type="hidden" name="option_thumbnail_path" value="{{ option.path }}">
+                                                                                    <label class="custom-file-label" for="option_thumbnail">{{ option.path }}</label>
+                                                                                </div>
+                                                                            </div>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3">
+                                                                        <div class="form-group">
+                                                                            <input class="form-control" type="text" placeholder="가격" name="option_price" value="{{ option.price }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <button type="button" class="btn btn-outline-danger" onclick="deleteOptionDetail({{ option.id }}, {{ loop.index - 1 }});">삭제</button>
+                                                                    </div>
                                                                 </div>
-                                                            </div>
-                                                            <div class="col-3">
+                                                            {% endfor %}
+                                                        </div>
+                                                        <button type="button" class="btn btn-primary addOptionDetailRow" style="margin-left: auto;">옵션별 상세 추가</button>
+                                                        <button type="button" class="btn btn-danger" style="margin-left: auto;" onclick="deleteOption({{ productOption.id }});">옵션 삭제</button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row" id="diaOptionArea">
+                            <div class="col-12">
+                                <div class="d-flex align-items-center">
+                                    <label for="">렌즈 상품 DIA 옵션 관리</label>
+                                </div>
+                                <div class="optionList mt-2">
+                                    <div class="card" id="">
+                                        <div class="card-body">
+                                            <div class="row">
+                                                <div class="col-12">
+                                                    <div class="optionListDIADetail">
+                                                        {% for option in product.ProductOptions[0].ProductOptionDetails[0].LensDiaOptions %}
+                                                        <div class="row" id="rowDIA{{ option.id }}">
+                                                            <input type="hidden" name="option_dia_id" value="{{ option.id }}">
+                                                            <div class="col-11">
                                                                 <div class="form-group">
-                                                                    <input class="form-control" type="text" placeholder="가격" name="option_price" value="{{ option.price }}">
+                                                                    <input class="form-control" type="text" placeholder="옵션명" name="dia_option_name" value="{{ option.name }}">
                                                                 </div>
                                                             </div>
                                                             <div class="col-1">
-                                                                <button type="button" class="btn btn-outline-danger" onclick="deleteOptionDetail({{ option.id }}, {{ loop.index - 1 }});">삭제</button>
+                                                                <button type="button" class="btn btn-outline-danger" onclick="deleteOptionDetailDIA({{ option.id }}, {{ loop.index - 1 }});">삭제</button>
                                                             </div>
                                                         </div>
                                                         {% endfor %}
                                                     </div>
-                                                    <button type="button" class="btn btn-primary addOptionDetailRow" style="margin-left: auto;">옵션별 상세 추가</button>
-                                                    <button type="button" class="btn btn-danger" style="margin-left: auto;" onclick="deleteOption({{ productOption.id }});">옵션 삭제</button>
+                                                    <button type="button" class="btn btn-primary addOptionDetailRowDIA" style="margin-left: auto;">옵션별 상세 추가</button>
                                                 </div>
                                             </div>
                                         </div>
                                     </div>
-                                    {% endfor %}
                                 </div>
                             </div>
                         </div>
@@ -406,6 +441,16 @@
       });
       formData.append('optionInfo', JSON.stringify(optionsArr));
 
+      var diaOptionArr = [];
+      $('.optionListDIADetail .row').each(function(){
+        var diaOptionObj = {};
+        diaOptionObj.id = $(this).find('[name="option_dia_id"]').val();
+        diaOptionObj.name = $(this).find('[name="dia_option_name"]').val();
+        diaOptionArr.push(diaOptionObj);
+      });
+      formData.append('diaOptionInfo', JSON.stringify(diaOptionArr));
+
+
       var url = '{{ product.name }}' === '' ? '/adm/product/create' : '/adm/product/detail/{{ product.id }}';
       $.ajax({
         url: url,
@@ -445,6 +490,17 @@
         '                                                            <div class="col-3">\n' +
         '                                                                <div class="form-group">\n' +
         '                                                                    <input class="form-control" type="text" placeholder="가격" name="option_price">\n' +
+        '                                                                </div>\n' +
+        '                                                            </div>\n' +
+        '                                                        </div>');
+    })
+
+    $(document).on('click', '.addOptionDetailRowDIA', function(){
+      $(this).parents('.optionList').find('.optionListDIADetail').append('' +
+        '<div class="row">\n' +
+        '                                                            <div class="col-11">\n' +
+        '                                                                <div class="form-group">\n' +
+        '                                                                    <input class="form-control" type="text" placeholder="옵션명" name="dia_option_name">\n' +
         '                                                                </div>\n' +
         '                                                            </div>\n' +
         '                                                        </div>');
@@ -567,6 +623,27 @@
       console.error(error);
     });
   }
+
+  function deleteOptionDetailDIA(id) {
+    if( !confirm('옵션을 삭제 하시겠습니까?') ) {
+      return false;
+    }
+    $.ajax({
+      url: '/adm/product/optionDetailDIA/delete/' + id,
+      type: 'post',
+      contentType: false,
+      processData: false,
+    }).done(function(data){
+      if(data.success) {
+        alert('옵션이 삭제되었습니다.');
+        $('#rowDIA' + id).remove();
+      }
+    }).fail(function(error) {
+      console.error(error);
+    });
+  }
+
+
 
   // is_lens
   $(function(){
