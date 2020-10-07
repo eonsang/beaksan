@@ -166,6 +166,26 @@
           // 렌즈
           res.product.ProductOptions.map(function(option){
             option.ProductOptionDetails.map(function(optionDetail){
+              var axisHtml = '';
+              var i = 0;
+              while(i <= 180) {
+                axisHtml += '<option value="'+i+'">'+i+'</option>';
+                i += 5;
+              }
+
+              var cylHtml = '';
+              var j = -10.00;
+              while(j <= 10.00) {
+                cylHtml += '<option value="'+j+'">'+j+'</option>';
+                j += 0.25;
+              }
+
+              var sphHtml = '';
+              var k = -25.00;
+              while(k <= 15.00) {
+                sphHtml += '<option value="'+k+'">'+k+'</option>';
+                k += 0.25;
+              }
               html += ' <div class="optionlist__item row">' +
                       '<div class="optionlist__imgbox">\n' +
                       '                        <div class="optionlist__header">\n' +
@@ -188,15 +208,27 @@
                       '</div>' +
                       '      <div class="optionlist__optionbox flex-1 ml-4">' +
                       '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">SPH</label>\n' +
+                      '                <label for="name" class="form-label">SPH <span class="text-xs">(0기준점 / 0.25단위)</span></label>\n' +
                       '                <div class="row">\n' +
-                      '                    <div class="input"><input type="text" name="sph" id="sph"></div>\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="sph" id="sph">' + sphHtml + '</select>' +
+                      '                    </div>\n' +
                       '                </div>\n' +
                       '            </div>' +
                       '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">CYL</label>\n' +
+                      '                <label for="name" class="form-label">CYL <span class="text-xs">(0 기준점 / 0.25단위)</span></label>\n' +
                       '                <div class="row">\n' +
-                      '                    <div class="input"><input type="text" name="cyl" id="cyl"></div>\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="cyl" id="cyl">' + cylHtml + '</select>' +
+                      '                    </div>\n' +
+                      '                </div>\n' +
+                      '            </div>' +
+                      '            <div class="form-row mb-4">\n' +
+                      '                <label for="name" class="form-label">AXIS <span class="text-xs">(5도 단위)</span></label>\n' +
+                      '                <div class="row">\n' +
+                      '                    <div class="select">' +
+                      '                       <select name="axis" id="axis">' + axisHtml + '</select>' +
+                      '                    </div>\n' +
                       '                </div>\n' +
                       '            </div>' +
                       '            <div class="form-row mb-4">\n' +
@@ -204,17 +236,9 @@
                       '                <div class="row">\n' +
                       '                    <div class="select">' +
                       '                       <select name="add" id="add">' +
-                      '                          <option value="add1">ADD1</option>' +
-                      '                       </select>' +
-                      '                    </div>\n' +
-                      '                </div>\n' +
-                      '            </div>' +
-                      '            <div class="form-row mb-4">\n' +
-                      '                <label for="name" class="form-label">AXIS</label>\n' +
-                      '                <div class="row">\n' +
-                      '                    <div class="select">' +
-                      '                       <select name="axis" id="axis">' +
-                      '                          <option value="axis1">axis1</option>' +
+                      '                          <option value="Low">Low</option>' +
+                      '                          <option value="Mid">Mid</option>' +
+                      '                          <option value="High">High</option>' +
                       '                       </select>' +
                       '                    </div>\n' +
                       '                </div>\n' +
@@ -222,11 +246,7 @@
                       '            <div class="form-row mb-4">\n' +
                       '                <label for="name" class="form-label">B.C</label>\n' +
                       '                <div class="row">\n' +
-                      '                    <div class="select">' +
-                      '                       <select name="bc" id="bc">' +
-                      '                          <option value="bc1">bc1</option>' +
-                      '                       </select>' +
-                      '                    </div>\n' +
+                      '                    <div class="input"><input type="text" name="bc" id="bc"></div>\n' +
                       '                </div>\n' +
                       '            </div>' +
                       '       </div>' +
