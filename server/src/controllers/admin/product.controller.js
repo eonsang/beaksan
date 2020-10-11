@@ -117,10 +117,11 @@ export const create = {
                 name: obj.name,
                 path: obj.path,
                 price: obj.price,
+                sold_out: obj.sold_out === "on",
+                order: parseInt(obj.order, 10),
                 ProductOptionId: object.id,
               }
             );
-
             if (req.body.diaOptionInfo) {
               JSON.parse(req.body.diaOptionInfo).map(async (option) => {
                 await ProductInstance.createDiaOptions({
@@ -238,6 +239,8 @@ export const update = async (req, res, next) => {
         });
       });
     }
+
+    console.log("optionInfo", JSON.parse(req.body.optionInfo));
     if (req.body.optionInfo) {
       JSON.parse(req.body.optionInfo).map(async (option) => {
         if (!option.id) {
@@ -246,11 +249,14 @@ export const update = async (req, res, next) => {
             ProductId: id,
           });
           option.list.map(async (obj) => {
+            console.log("obj", obj);
             if (!obj.id) {
               await ProductInstance.createProductOptionDetail({
                 name: obj.name,
                 path: obj.path,
                 price: obj.price,
+                sold_out: obj.sold_out === "on",
+                order: parseInt(obj.order, 10),
                 ProductOptionId: object.id,
               });
             } else {
@@ -258,6 +264,8 @@ export const update = async (req, res, next) => {
                 name: obj.name,
                 path: obj.path,
                 price: obj.price,
+                sold_out: obj.sold_out === "on",
+                order: parseInt(obj.order, 10),
               });
             }
           });
@@ -266,11 +274,14 @@ export const update = async (req, res, next) => {
             name: option.name,
           });
           option.list.map(async (obj) => {
+            console.log("obj", obj);
             if (!obj.id) {
               await ProductInstance.createProductOptionDetail({
                 name: obj.name,
                 path: obj.path,
                 price: obj.price,
+                sold_out: obj.sold_out === "on",
+                order: parseInt(obj.order, 10),
                 ProductOptionId: option.id,
               });
             } else {
@@ -278,6 +289,8 @@ export const update = async (req, res, next) => {
                 name: obj.name,
                 path: obj.path,
                 price: obj.price,
+                sold_out: obj.sold_out === "on",
+                order: parseInt(obj.order, 10),
               });
 
               // 수정

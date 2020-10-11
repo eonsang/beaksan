@@ -21,6 +21,16 @@ module.exports = {
         allowNull: false,
         defaultValue: 0,
       },
+      sold_out: {
+        type: Sequelize.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      order: {
+        type: Sequelize.INTEGER,
+        allowNull: false,
+        defaultValue: 0,
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE,

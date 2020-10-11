@@ -233,6 +233,12 @@
         background:#1b1be4;
         color:#fff;
       }
+      &:disabled {
+        opacity: 1;
+        background: #000 !important;
+        color: #fff !important;
+        border: none !important;
+      }
     }
 
     img {

@@ -145,7 +145,7 @@
 
                       '                        </div>\n' +
                       '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
-                      '                            <button class="addOption" ' +
+                      '                            <button class="addOption" ' + (optionDetail.sold_out ? 'disabled="disabled"' : '') +
                       'data-parents-id="'+res.product.id+'" ' + // 부모 아이디
                       'data-isLens="'+res.product.is_lens+'" ' + // 렌즈 여부
                       'data-parents-name="'+res.product.name+'" ' + // 부모 아이디
@@ -155,7 +155,7 @@
                       'data-price="'+optionDetail.price+'" ' + // 옵션 추가 가격
                       'data-name="'+optionDetail.name+'" ' + // 옵션 명
                       'data-id="'+optionDetail.id+'"' + // 옵션 아이디
-                      '>장바구니</button>\n' +
+                      '>'+(optionDetail.sold_out ? '품절' : '장바구니')+'</button>\n' +
                       '                            <img src="'+optionDetail.path+'" alt="">\n' +
                       '                        </div>\n' +
                       '                    </div>';
@@ -270,15 +270,14 @@
     }).fail(function(error) {
       alert('관리자에게 문의주세요.')
     }).always(function(res){
-      if(res.product.is_lens) {
+      if(res.success && res.product.is_lens) {
         $('#detailOptions').addClass('is_lens');
       } else {
         $('#detailOptions').removeClass('is_lens');
       }
       setTimeout(function(){
-
         $('#detailOptions').show();
-      }, 0)
+      }, 0);
     });
   }
 

@@ -200,20 +200,31 @@
                                             <input type="hidden" name="optionItemId" value="{{ productOption.id }}">
                                             <div class="card-body">
                                                 <div class="row">
-                                                    <div class="col-3">
+                                                    <div class="col-2">
                                                         <div class="form-group">
                                                             <label for="billing-email-address">옵션제목</label>
                                                             <input class="form-control" type="text" placeholder="상품 소개글" name="option_name" value="{{ productOption.name }}">
                                                             <span class="font-13 text-muted">ex) 컬러, 사이즈 등</span>
                                                         </div>
                                                     </div>
-                                                    <div class="col-9">
-                                                        <label for="">옵션별 상세</label>
+                                                    <div class="col-10">
+                                                        <label for="">옵션별 상세(오름차순 정렬)</label>
                                                         <div class="optionListDetail">
                                                             {% for option in productOption.ProductOptionDetails %}
-                                                                <div class="row" id="row{{ option.id }}">
+                                                                <div class="row " id="row{{ option.id }}">
                                                                     <input type="hidden" name="option_id" value="{{ option.id }}">
-                                                                    <div class="col-5">
+                                                                    <div class="col-1">
+                                                                        <div class="custom-control custom-checkbox">
+                                                                            <input type="checkbox" class="custom-control-input" name="option_sold_out" id="option_sold_out{{ option.id }}"  {% if option.sold_out %} checked {% endif %}>
+                                                                            <label class="custom-control-label" for="option_sold_out{{ option.id }}"> 품절</label>
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-1">
+                                                                        <div class="form-group">
+                                                                            <input class="form-control" type="text" placeholder="순서" name="option_order" value="{{ option.order }}">
+                                                                        </div>
+                                                                    </div>
+                                                                    <div class="col-3">
                                                                         <div class="form-group">
                                                                             <input class="form-control" type="text" placeholder="옵션명" name="option_name" value="{{ option.name }}">
                                                                         </div>
@@ -435,6 +446,8 @@
           optionDetailObj.name = $(this).find('[name="option_name"]').val();
           optionDetailObj.path = $(this).find('[name="option_thumbnail_path"]').val();
           optionDetailObj.price = $(this).find('[name="option_price"]').val();
+        optionDetailObj.sold_out = $(this).find('[name="option_sold_out"]').is(':checked') ? 'on' : 'off';
+          optionDetailObj.order = $(this).find('[name="option_order"]').val();
           optionObj.list.push(optionDetailObj);
         })
         optionsArr.push(optionObj);
@@ -471,7 +484,13 @@
     $(document).on('click', '.addOptionDetailRow', function(){
       $(this).parents('.optionItem').find('.optionListDetail').append('' +
         '<div class="row">\n' +
-        '                                                            <div class="col-5">\n' +
+        '\n' +
+        '                                                                    <div class="col-1">\n' +
+        '                                                                        <div class="form-group">\n' +
+        '                                                                            <input class="form-control" type="text" placeholder="순서" name="option_order">\n' +
+        '                                                                        </div>\n' +
+        '                                                                    </div>' +
+        '                                                            <div class="col-4">\n' +
         '                                                                <div class="form-group">\n' +
         '                                                                    <input class="form-control" type="text" placeholder="옵션명" name="option_name">\n' +
         '                                                                </div>\n' +
@@ -522,7 +541,12 @@
         '                                                    <label for="">옵션별 상세</label>\n' +
         '                                                    <div class="optionListDetail">\n' +
         '                                                        <div class="row">\n' +
-        '                                                            <div class="col-5">\n' +
+        '                                                                    <div class="col-1">\n' +
+        '                                                                        <div class="form-group">\n' +
+        '                                                                            <input class="form-control" type="text" placeholder="순서" name="option_order">\n' +
+        '                                                                        </div>\n' +
+        '                                                                    </div>' +
+        '                                                            <div class="col-4">\n' +
         '                                                                <div class="form-group">\n' +
         '                                                                    <input class="form-control" type="text" placeholder="옵션명" name="option_name">\n' +
         '                                                                </div>\n' +
