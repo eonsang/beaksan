@@ -92,9 +92,11 @@
         res.data.map(function(item) {
           var optionText = '';
           if(item.lens_option) {
+
             var option = JSON.parse(item.lens_option);
             optionText = option.sph + ' / ' +  option.cyl + ' / ' + option.add + ' / ' + option.axis + ' / ' + option.bc + ' / ' + option.dia;
           } else {
+            $('#addCartbutton').remove();
             optionText = item.ProductOptionDetail.name;
           }
           totalPrice += (parseInt(item.Product.customer_price, 10) + parseInt(item.ProductOptionDetail.price, 10)) * item.quantity;
@@ -140,6 +142,9 @@
               html += ' <div class="optionlist__item">\n' +
                       '                        <div class="optionlist__header">\n' +
                       '                            <h3>'+optionDetail.name+'</h3>\n' +
+
+                      '                        </div>\n' +
+                      '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
                       '                            <button class="addOption" ' +
                       'data-parents-id="'+res.product.id+'" ' + // 부모 아이디
                       'data-isLens="'+res.product.is_lens+'" ' + // 렌즈 여부
@@ -151,8 +156,6 @@
                       'data-name="'+optionDetail.name+'" ' + // 옵션 명
                       'data-id="'+optionDetail.id+'"' + // 옵션 아이디
                       '>장바구니</button>\n' +
-                      '                        </div>\n' +
-                      '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
                       '                            <img src="'+optionDetail.path+'" alt="">\n' +
                       '                        </div>\n' +
                       '                    </div>';
@@ -169,6 +172,16 @@
                 i += 5;
               }
 
+              $('#detailOptions .total .btnboxes').prepend('<button id="addCartbutton" class="submit mr-1 addOption" style="background:#1b1be4;">장바구니 담기</button>')
+              $('#addCartbutton').attr('data-parents-id', res.product.id);
+              $('#addCartbutton').attr('data-isLens', res.product.is_lens);
+              $('#addCartbutton').attr('data-parents-name', res.product.name);
+              $('#addCartbutton').attr('data-parents-price', res.product.customer_price);
+              $('#addCartbutton').attr('data-option-id', option.id);
+              $('#addCartbutton').attr('data-option-name', option.name);
+              $('#addCartbutton').attr('data-price', optionDetail.price);
+              $('#addCartbutton').attr('data-name', optionDetail.name);
+              $('#addCartbutton').attr('data-id', optionDetail.id);
               var diaHtml = '';
               optionDetail.LensDiaOptions.map(function(diaoption){
                 diaHtml += '<option value="'+diaoption.name+'">'+diaoption.name+'</option>';
@@ -177,6 +190,9 @@
                       '<div class="optionlist__imgbox">\n' +
                       '                        <div class="optionlist__header">\n' +
                       '                            <h3>'+optionDetail.name+'</h3>\n' +
+
+                      '                        </div>\n' +
+                      '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
                       '                            <button class="addOption" ' +
                       'data-parents-id="'+res.product.id+'" ' + // 부모 아이디
                       'data-isLens="'+res.product.is_lens+'" ' + // 렌즈 여부
@@ -188,8 +204,6 @@
                       'data-name="'+optionDetail.name+'" ' + // 옵션 명
                       'data-id="'+optionDetail.id+'"' + // 옵션 아이디
                       '>장바구니</button>\n' +
-                      '                        </div>\n' +
-                      '                        <div class="optionlist__thumb" data-path="'+optionDetail.path+'">\n' +
                       '                            <img src="'+optionDetail.path+'" alt="">\n' +
                       '                        </div>\n' +
                       '</div>' +
@@ -281,7 +295,7 @@
             nav += '<div class="img"><img src="/'+img.path+'" alt=""></div>';
           })
           $('#imageSlider .slider-for').html(html);
-          $('#imageSlider .slider-nav').html(nav);
+          $('#imageSlider .slider-nav .slider').html(nav);
         } else {
           alert('이미지를 불러오는데 실패했습니다.');
         }
@@ -294,16 +308,17 @@
           slidesToScroll: 1,
           arrows: false,
           fade: true,
-          asNavFor: '.slider-nav'
+          asNavFor: '.slider-nav .slider'
         });
-        $('.slider-nav').slick({
-          slidesToShow: 3,
+        $('.slider-nav .slider').slick({
+          slidesToShow: 1,
           slidesToScroll: 1,
           asNavFor: '.slider-for',
           dots: false,
-          arrows: true,
+          arrows: false,
           centerMode: true,
           focusOnSelect: true,
+          centerPadding: '60px',
           responsive: [
             {
               breakpoint: 650,
@@ -312,6 +327,12 @@
               }
             }
           ]
+        });
+        $('.next-arrow').on('click', function(){
+          $('.slider-nav .slider').slick('slickNext');
+        });
+        $('.prev-arrow').on('click', function(){
+          $('.slider-nav .slider').slick('slickPrev');
         });
       });
   }
@@ -353,7 +374,7 @@
     // slick 초가화
     $('#imageSlider .close').add('#imageSlider .mobileclose').on('click', function(){
       $('#imageSlider .slider-for').removeClass('slick-initialized slick-slider').html('');
-      $('#imageSlider .slider-nav').removeClass('slick-initialized slick-slider').html('');
+      $('#imageSlider .slider-nav .slider').removeClass('slick-initialized slick-slider').html('');
       $('#imageSlider').hide();
     })
     {% for popup in popups %}
@@ -362,7 +383,8 @@
     }
     {% endfor %}
 
-    $(document).on('click', '.addOption', function(){
+    $(document).on('click', '.addOption', function(e){
+      e.stopPropagation();
       var prdId = $(this).data('id');
       var isLens = $(this).data('islens');
       var that = $(this);

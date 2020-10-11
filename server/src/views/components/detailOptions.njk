@@ -2,7 +2,7 @@
     <input type="hidden" name="totalPrice" id="totalPrice" value="0">
     <input type="hidden" name="totalCount" id="totalCount" value="0">
     <div class="detailOptions__content">
-        <button class="close" onclick="$('#detailOptions').hide();">닫기</button>
+        <button class="close" onclick="$('#detailOptions').hide();$('#addCartbutton').remove();">닫기</button>
         <div class="row">
             <div class="col optionlist">
                 <div class="flex flex-wrap" id="optionlist">
@@ -49,7 +49,11 @@
                             <div class="result"><span id="optionTotalPrice">0</span>원</div>
                         </div>
                     </div>
-                    <button class="submit" onclick="location.href='/cart';">장바구니 바로가기</button>
+
+                    <div class="btnboxes flex">
+{#                        <button id="addCartbutton" class="submit mr-1 addOption" style="background:#1b1be4;display: none;">장바구니 담기</button>#}
+                        <button class="submit" onclick="location.href='/cart';">장바구니 바로가기</button>
+                    </div>
                 </div>
             </div>
         </div>

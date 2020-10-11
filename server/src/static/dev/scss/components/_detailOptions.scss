@@ -17,9 +17,10 @@
 
     .optionlist__imgbox {
       flex: 1;
+      max-width: calc(100% - 266px);
     }
     .optionlist__optionbox {
-      padding-top: 42px;
+      padding-top: 34px;
       width: 250px;
       flex: none;
     }
@@ -204,9 +205,24 @@
   }
 
 
+
   .optionlist__header {
-    @apply flex justify-between items-center;
+    h3 {
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+  }
+
+  .optionlist__thumb {
+    margin-top: 10px;
+    @apply border border-gray-100 relative;
+
     button {
+      @apply absolute;
+      top: 5px;
+      right: 5px;
+      background:#fff;
       line-height: 30px;
       border: 1px solid #1b1be4;
       color:#1b1be4;;
@@ -218,11 +234,7 @@
         color:#fff;
       }
     }
-  }
 
-  .optionlist__thumb {
-    margin-top: 10px;
-    @apply border border-gray-100;
     img {
       vertical-align: top;
       width: 100%;

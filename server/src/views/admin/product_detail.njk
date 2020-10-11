@@ -287,7 +287,7 @@
                         </div>
                         <hr>
                         <div class="mt-3 d-flex">
-                            <a href="/adm/product" class="btn btn-secondary">뒤로가기</a>
+                                 <a href="/adm/product" class="btn btn-secondary">뒤로가기</a>
                             <button type="button" id="delete" class="btn btn-danger ml-auto mr-1">삭제</button>
                             <button type="submit" class="btn btn-primary">저장</button>
                         </div>
@@ -568,6 +568,11 @@
   }
 
   function deleteFile (id, idx) {
+    var imgLen = $('#fileList .media div').length;
+    if(imgLen === 1) {
+      alert('최소 하나 이상의 상품이미지가 필요합니다.');
+      return false;
+    }
     if( !confirm('이미지를 삭제 하시겠습니까?') ) {
       return false;
     }
@@ -580,6 +585,7 @@
       if(data.success) {
         alert('이미지가 삭제되었습니다.');
         $('#fileList .media div').eq(idx).remove();
+        location.reload();
       }
     }).fail(function(error) {
       console.error(error);
