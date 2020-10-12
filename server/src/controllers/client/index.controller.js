@@ -121,7 +121,7 @@ export const product = {
       const { id } = req.params;
       const product = await ProductInstance.findByPk(id, {
         order: [
-          [ProductOption, "createdAt", "ASC"],
+          [ProductImage, "createdAt", "ASC"],
           [ProductOption, ProductOptionDetail, "order", "ASC"],
         ],
         include: [

@@ -330,6 +330,7 @@ export const detail = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await ProductInstance.findByPk(id, {
+      order: [[ProductImage, "createdAt", "ASC"]],
       include: [
         {
           model: Category,
