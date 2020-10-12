@@ -18,6 +18,9 @@
     .optionlist__imgbox {
       flex: 1;
       max-width: calc(100% - 266px);
+      @media screen and (max-width: 1000px) {
+        max-width: 100%;
+      }
     }
     .optionlist__optionbox {
       padding-top: 34px;

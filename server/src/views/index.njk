@@ -34,7 +34,7 @@
                             </div>
                             <div class="item__info">
                                 <h3 class="item__name">{{ product.name }}</h3>
-                                <p class="item__subname">{{ product.description }}</p>
+                                <p class="item__subname" style="white-space: pre-line">{{ product.description | safe }}</p>
                                 <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
                               {% if not product.sold_out %}
                                 <div class="item__price">
