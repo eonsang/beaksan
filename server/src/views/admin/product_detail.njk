@@ -320,7 +320,7 @@
   var filesTempArr = [];
   $(function(){
 
-    if($('[name="category1"]').val()) {
+    if({{ product.Categories[0].id or '-' }}) {
       var that = $('[name="category1"]');
       $.ajax({
         type: "GET",
