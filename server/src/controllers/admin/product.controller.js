@@ -175,6 +175,7 @@ export const update = async (req, res, next) => {
       price: productDto.price,
       customer_price: productDto.customer_price,
     };
+
     if (productDto.category2) {
       data = {
         ...data,
@@ -330,7 +331,10 @@ export const detail = async (req, res, next) => {
   try {
     const { id } = req.params;
     const product = await ProductInstance.findByPk(id, {
-      order: [[ProductImage, "createdAt", "ASC"]],
+      order: [
+        [Category, "createdAt", "ASC"],
+        [ProductImage, "createdAt", "ASC"],
+      ],
       include: [
         {
           model: Category,
