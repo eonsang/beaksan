@@ -166,7 +166,11 @@
                                 <div class="form-group">
                                     <label for="use">상품 노출</label>
                                     <div class="custom-control custom-checkbox">
-                                        <input type="checkbox" class="custom-control-input" name="use" id="use" {% if product.use %} checked {% endif %}>
+                                        {% if product.id %}
+                                        <input type="checkbox" class="custom-control-input" name="use" id="use" {% if product.use  %} checked {% endif %}>
+                                        {% else %}
+                                            <input type="checkbox" class="custom-control-input" name="use" id="use" checked>
+                                        {% endif %}
                                         <label class="custom-control-label" for="use" >상품 노출여부</label>
                                     </div>
                                 </div>
