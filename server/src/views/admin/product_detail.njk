@@ -24,6 +24,8 @@
                                             <option value="{{ obj.id }}" {% if obj.id === product.Categories[0].id %} selected {% endif %} >{{ obj.name }}</option>
                                         {% endfor %}
                                     </select>
+                                    <script>
+                                    </script>
                                     <span class="font-13 text-muted">1차 카테고리를 필수 선택요소 입니다.</span>
                                 </div>
                             </div>
@@ -320,10 +322,12 @@
         type: "GET",
         url: "/adm/category/child",
         data: {
-          id: that.val(),
+          id: parseInt('{{ product.Categories[0].id or '-' }}', 10),
         },
       }).done(function (res) {
         if (res.success) {
+          console.log(parseInt('{{ product.Categories[0].id or '-' }}', 10));
+          console.log(parseInt('{{ product.Categories[1].id or '-' }}', 10));
           var options = '<option value="">선택</option>';
           res.objects.map(function (data) {
             var selected = '';
