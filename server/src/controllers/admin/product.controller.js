@@ -332,7 +332,7 @@ export const detail = async (req, res, next) => {
     const { id } = req.params;
     const product = await ProductInstance.findByPk(id, {
       order: [
-        [Category, "createdAt", "ASC"],
+        [Category, "id", "ASC"],
         [ProductImage, "createdAt", "ASC"],
       ],
       include: [
