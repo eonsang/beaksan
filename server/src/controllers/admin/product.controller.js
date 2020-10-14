@@ -414,6 +414,7 @@ export const removeChecked = {
       if (typeof checkedProduct === "string") {
         const result = await ProductInstance.destroy(checkedProduct);
 
+        console.log(result);
         if (result) {
           logger.info(`[ 아이디: ${checkedProduct} ] 상품 삭제`);
           return res.json({

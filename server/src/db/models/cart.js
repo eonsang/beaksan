@@ -16,6 +16,7 @@ module.exports = (sequelize, DataTypes) => {
         },
       });
       models.Cart.belongsTo(models.Product, {
+        onDelete: "cascade",
         foreignKey: {
           allowNull: false,
         },

@@ -84,7 +84,9 @@
                                             <input type="file" class="custom-file-input" name="thumbnail" id="thumbnail" multiple>
                                             <label class="custom-file-label" for="thumbnail">Choose file</label>
                                         </div>
+                                        {% if product.id %}
                                         <button type="submit" class="btn btn-primary" style="margin-left:10px;">저장</button>
+                                        {% endif %}
                                     </div>
                                     <span class="font-13 text-muted">여러 이미지를 등록할 수 있습니다.</span>
                                     <div id="fileList" class="mt-2">
@@ -320,7 +322,7 @@
   var filesTempArr = [];
   $(function(){
 
-    if({{ product.Categories[0].id or '-' }}) {
+    if({{ product.Categories[0].id or 0 }}) {
       var that = $('[name="category1"]');
       $.ajax({
         type: "GET",
