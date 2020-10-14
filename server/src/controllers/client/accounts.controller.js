@@ -117,6 +117,12 @@ export const signup = {
         `${user.number}` // 상대 연락처
       );
 
+      await sendTalk(
+        "KA01TP201014061601411g9ppJMlgxmr", // 템플릿 아이디
+        `${user.name}님이 백산몰에 가입했습니다.`, // 내용
+        `${process.env.TALK_FORM_NUMBER}` // 관리자에게
+      );
+
       return res.json({
         success: true,
         message: "회원가입 성공",

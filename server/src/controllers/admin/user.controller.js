@@ -11,6 +11,7 @@ import AccountsService from "../../services/Accounts.service";
 import logger from "../../loader/winston";
 import bcrypt from "bcrypt";
 import createKey from "../../utils/createKey";
+import { sendTalk } from "../../utils/kakaoMessage";
 
 const AccountsServiceInstance = new AccountsService(User);
 
@@ -65,6 +66,24 @@ export const detail = {
         ...data,
         password: hash,
       };
+    }
+
+    const user = await AccountsServiceInstance.findByPk(id);
+    if (verified) {
+      sendTalk(
+        "KA01TP201014061652352Od9BhC1QwZs", // 템플릿 아이디
+        `${user.name} 님 승인이 완료되어 정상적으로 사이트 이용이 가능하십니다. 감사합니다.`, // 내용
+        `${user.number}`, // 상대 연락처
+        [
+          // 버튼
+          {
+            buttonName: "홈페이지 바로가기",
+            buttonType: "WL",
+            linkMo: "http://baeksanmall.com",
+            linkPc: "http://baeksanmall.com",
+          },
+        ]
+      );
     }
 
     const result = await AccountsServiceInstance.update(id, data);
