@@ -168,6 +168,7 @@ export const update = async (req, res, next) => {
       maker: productDto.maker,
       origin: productDto.origin,
       brand: productDto.brand,
+      entertainer: productDto.entertainer,
       model: productDto.model,
       description: productDto.description,
       memo: productDto.memo,
