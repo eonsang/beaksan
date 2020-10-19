@@ -51,38 +51,58 @@ export const index = {
         include: [PopupImage],
       });
 
-      const { depth } = req.query;
+      const { depth1, depth2 } = req.query;
 
       let products = null;
       let categories = null;
-      if (depth) {
-        products = await ProductInstance.findAll({
-          where: {
-            use: true,
-          },
-          include: [
-            {
-              model: ProductImage,
+      let categoriesDepth = null;
+
+      categories = await CategoryInstance.findAll({
+        order: [["order", "DESC"]],
+        where: {
+          CategoryId: null,
+        },
+      });
+
+      if (depth1) {
+        if (depth2) {
+          products = await ProductInstance.findAll({
+            where: {
+              use: true,
             },
-            {
-              model: Category,
-              where: {
-                id: depth,
+            include: [
+              {
+                model: ProductImage,
               },
+              {
+                model: Category,
+              },
+            ],
+          });
+        } else {
+          products = await ProductInstance.findAll({
+            where: {
+              use: true,
             },
-          ],
-        });
-        categories = await CategoryInstance.findAll({
+            include: [
+              {
+                model: ProductImage,
+              },
+              {
+                model: Category,
+                where: {
+                  id: depth1,
+                },
+              },
+            ],
+          });
+        }
+
+        categoriesDepth = await CategoryInstance.findAll({
           order: [["order", "DESC"]],
           where: {
-            CategoryId: depth,
+            CategoryId: depth1,
           },
-          include: [
-            {
-              model: Category,
-              as: "children",
-            },
-          ],
         });
       } else {
         products = await ProductInstance.findAll({
@@ -105,7 +125,9 @@ export const index = {
         popups,
         products,
         categories,
-        depth,
+        categoriesDepth,
+        depth1,
+        depth2,
         today: prevDay(7),
       });
     } catch (error) {

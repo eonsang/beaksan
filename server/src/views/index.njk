@@ -6,53 +6,102 @@
     {% include 'layout/header.njk' %}
 
     <div class="container">
-        {% if depth %}
+       <!-- depth 1 -->
         <div class="categories">
-            <div class="wrap">
-                <a href="/?depth={{ depth }}" class="active">전체 상품</a>
-                {% for category in categories %}
-                    <a href="/?depth={{ category.id }}">{{ category.name }}</a>
-                {% endfor %}
-            </div>
+          <div class="wrap">
+            <a href="/" {% if not depth1 %} class="active" {% endif %}>전체 상품</a>
+            {% for category in categories %}
+              <a href="/?depth1={{ category.id }}" {% if depth1 == category.id %} class="active" {% endif %}>{{ category.name }}</a>
+            {% endfor %}
+          </div>
         </div>
-        {% endif %}
+      {% if categoriesDepth %}
+        <div class="categories depth2">
+          <div class="wrap">
+            <a href="/?depth1={{ depth1 }}" {% if not depth2 %} class="active" {% endif %}>전체 상품</a>
+            {% for category in categoriesDepth %}
+              <a href="/?depth1={{ depth1 }}&depth2={{ category.id }}" {% if depth2 == category.id %} class="active" {% endif %}>{{ category.name }}</a>
+            {% endfor %}
+          </div>
+        </div>
+      {% endif %}
+
         <div class="products">
             <div class="wrap">
                 {% if products | length %}
                     {% for product in products %}
-                        <div class="item">
+                      {% if depth2 %}
+                        {% if depth2 == product.Categories[1].id %}
+                        {{ product.Categories[1].id }}
+                          <div class="item">
                             <div class="item__thumb">
-                                <!-- 350 x 400 -->
-                                <img src="/{{ product.ProductImages[0].path }}" alt="{{ product.name }}">
-                                <div class="item__actions">
-                                    <a href="javascript:showDetailImage({{ product.id }});" class="item__detail">자세히보기</a>
+                              <!-- 350 x 400 -->
+                              <img src="/{{ product.ProductImages[0].path }}" alt="{{ product.name }}">
+                              <div class="item__actions">
+                                <a href="javascript:showDetailImage({{ product.id }});" class="item__detail">자세히보기</a>
 
-                                  {% if not product.sold_out %}
-                                    <a href="javascript:showDetailOption({{ product.id }});" class="item__cart">장바구니</a>
-                                  {% endif %}
-                                </div>
+                                {% if not product.sold_out %}
+                                  <a href="javascript:showDetailOption({{ product.id }});" class="item__cart">장바구니</a>
+                                {% endif %}
+                              </div>
                             </div>
                             <div class="item__info">
-                                <h3 class="item__name">{{ product.name }}</h3>
-                                <p class="item__subname" style="white-space: pre-line">{{ product.description | safe }}</p>
-                                <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
+                              <h3 class="item__name">{{ product.name }}</h3>
+                              <p class="item__subname" style="white-space: pre-line">{{ product.description | safe }}</p>
+                              <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
                               {% if not product.sold_out %}
                                 <div class="item__price">
-                                    <span>{{ product.price|comma }}</span>
-                                    <h3>{{ product.customer_price|comma }}</h3>
+                                  <span>{{ product.price|comma }}</span>
+                                  <h3>{{ product.customer_price|comma }}</h3>
                                 </div>
                                 <div class="item__label">
-                                    {% if product.createdAt | date("YYYY-MM-DD") > today | date("YYYY-MM-DD") %}
-                                        <span class="new">NEW</span>
-                                    {% endif %}
+                                  {% if product.createdAt | date("YYYY-MM-DD") > today | date("YYYY-MM-DD") %}
+                                    <span class="new">NEW</span>
+                                  {% endif %}
                                 </div>
                               {% else %}
                                 <div class="item__price">
                                   <h3>품절</h3>
                                 </div>
-                                {% endif %}
+                              {% endif %}
                             </div>
+                          </div>
+                          {% endif %}
+                      {% else %}
+                        <div class="item">
+                          <div class="item__thumb">
+                            <!-- 350 x 400 -->
+                            <img src="/{{ product.ProductImages[0].path }}" alt="{{ product.name }}">
+                            <div class="item__actions">
+                              <a href="javascript:showDetailImage({{ product.id }});" class="item__detail">자세히보기</a>
+
+                              {% if not product.sold_out %}
+                                <a href="javascript:showDetailOption({{ product.id }});" class="item__cart">장바구니</a>
+                              {% endif %}
+                            </div>
+                          </div>
+                          <div class="item__info">
+                            <h3 class="item__name">{{ product.name }}</h3>
+                            <p class="item__subname" style="white-space: pre-line">{{ product.description | safe }}</p>
+                            <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
+                            {% if not product.sold_out %}
+                              <div class="item__price">
+                                <span>{{ product.price|comma }}</span>
+                                <h3>{{ product.customer_price|comma }}</h3>
+                              </div>
+                              <div class="item__label">
+                                {% if product.createdAt | date("YYYY-MM-DD") > today | date("YYYY-MM-DD") %}
+                                  <span class="new">NEW</span>
+                                {% endif %}
+                              </div>
+                            {% else %}
+                              <div class="item__price">
+                                <h3>품절</h3>
+                              </div>
+                            {% endif %}
+                          </div>
                         </div>
+                      {% endif %}
                     {% endfor %}
                 {% else %}
                     <p class="text-center py-20 mx-auto">등록된 제품이 없습니다.</p>
