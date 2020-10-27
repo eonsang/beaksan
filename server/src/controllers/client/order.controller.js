@@ -67,7 +67,7 @@ export const order = {
         ],
       });
 
-      sendTalk(
+      await sendTalk(
         "KA01TP200928231224725fQDYrkK7bBD", // 템플릿 아이디
         `[백산안경]${req.user.name} 고객님 주문이 완료되었습니다.\n영업일 기준 2~3일 정도 소요되며, 추가 문의사항은\n게시판 혹은 전화 상담을 부탁드립니다.`, // 내용
         `${req.user.number}`, // 상대 연락처
@@ -81,9 +81,8 @@ export const order = {
           },
         ]
       );
-
       // 관)고객이주문
-      sendTalk(
+      await sendTalk(
         "KA01TP200928230940795W5RWrkEK7Vw", // 템플릿 아이디
         `[백산안경] ${req.user.name} 고객이 ${product.Product.name} 상품 외 ${checkedItems.length}건을 주문 주문했습니다.`, // 내용
         `${process.env.TALK_FORM_NUMBER}` // 상대 연락처
