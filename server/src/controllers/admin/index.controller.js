@@ -30,9 +30,6 @@ export const dashboard = async (req, res) => {
   const productCount = await ProductInstance.getAllCount();
   const qnaCount = await QnaServiceInstance.getAllCount();
   const orders = await OrderInstance.findAll({
-    where: {
-      UserId: req.user.id,
-    },
     include: [
       {
         model: Cart,
