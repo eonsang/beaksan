@@ -12,6 +12,7 @@ import {
   naverCallback,
   snsLoginRedirectHome,
   checkCompanyCode,
+  checkEmail,
 } from "../../controllers/client/accounts.controller";
 import routes from "../routes";
 import { isNotLoggedIn, isLoggedIn } from "../../middlewares/auth";
@@ -22,6 +23,8 @@ router
   .route(routes.login)
   .get(isNotLoggedIn, login.get)
   .post(isNotLoggedIn, login.post);
+
+router.post("/checkEmail", checkEmail);
 
 router.get(routes.kakao, kakao);
 router.get(routes.kakaoCallback, kakaoCallback, snsLoginRedirectHome);

@@ -134,6 +134,19 @@ export const signup = {
   },
 };
 
+// 이메일 확인
+export const checkEmail = async (req, res, next) => {
+  const { email } = req.body;
+  const existUser = await AccountsServiceInstance.findByEmail(email);
+  if (existUser) {
+    return res.json({
+      success: false,
+    });
+  }
+  return res.json({
+    success: true,
+  });
+};
 export const complete = (req, res, next) => {
   return res.render("signupComplete", {
     username: req.flash("username"),
