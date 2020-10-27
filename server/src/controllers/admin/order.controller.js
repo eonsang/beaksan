@@ -18,9 +18,6 @@ const OrderInstance = new OrderService(Order);
 export const order = {
   get: async (req, res, next) => {
     const objects = await OrderInstance.findAll({
-      where: {
-        UserId: req.user.id,
-      },
       include: [
         {
           model: Cart,
