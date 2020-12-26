@@ -15,14 +15,14 @@
                 <form action="" method="POST" id="form">
                     <div class="card-body">
                         <div class="row">
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="form-group">
                                     <label for="name">카테고리 명</label>
                                     <input type="text" class="form-control" id="name" placeholder="카테고리 명" name="name" value="{{ object.name }}">
                                 </div>
                             </div>
 
-                            <div class="col-6">
+                            <div class="col-5">
                                 <div class="form-group">
                                     <label for="category1">부모 카테고리</label>
                                     <select class="form-control category" data-toggle="select2" name="category1" id="category1" data-next="#category2">
@@ -34,12 +34,12 @@
                                     <span class="font-13 text-muted">1차 카테고리를 선택하지 않으면 최상단 카테고리로 등록됩니다.</span>
                                 </div>
                             </div>
-{#                            <div class="col-2" style="display: none;">#}
-{#                                <div class="form-group">#}
-{#                                    <label for="order">순서</label>#}
-{#                                    <input type="number" class="form-control" id="order" placeholder="순서" name="order" value="{{ object.order }}">#}
-{#                                </div>#}
-{#                            </div>#}
+                            <div class="col-2" style="">
+                                <div class="form-group">
+                                    <label for="order">순서</label>
+                                    <input type="number" class="form-control" id="order" placeholder="순서" name="order" value="{{ object.order }}">
+                                </div>
+                            </div>
 
                         </div>
                         <div class="row">

@@ -69,7 +69,7 @@ export const index = {
           };
 
       categories = await CategoryInstance.findAll({
-        order: [["order", "DESC"]],
+        order: [["order", "ASC"]],
         where: {
           CategoryId: null,
         },
@@ -106,7 +106,7 @@ export const index = {
         }
 
         categoriesDepth = await CategoryInstance.findAll({
-          order: [["order", "DESC"]],
+          order: [["order", "ASC"]],
           where: {
             CategoryId: depth1,
           },
