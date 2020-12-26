@@ -7,6 +7,7 @@ import {
 } from "../../db/models";
 import OrderService from "../../services/Order.service";
 import CartService from "../../services/Cart.service";
+import ProductService from "../../services/Product.service";
 
 import routes from "../../routers/routes";
 import logger from "../../loader/winston";
@@ -14,6 +15,7 @@ import { sendTalk } from "../../utils/kakaoMessage";
 
 const CartInstance = new CartService(Cart);
 const OrderInstance = new OrderService(Order);
+const ProductInstance = new ProductService(Product);
 
 require("dotenv").config();
 
@@ -54,6 +56,20 @@ export const order = {
       });
 
       checkedItems.map(async (data) => {
+        const object = await CartInstance.findByPk(data, {
+          include: [
+            {
+              model: Product,
+            },
+          ],
+        });
+
+        await ProductInstance.update(object.Product.id, {
+          sold_count:
+            parseInt(object.Product.sold_count, 10) +
+            parseInt(object.quantity, 10),
+        });
+
         await CartInstance.update(data, {
           OrderId: object.id,
         });

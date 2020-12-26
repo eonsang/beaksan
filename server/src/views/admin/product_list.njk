@@ -36,6 +36,7 @@
                                     <th>상품 노출</th>
                                     <th>품절 여부</th>
                                     <th>판매가격 / 원가</th>
+                                    <th>판매수</th>
                                     <th>등록일자</th>
                                     <th style="width: 75px;">Action</th>
                                 </tr>
@@ -78,6 +79,9 @@
                                         </td>
                                         <td>
                                             {{ product.customer_price | comma }} / {{ product.price | comma }}
+                                        </td>
+                                        <td>
+                                            {{ product.sold_count }}
                                         </td>
                                         <td>
                                             {{ product.createdAt | date("YYYY-MM-DD")   }}
@@ -191,6 +195,7 @@
             },
             {orderable:!0},
             {orderable:!1},
+            {orderable:!0},
             {orderable:!0},
             {orderable:!0},
             {orderable:!0},
