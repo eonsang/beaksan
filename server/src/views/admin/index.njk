@@ -83,8 +83,7 @@
                 <div class="card">
                     <div class="card-body">
                         <h4 class="header-title mb-3">월별 주문 현황</h4>
-                        <div id="high-performing-product" class="apex-charts"
-                             data-colors="#727cf5,#e3eaef"></div>
+                        <canvas id="myChart" width="400" height=""></canvas>
                     </div> <!-- end card-body-->
                 </div> <!-- end card-->
 
@@ -202,9 +201,51 @@
 
 {% endblock %}
 
+{% block css %}
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.css" integrity="sha512-C7hOmCgGzihKXzyPU/z4nv97W0d9bv4ALuuEbSf6hm93myico9qa0hv4dODThvCsqQUmKmLcJmlpRmCaApr83g==" crossorigin="anonymous" />
+{% endblock %}
+
 {% block script %}
-<script src="/static/admin/js/vendor/apexcharts.min.js"></script>
-<script src="/static/admin/js/vendor/jquery-jvectormap-1.2.2.min.js"></script>
-<script src="/static/admin/js/vendor/jquery-jvectormap-world-mill-en.js"></script>
-<script src="/static/admin/js/pages/demo.dashboard.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.min.js" integrity="sha512-d9xgZrVZpmmQlfonhQUvTR7lMPtO7NkZMkA0ABN3PHCbKA5nqylQ/yWlFAyY6hYgdF1Qh6nYiuADWwKB4C2WSw==" crossorigin="anonymous"></script>
+    <script>
+
+      var theMonths = new Array("12", "11", "10", "9", "8", "7", "6", "5", "4", "3", "2", "1");
+      var now = new Date();
+
+      var dataLabels = [];
+      for (var i = 0; i < 12; i++) {
+        var future = new Date(now.getFullYear(), now.getMonth() - i, 1);
+        var month = theMonths[future.getMonth()];
+        var year = future.getFullYear();
+
+        dataLabels.push(year + '년' + month + '월')
+      }
+
+      var ctx = document.getElementById('myChart').getContext('2d');
+      var myChart = new Chart(ctx, {
+        type: 'bar',
+        data: {
+          labels: dataLabels,
+          datasets: [{
+            label: '가입자 수',
+            data: [{{ dataLabels.userCount }}],
+            backgroundColor: 'rgba(255, 99, 132)',
+          }, {
+            label: '주문 수량',
+            data: [{{ dataLabels.orderCount }}],
+            backgroundColor:  '#727cf5',
+          }]
+        },
+        options: {
+          scales: {
+            yAxes: [{
+              ticks: {
+                min: 0,
+                precision: 0
+              }
+            }]
+          }
+        }
+      });
+    </script>
 {% endblock %}

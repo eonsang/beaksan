@@ -47,11 +47,67 @@ export const dashboard = async (req, res) => {
       },
     ],
   });
+
+  const chartData = {};
+  const theMonths = new Array(
+    "12",
+    "11",
+    "10",
+    "9",
+    "8",
+    "7",
+    "6",
+    "5",
+    "4",
+    "3",
+    "2",
+    "1"
+  );
+  const now = new Date();
+
+  const dataLabels = {
+    userCount: [],
+    orderCount: [],
+  };
+  for (let i = 0; i < 12; i++) {
+    const future = new Date(now.getFullYear(), now.getMonth() - i, 1);
+    const month = theMonths[future.getMonth()];
+    const year = future.getFullYear();
+
+    let count = 0;
+    users.map((user) => {
+      const userCreateDate = new Date(user.createdAt);
+      if (
+        userCreateDate.getFullYear() === year &&
+        userCreateDate.getMonth() + 1 === parseInt(month, 10)
+      ) {
+        count += 1;
+      }
+    });
+
+    let orderCount = 0;
+    orders.map((order) => {
+      const orderCreateDate = new Date(order.createdAt);
+      if (
+        orderCreateDate.getFullYear() === year &&
+        orderCreateDate.getMonth() + 1 === parseInt(month, 10)
+      ) {
+        orderCount += 1;
+      }
+    });
+
+    dataLabels.userCount.push(count);
+    dataLabels.orderCount.push(orderCount);
+  }
+
+  // console.log(dataLabels);
+
   res.render("admin/index", {
     userCount,
     orders,
     productCount,
     qnaCount,
     users,
+    dataLabels,
   });
 };
