@@ -1,3 +1,29 @@
+.list-search {
+  display: flex;
+  justify-content: flex-end;
+  margin-bottom: 10px;
+
+  .formblock {
+    display: flex;
+    align-items: center;
+    width: 300px;
+
+    input {
+      height: 40px;
+      border: 1px solid #ddd;
+      flex: 1;
+      padding:0 10px;
+    }
+    button {
+      background:#000;
+      color:#fff;
+      width: 70px;
+      height: 40px;
+      margin-left: 5px;
+    }
+  }
+}
+
 .products {
   margin:0 -10px;
   padding-top: 40px;

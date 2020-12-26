@@ -7,6 +7,14 @@
 
     <div class="container">
        <!-- depth 1 -->
+      <div class="list-search">
+        <form action="." method="GET">
+          <div class="formblock">
+            <input type="text" name="keyword" placeholder="상품명 검색" value="">
+            <button type="submit">검색</button>
+          </div>
+        </form>
+      </div>
         <div class="categories">
           <div class="wrap">
             <a href="/" {% if not depth1 %} class="active" {% endif %}>전체 상품</a>
