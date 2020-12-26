@@ -28,6 +28,8 @@ export const order = {
           ],
         },
       ],
+
+      order: [["createdAt", "DESC"]],
     });
     return res.render("admin/order_list", {
       objects,
