@@ -48,6 +48,7 @@
                               <h3 class="item__name">{{ product.name }}</h3>
                               <p class="item__subname" style="white-space: pre-line">{{ product.description | safe }}</p>
                               <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
+                              <p class="item__subname mt-1">총 판매수량 : {{ product.sold_count }}</p>
                               {% if not product.sold_out %}
                                 <div class="item__price">
                                   <span>{{ product.price|comma }}</span>
@@ -83,6 +84,7 @@
                             <h3 class="item__name">{{ product.name }}</h3>
                             <p class="item__subname" style="white-space: pre-line">{{ product.description | safe }}</p>
                             <p class="item__subname mt-1">착용연예인 : {{ product.entertainer }}</p>
+                            <p class="item__subname mt-1">총 판매수량 : {{ product.sold_count }}</p>
                             {% if not product.sold_out %}
                               <div class="item__price">
                                 <span>{{ product.price|comma }}</span>
