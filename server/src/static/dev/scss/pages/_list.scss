@@ -1,12 +1,43 @@
+select {
+  appearance: none;
+}
+
 .list-search {
   display: flex;
   justify-content: flex-end;
   margin-bottom: 10px;
 
+  .select {
+    flex: 1;
+    max-width: 150px;
+    margin-right: auto;
+    position: relative;
+    &:after {
+      content: '';
+      width: 15px;
+      height: 7px;
+      background: url('../../images/select-arrow.png') no-repeat center;
+      position: absolute;
+      display: block;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      z-index: 1;
+    }
+  }
+  select {
+    height: 40px;
+    border: 1px solid #ddd;
+    padding:0 10px;
+    width: 100%;
+  }
+  form {
+    max-width: 300px;
+  }
   .formblock {
     display: flex;
     align-items: center;
-    width: 300px;
+    width: 100%;
 
     input {
       height: 40px;
@@ -20,6 +51,25 @@
       width: 70px;
       height: 40px;
       margin-left: 5px;
+    }
+  }
+
+  @media screen and (max-width: 768px) {
+    display: block;
+    .select {
+      width: 100%;
+      max-width: 100%;
+      display: block;
+    }
+
+    form {
+      margin-top: 5px;
+      display: block;
+      width: 100%;
+      max-width: 100%;
+      .formblock {
+        width: 100%;
+      }
     }
   }
 }
