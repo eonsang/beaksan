@@ -18,6 +18,7 @@
                             <thead>
                             <tr>
                                 <th>주문번호</th>
+                                <th>발송여부</th>
                                 <th>상품</th>
                                 <th>이름</th>
                                 <th>연락처</th>
@@ -30,6 +31,19 @@
                             {% for object in objects %}
                                 <tr>
                                     <td>{{ object.id }}</td>
+                                    <td>
+                                        {% if object.is_send %}
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="ordertrue{{ object.id }}" checked="checked" onclick="changeOrderSendState(true, '{{ object.id }}');"/>
+                                                <label for="ordertrue{{ object.id }}" class="custom-control-label"></label>
+                                            </div>
+                                        {% else %}
+                                            <div class="custom-control custom-checkbox">
+                                                <input type="checkbox" class="custom-control-input" id="orderfalse{{ object.id }}" onclick="changeOrderSendState(false, '{{ object.id }}');"/>
+                                                <label for="orderfalse{{ object.id }}" class="custom-control-label"></label>
+                                            </div>
+                                        {% endif %}
+                                    </td>
                                     <td>
                                         <a href="/adm/order/detail/{{ object.id }}" class="text-body font-weight-semibold">
                                             {{ object.Carts[0].Product.name }} 등
@@ -48,7 +62,7 @@
                                         {{ object.createdAt | date("YYYY-MM-DD HH:mm:ss")   }}
                                     </td>
                                     <td>
-                                        <a href="/adm/qna/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
+                                        <a href="/adm/order/detail/{{ object.id }}" class="action-icon"> <i class="mdi mdi-square-edit-outline"></i></a>
                                     </td>
                                 </tr>
                             {% endfor %}
@@ -81,6 +95,7 @@
         $("#basic-datatable").DataTable({
           pageLength:10,
           columns:[
+            { orderable: 1 },
             { orderable: 1 },
             { orderable: 1 },
             { orderable: 1 },

@@ -65,6 +65,40 @@ export const order = {
   },
 };
 
+export const orderSendTrue = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await OrderInstance.update(id, {
+      is_send: true,
+    });
+
+    // 카카오 메세지 보내기
+
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+export const orderSendFalse = async (req, res, next) => {
+  try {
+    const { id } = req.params;
+
+    await OrderInstance.update(id, {
+      is_send: false,
+    });
+    return res.json({
+      success: true,
+    });
+  } catch (error) {
+    console.error(error);
+    return next(error);
+  }
+};
+
 export const detail = async (req, res, next) => {
   try {
     const { id } = req.params;

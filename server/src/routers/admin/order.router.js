@@ -3,6 +3,8 @@ import {
   order,
   detail,
   update,
+  orderSendTrue,
+  orderSendFalse,
 } from "../../controllers/admin/order.controller";
 import { isLoggedIn } from "../../middlewares/auth";
 import multer from "multer";
@@ -31,6 +33,9 @@ const upload = multer({
 
 router.get("/", isLoggedIn, order.get);
 router.post("/", isLoggedIn, upload.none(), order.post);
+
+router.post("/send_true/:id", isLoggedIn, orderSendTrue);
+router.post("/send_false/:id", isLoggedIn, orderSendFalse);
 
 router.get("/detail/:id", isLoggedIn, detail);
 router.post("/detail/:id", isLoggedIn, update);

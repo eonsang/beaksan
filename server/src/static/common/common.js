@@ -128,3 +128,23 @@ $(function () {
     });
   }
 });
+
+function changeOrderSendState(bool, id) {
+  var actionState = false;
+  if (bool) {
+    actionState = confirm("발송을 취소처리 하시겠습니까?");
+  } else {
+    actionState = confirm("발송을 완료처리 하시겠습니까?");
+  }
+
+  if (actionState) {
+    // 확인 클릭시
+    $.ajax({
+      type: "POST",
+      url: bool ? "/adm/order/send_false/" + id : "/adm/order/send_true/" + id,
+    }).done(function (res) {
+      alert("변경되었습니다.");
+      location.reload();
+    });
+  }
+}
