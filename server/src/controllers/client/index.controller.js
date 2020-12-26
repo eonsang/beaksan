@@ -51,11 +51,22 @@ export const index = {
         include: [PopupImage],
       });
 
-      const { depth1, depth2 } = req.query;
+      const { depth1, depth2, keyword } = req.query;
 
       let products = null;
       let categories = null;
       let categoriesDepth = null;
+
+      const whereOption = keyword
+        ? {
+            use: true,
+            name: {
+              [Op.like]: "%" + keyword + "%",
+            },
+          }
+        : {
+            use: true,
+          };
 
       categories = await CategoryInstance.findAll({
         order: [["order", "DESC"]],
@@ -67,9 +78,7 @@ export const index = {
       if (depth1) {
         if (depth2) {
           products = await ProductInstance.findAll({
-            where: {
-              use: true,
-            },
+            where: whereOption,
             include: [
               {
                 model: ProductImage,
@@ -81,9 +90,7 @@ export const index = {
           });
         } else {
           products = await ProductInstance.findAll({
-            where: {
-              use: true,
-            },
+            where: whereOption,
             include: [
               {
                 model: ProductImage,
@@ -106,9 +113,7 @@ export const index = {
         });
       } else {
         products = await ProductInstance.findAll({
-          where: {
-            use: true,
-          },
+          where: whereOption,
           include: [
             {
               model: ProductImage,
@@ -128,6 +133,7 @@ export const index = {
         categoriesDepth,
         depth1,
         depth2,
+        keyword,
         today: prevDay(7),
       });
     } catch (error) {
