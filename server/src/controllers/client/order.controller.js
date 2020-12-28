@@ -56,7 +56,7 @@ export const order = {
       });
 
       checkedItems.map(async (data) => {
-        const object = await CartInstance.findByPk(data, {
+        const cartbox = await CartInstance.findByPk(data, {
           include: [
             {
               model: Product,
@@ -64,15 +64,17 @@ export const order = {
           ],
         });
 
-        await ProductInstance.update(object.Product.id, {
+        await ProductInstance.update(cartbox.Product.id, {
           sold_count:
-            parseInt(object.Product.sold_count, 10) +
-            parseInt(object.quantity, 10),
+            parseInt(cartbox.Product.sold_count, 10) +
+            parseInt(cartbox.quantity, 10),
         });
 
         await CartInstance.update(data, {
           OrderId: object.id,
         });
+
+        console.log(cartbox);
       });
 
       const product = await CartInstance.findByPk(checkedItems[0], {
