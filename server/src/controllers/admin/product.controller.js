@@ -57,6 +57,7 @@ export const create = {
         model: productDto.model,
         description: productDto.description,
         memo: productDto.memo,
+        order: productDto.order,
         hit: 0,
         content: productDto.content,
         price: productDto.price,
@@ -174,6 +175,7 @@ export const update = async (req, res, next) => {
       memo: productDto.memo,
       content: productDto.content,
       price: productDto.price,
+      order: productDto.order,
       customer_price: productDto.customer_price,
     };
 

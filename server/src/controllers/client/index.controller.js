@@ -70,7 +70,7 @@ export const index = {
         };
       }
 
-      let orderOption = ["createdAt", "DESC"];
+      let orderOption = ["order", "DESC"];
 
       if (sort) {
         orderOption = [sort, "DESC"];

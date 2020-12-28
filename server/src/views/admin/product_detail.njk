@@ -76,6 +76,17 @@
                         </div>
 
                         <div class="row">
+                            <div class="col-3">
+                                <div class="form-group">
+                                    <label for="customer_price">정렬 순서</label>
+                                    <input class="form-control" type="number" placeholder="정렬 순서" name="order" id="order" value="{{ product.order }}">
+                                    <span class="font-13 text-muted">내림차순으로 나열됩니다.</span>
+                                </div>
+                            </div>
+                        </div>
+
+
+                        <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
                                     <label for="thumbnail">상품 이미지 <span class="text-danger">*</span></label>
@@ -410,6 +421,7 @@
       formData.append('price', price.value);
       formData.append('entertainer', entertainer.value);
       formData.append('customer_price', customer_price.value);
+      formData.append('order', order.value);
       console.log(filesTempArr);
       for(var i=0, filesTempArrLen = filesTempArr.length; i<filesTempArrLen; i++) {
         formData.append("thumbnail", filesTempArr[i]);

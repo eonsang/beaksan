@@ -10,7 +10,8 @@
       <div class="list-search">
         <div class="select">
           <select name="sort" id="" onChange="window.location.href='/?{% if depth1 %}depth1={{ depth1 }}&{% endif %}{% if depth2 %}depth2={{ depth2 }}&{% endif %}{% if keyword %}keyword={{ keyword }}&{% endif %}sort=' + this.value">
-            <option value="createdAt" {% if (sort == 'createdAt') or (sort == '') %} selected {% endif %}>등록 순</option>
+            <option value="order" {% if (sort == 'order') or (sort == '') %} selected {% endif %}>관리자 지정 순</option>
+            <option value="createdAt" {% if (sort == 'createdAt') %} selected {% endif %}>등록 순</option>
             <option value="name" {% if (sort == 'name') %} selected {% endif %}>상품명 순</option>
             <option value="sold_count"{% if (sort == 'sold_count') %} selected {% endif %}>판매수량 순</option>
           </select>
