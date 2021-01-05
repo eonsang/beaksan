@@ -42,6 +42,13 @@
         </div>
       {% endif %}
 
+      <style>
+        .item__tags{position: absolute;left: 0;top: 0;}
+        .item__tags span{display: block;padding:0 10px;font-size: 14px;line-height: 30px;color:#fff;text-align: center;white-space: nowrap;}
+        .item__tags span.new_item{background:#ea4026;}
+        .item__tags span.new_color{background:#09aeee}
+        .item__tags span.best{background:#3333FF;}
+      </style>
         <div class="products">
             <div class="wrap">
                 {% if products | length %}
@@ -50,6 +57,17 @@
                         {% if depth2 == product.Categories[1].id %}
                           <div class="item">
                             <div class="item__thumb">
+                              <div class="item__tags">
+                                {% if product.is_new_item %}
+                                  <span class="new_item">NEW ITEM</span>
+                                {% endif %}
+                                {% if product.is_new_color %}
+                                  <span class="new_color">NEW COLOR</span>
+                                {% endif %}
+                                {% if product.is_best %}
+                                  <span class="best">BEST</span>
+                                {% endif %}
+                              </div>
                               <!-- 350 x 400 -->
                               <img src="/{{ product.ProductImages[0].path }}" alt="{{ product.name }}">
                               <div class="item__actions">
@@ -86,6 +104,17 @@
                       {% else %}
                         <div class="item">
                           <div class="item__thumb">
+                            <div class="item__tags">
+                              {% if product.is_new_item %}
+                                <span class="new_item">NEW ITEM</span>
+                              {% endif %}
+                              {% if product.is_new_color %}
+                                <span class="new_color">NEW COLOR</span>
+                              {% endif %}
+                              {% if product.is_best %}
+                                <span class="best">BEST</span>
+                              {% endif %}
+                            </div>
                             <!-- 350 x 400 -->
                             <img src="/{{ product.ProductImages[0].path }}" alt="{{ product.name }}">
                             <div class="item__actions">

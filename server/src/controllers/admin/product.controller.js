@@ -83,6 +83,27 @@ export const create = {
         };
       }
 
+      if (productDto.is_new_item) {
+        data = {
+          ...data,
+          is_new_item: productDto.is_new_item === "on",
+        };
+      }
+
+      if (productDto.is_new_color) {
+        data = {
+          ...data,
+          is_new_color: productDto.is_new_color === "on",
+        };
+      }
+
+      if (productDto.is_best) {
+        data = {
+          ...data,
+          is_best: productDto.is_best === "on",
+        };
+      }
+
       const product = await ProductInstance.createProduct(data);
       const category1 = await CategoryInstance.findByPk(productDto.category1);
       await product.addCategory(category1);
@@ -208,6 +229,30 @@ export const update = async (req, res, next) => {
       data = {
         ...data,
         is_lens: productDto.is_lens === "on",
+      };
+    }
+
+
+    if (productDto.is_new_item) {
+      data = {
+        ...data,
+        is_new_item: productDto.is_new_item === "on",
+      };
+    }
+
+
+    if (productDto.is_new_color) {
+      data = {
+        ...data,
+        is_new_color: productDto.is_new_color === "on",
+      };
+    }
+
+
+    if (productDto.is_best) {
+      data = {
+        ...data,
+        is_best: productDto.is_best === "on",
       };
     }
 

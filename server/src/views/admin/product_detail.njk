@@ -50,6 +50,29 @@
                             </div>
                         </div>
 
+
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="is_lens">상품 태그</label>
+                                    <div class="d-flex">
+                                        <div class="custom-control custom-checkbox mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="is_new_item" id="is_new_item" {% if product.is_new_item %} checked {% endif %}>
+                                            <label class="custom-control-label" for="is_new_item" >NEW ITEM</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox mr-3">
+                                            <input type="checkbox" class="custom-control-input" name="is_new_color" id="is_new_color" {% if product.is_new_color %} checked {% endif %}>
+                                            <label class="custom-control-label" for="is_new_color" >NEW COLOR</label>
+                                        </div>
+                                        <div class="custom-control custom-checkbox">
+                                            <input type="checkbox" class="custom-control-input" name="is_best" id="is_best" {% if product.is_best %} checked {% endif %}>
+                                            <label class="custom-control-label" for="is_best" >BEST</label>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
                         <div class="row">
                             <div class="col-12">
                                 <div class="form-group">
@@ -78,7 +101,7 @@
                         <div class="row">
                             <div class="col-3">
                                 <div class="form-group">
-                                    <label for="customer_price">정렬 순서</label>
+                                    <label for="customer_price">정렬 순서 <span class="text-danger">*</span></label>
                                     <input class="form-control" type="number" placeholder="정렬 순서" name="order" id="order" value="{{ product.order }}">
                                     <span class="font-13 text-muted">내림차순으로 나열됩니다.</span>
                                 </div>
@@ -120,6 +143,7 @@
                                 </div>
                             </div>
                         </div>
+
 
                         <div class="row">
                             <div class="col-12">
@@ -447,6 +471,24 @@
         formData.append('is_lens', 'on');
       } else {
         formData.append('is_lens', 'off');
+      }
+
+      if($('#is_new_item').is(':checked')) {
+        formData.append('is_new_item', 'on');
+      } else {
+        formData.append('is_new_item', 'off');
+      }
+
+      if($('#is_new_color').is(':checked')) {
+        formData.append('is_new_color', 'on');
+      } else {
+        formData.append('is_new_color', 'off');
+      }
+
+      if($('#is_best').is(':checked')) {
+        formData.append('is_best', 'on');
+      } else {
+        formData.append('is_best', 'off');
       }
 
 

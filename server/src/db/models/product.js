@@ -98,6 +98,21 @@ module.exports = (sequelize, DataTypes) => {
         allowNull: false,
         defaultValue: 100,
       },
+      is_new_item: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      is_new_color: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      is_best: {
+        type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
     },
     {
       sequelize,
