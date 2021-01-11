@@ -20,4 +20,17 @@ router.get("/showImage", isLoggedIn, (req, res, next) => {
   });
 });
 
+
+router.get('/private', (req, res, next) => {
+  return res.render("private");
+});
+
+router.get('/orderinfo', (req, res, next) => {
+  return res.render("orderinfo");
+});
+
+router.get('/terms', (req, res, next) => {
+  return res.render("terms");
+});
+
 export default router;
