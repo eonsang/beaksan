@@ -26,7 +26,7 @@ router.get('/private', (req, res, next) => {
 });
 
 router.get('/orderinfo', (req, res, next) => {
-  return res.render("orderinfo");
+  return res.render("orderInfo");
 });
 
 router.get('/terms', (req, res, next) => {
