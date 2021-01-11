@@ -43,6 +43,8 @@ export const cart = {
         },
       });
 
+      console.log(objects[0].ProductOptionDetail);
+
       objects = objects.map((object) => {
         if (object.lens_option) {
           object.lens_option = JSON.parse(object.lens_option);

@@ -48,6 +48,22 @@ export const dashboard = async (req, res) => {
     ],
   });
 
+  // 30일 지나면 태그들이 없어짐
+  const products = await ProductInstance.findAll();
+  await products.map(async product => {
+    const lastUpdated = new Date(product.updatedAt).setDate(new Date(product.updatedAt).getDate() + 30);
+    const today = new Date().getTime();
+
+    console.log(lastUpdated < today);
+    if( lastUpdated < today ) {
+      await ProductInstance.updateProduct(product.id, {
+        is_new_item: false,
+        is_new_color: false,
+        is_best: false,
+      });
+    }
+  });
+
   const chartData = {};
   const theMonths = new Array(
     "12",

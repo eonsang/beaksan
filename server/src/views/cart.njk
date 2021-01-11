@@ -38,13 +38,16 @@
                         </div>
                     </div>
                 </div>
+                <style>
+                    .cart__item.soldout {opacity: .3;}
+                </style>
                 {% if objects | length %}
                     {% for object in objects %}
-                        <div class="cart__item">
+                        <div class="cart__item {% if object.ProductOptionDetail.sold_out %} soldout {% endif %}">
                             <div class="row">
                                 <div class="check">
                                     <label for="{{ object.id }}" class="checkbox">
-                                        <input type="checkbox" hidden id="{{ object.id }}" data-id="{{ object.id }}" checked class="item-check">
+                                        <input type="checkbox" hidden id="{{ object.id }}" data-id="{{ object.id }}" {% if object.ProductOptionDetail.sold_out %} disabled {% else %} checked {% endif%} class="item-check">
                                         <span></span>
                                     </label>
                                 </div>
@@ -52,7 +55,9 @@
                                     <img src="{{ object.ProductOptionDetail.path }}" alt="">
                                 </div>
                                 <div class="info flex-1">
-                                    <h3>{{ object.Product.name }}</h3>
+                                    <h3>
+                                        {{ object.Product.name }}
+                                    </h3>
                                     <p>
                                         {% if object.lens_option %}
                                             <strong class="text-black font-normal">SPH</strong>: {{ object.lens_option.sph }} /
@@ -74,9 +79,9 @@
                                 <div class="count">
                                     <div class="reglist__item">
                                         <div class="form">
-                                            <button class="dec" data-cart-id="{{ object.id }}">-</button>
+                                            <button class="dec" data-cart-id="{{ object.id }}" {% if object.ProductOptionDetail.sold_out %} disabled {% endif%} >-</button>
                                             <input type="text" value="{{ object.quantity }}" class="cnt" readonly>
-                                            <button class="inc" data-cart-id="{{ object.id }}">+</button>
+                                            <button class="inc" data-cart-id="{{ object.id }}" {% if object.ProductOptionDetail.sold_out %} disabled {% endif%} >+</button>
                                         </div>
                                     </div>
                                 </div>
@@ -89,8 +94,10 @@
                                 </div>
                             </div>
                         </div>
-                        {% set count = count + object.quantity %}
-                        {% set totalPrice = totalPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
+                        {% if not object.ProductOptionDetail.sold_out %}
+                            {% set count = count + object.quantity %}
+                            {% set totalPrice = totalPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
+                        {% endif %}
                     {% endfor %}
                 {% else %}
                     <p class="text-center py-20 mx-auto border-b border-gray-200">장바구니에 담긴 상품이 없습니다.</p>
