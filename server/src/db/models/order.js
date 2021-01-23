@@ -15,6 +15,13 @@ module.exports = (sequelize, DataTypes) => {
           allowNull: false,
         },
       });
+
+      models.Order.belongsTo(models.Payment, {
+        onDelete: "cascade",
+        foreignKey: {
+          allowNull: true,
+        },
+      });
       models.Order.hasMany(models.Cart);
     }
   }
@@ -51,6 +58,21 @@ module.exports = (sequelize, DataTypes) => {
       },
       is_send: {
         type: DataTypes.BOOLEAN,
+        allowNull: false,
+        defaultValue: false,
+      },
+      total_price: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: false,
+      },
+      paid_price: {
+        type: DataTypes.STRING,
+        allowNull: false,
+        defaultValue: false,
+      },
+      balance_price: {
+        type: DataTypes.STRING,
         allowNull: false,
         defaultValue: false,
       },

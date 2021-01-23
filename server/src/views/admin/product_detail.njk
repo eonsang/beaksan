@@ -50,6 +50,18 @@
                             </div>
                         </div>
 
+                        <div class="row">
+                            <div class="col-12">
+                                <div class="form-group">
+                                    <label for="is_lens">바로 결제 여부 <span class="text-danger">*</span></label>
+                                    <div class="custom-control custom-checkbox">
+                                        <input type="checkbox" class="custom-control-input" name="is_payment" id="is_payment" {% if not product %} checked {% endif%}  {% if product.is_payment %} checked="true" {% else %} {% endif %}>
+                                        <label class="custom-control-label" for="is_payment" >바로 결제 여부</label>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
 
                         <div class="row">
                             <div class="col-12">
@@ -489,6 +501,12 @@
         formData.append('is_best', 'on');
       } else {
         formData.append('is_best', 'off');
+      }
+
+      if($('#is_payment').is(':checked')) {
+        formData.append('is_payment', 'on');
+      } else {
+        formData.append('is_payment', 'off');
       }
 
 

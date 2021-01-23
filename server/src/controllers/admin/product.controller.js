@@ -46,6 +46,8 @@ export const index = async (req, res, next) => {
 export const create = {
   post: async (req, res, next) => {
     try {
+      console.log(req.body);
+
       const productDto = req.body;
       const files = req.files;
       let data = {
@@ -101,6 +103,13 @@ export const create = {
         data = {
           ...data,
           is_best: productDto.is_best === "on",
+        };
+      }
+
+      if (productDto.is_payment) {
+        data = {
+          ...data,
+          is_payment: productDto.is_payment === "on",
         };
       }
 
@@ -232,14 +241,12 @@ export const update = async (req, res, next) => {
       };
     }
 
-
     if (productDto.is_new_item) {
       data = {
         ...data,
         is_new_item: productDto.is_new_item === "on",
       };
     }
-
 
     if (productDto.is_new_color) {
       data = {
@@ -248,11 +255,17 @@ export const update = async (req, res, next) => {
       };
     }
 
-
     if (productDto.is_best) {
       data = {
         ...data,
         is_best: productDto.is_best === "on",
+      };
+    }
+
+    if (productDto.is_payment) {
+      data = {
+        ...data,
+        is_payment: productDto.is_payment === "on",
       };
     }
 

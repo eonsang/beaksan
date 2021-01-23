@@ -1,6 +1,7 @@
 import {
   Cart,
   Order,
+  Payment,
   Product,
   ProductOption,
   ProductOptionDetail,
@@ -45,6 +46,7 @@ export const order = {
     try {
       const dto = req.body;
       const checkedItems = JSON.parse(dto.checkedItem);
+      console.log(dto);
       const object = await OrderInstance.create({
         name: dto.name,
         number: dto.number,
@@ -53,6 +55,10 @@ export const order = {
         addr2: dto.addr2,
         addr3: dto.addr3,
         UserId: req.user.id,
+        PaymentId: dto.PaymentId,
+        total_price: dto.total_price,
+        paid_price: dto.paid_price,
+        balance_price: dto.balance_price,
       });
 
       checkedItems.map(async (data) => {
@@ -85,26 +91,26 @@ export const order = {
         ],
       });
 
-      await sendTalk(
-        "KA01TP200928231224725fQDYrkK7bBD", // 템플릿 아이디
-        `[백산안경]${req.user.name} 고객님 주문이 완료되었습니다.\n영업일 기준 2~3일 정도 소요되며, 추가 문의사항은\n게시판 혹은 전화 상담을 부탁드립니다.`, // 내용
-        `${req.user.number}`, // 상대 연락처
-        [
-          // 버튼
-          {
-            buttonName: "사이트 바로가기",
-            buttonType: "WL",
-            linkMo: "http://baeksanmall.com",
-            linkPc: "http://baeksanmall.com",
-          },
-        ]
-      );
-      // 관)고객이주문
-      await sendTalk(
-        "KA01TP200928230940795W5RWrkEK7Vw", // 템플릿 아이디
-        `[백산안경] ${req.user.name} 고객이 ${product.Product.name} 상품 외 ${checkedItems.length}건을 주문 주문했습니다.`, // 내용
-        `${process.env.TALK_FORM_NUMBER}` // 상대 연락처
-      );
+      // await sendTalk(
+      //   "KA01TP200928231224725fQDYrkK7bBD", // 템플릿 아이디
+      //   `[백산안경]${req.user.name} 고객님 주문이 완료되었습니다.\n영업일 기준 2~3일 정도 소요되며, 추가 문의사항은\n게시판 혹은 전화 상담을 부탁드립니다.`, // 내용
+      //   `${req.user.number}`, // 상대 연락처
+      //   [
+      //     // 버튼
+      //     {
+      //       buttonName: "사이트 바로가기",
+      //       buttonType: "WL",
+      //       linkMo: "http://baeksanmall.com",
+      //       linkPc: "http://baeksanmall.com",
+      //     },
+      //   ]
+      // );
+      // // 관)고객이주문
+      // await sendTalk(
+      //   "KA01TP200928230940795W5RWrkEK7Vw", // 템플릿 아이디
+      //   `[백산안경] ${req.user.name} 고객이 ${product.Product.name} 상품 외 ${checkedItems.length}건을 주문 주문했습니다.`, // 내용
+      //   `${process.env.TALK_FORM_NUMBER}` // 상대 연락처
+      // );
 
       return res.json({
         success: true,
@@ -124,6 +130,9 @@ export const detail = async (req, res, next) => {
 
     const object = await OrderInstance.findByPk(id, {
       include: [
+        {
+          model: Payment,
+        },
         {
           model: Cart,
           include: [
@@ -150,8 +159,13 @@ export const detail = async (req, res, next) => {
       }
     });
 
+    let vbankDate = null;
+    if (object.Payment) {
+      vbankDate = new Date(object.Payment.vbank_date * 1000);
+    }
     return res.render("order-detail.njk", {
       object,
+      vbankDate,
     });
   } catch (error) {
     console.error(error);

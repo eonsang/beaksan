@@ -2,6 +2,7 @@
 
 {% set count = 0 %}
 {% set totalPrice = 0 %}
+{% set paymentPrice = 0 %}
 {% block content %}
     {% include 'layout/header.njk' %}
     <div class="container">
@@ -44,6 +45,7 @@
                 {% if objects | length %}
                     {% for object in objects %}
                         <div class="cart__item {% if object.ProductOptionDetail.sold_out %} soldout {% endif %}">
+                            <input type="checkbox" class="is_paymentItem" {% if object.Product.is_payment %} checked {% endif %}>
                             <div class="row">
                                 <div class="check">
                                     <label for="{{ object.id }}" class="checkbox">
@@ -70,6 +72,9 @@
                                             {{ object.ProductOptionDetail.name }}
                                         {% endif %}
                                     </p>
+                                    {% if not object.Product.is_payment %}
+                                        <span style="font-size: 12px;color:#f00;">나중결제 상품</span>
+                                    {% endif %}
                                 </div>
                                 <div class="price">
                                     <label for="" class="label">단가</label>
@@ -96,25 +101,41 @@
                         </div>
                         {% if not object.ProductOptionDetail.sold_out %}
                             {% set count = count + object.quantity %}
+{#                           총 주문 금액 #}
                             {% set totalPrice = totalPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
+
+                            {% if object.Product.is_payment %}
+                                {% set paymentPrice = paymentPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
+                            {% endif %}
                         {% endif %}
                     {% endfor %}
                 {% else %}
                     <p class="text-center py-20 mx-auto border-b border-gray-200">장바구니에 담긴 상품이 없습니다.</p>
                 {% endif %}
             </div>
-            <p class="text-sm text-gray-500">※ 배송비: 3장 이상 구매 시 무료배송, 3장 미만은 착불</p>
 
+            <p class="text-sm text-gray-500">※ 배송비: 3장 이상 구매 시 무료배송, 3장 미만은 착불</p>
+            <input type="text" id="result-total-price" value="{{ totalPrice }}">
+            <input type="text" id="result-paid-price" value="{{ paymentPrice }}">
+            <input type="text" id="result-balance-price" value="{{ totalPrice - paymentPrice }}">
             <div class="cart__footer">
                 <div class="count">
                     <label for="" class="label">총 수량</label>
                     <p class="allCount value" id="allCount">{{ count }}</p>
                 </div>
                 <div class="calculator">
-                    <div class="row">
+                    <div class="row" style="justify-content: flex-start;">
                         <div class="col">
                             <label for="" class="label">총 주문금액</label>
                             <p class="allPrice value" id="allPrice">￦ {{ totalPrice|comma }}</p>
+                        </div>
+                        <div class="col" style="margin-left: 5em;">
+                            <label for="" class="label">바로결제 금액</label>
+                            <p class="allPrice value" id="paymentPrice">￦ {{ paymentPrice|comma }}</p>
+                        </div>
+                        <div class="col" style="margin-left: 5em;">
+                            <label for="" class="label">나중결제 금액</label>
+                            <p class="allPrice value" id="next-paymentPrice">￦ {{ (totalPrice - paymentPrice)|comma }}</p>
                         </div>
                     </div>
                 </div>
@@ -129,9 +150,18 @@
     {% include 'components/orderform.njk' %}
 {% endblock %}
 {% block script %}
+    {#  iamport 스크립트 추가  #}
+    <script type="text/javascript" src="https://code.jquery.com/jquery-1.12.4.min.js" ></script>
+    <script type="text/javascript" src="https://cdn.iamport.kr/js/iamport.payment-1.1.5.js"></script>
+
     <script>
+      function generateUID (length) {
+        return window.btoa(Array.from(window.crypto.getRandomValues(new Uint8Array(length * 2))).map((b) => String.fromCharCode(b)).join('')).replace(/[+/]/g, '').substring(0, length);
+      }
+
       function submitOrder() {
         // validation 체크
+
         var formdata = new FormData();
         formdata.append('name', $('#name').val());
         formdata.append('number', $('#number').val());
@@ -139,11 +169,19 @@
         formdata.append('addr1', $('#addr1').val());
         formdata.append('addr2', $('#addr2').val());
         formdata.append('addr3', $('#addr3').val());
+        formdata.append('total_price', $('#result-total-price').val());
+        formdata.append('paid_price', $('#result-paid-price').val());
+        formdata.append('balance_price', $('#result-balance-price').val());
         var checkedItemId = [];
+        var titleProductName = '';
         $('.cart__item:not(".cart__item--header")').each(function(idx, el) {
+
           var isChecked = $(el).find('.item-check').is(':checked')
           if(isChecked) {
             checkedItemId.push($(el).find('.item-check').data('id'));
+            if(idx === 0) {
+              titleProductName = $(el).find('.item-check').parents('.cart__item').find('h3').text();
+            }
           }
         });
         formdata.append('checkedItem', JSON.stringify(checkedItemId));
@@ -160,25 +198,68 @@
           return;
         }
 
-        // ajax 주문서 생성 후 장바구니 orderId 넣기
-        $.ajax({
-          type: 'POST',
-          url: '/order',
-          data: formdata,
-          processData: false,
-          contentType: false,
-        }).done(function(res) {
+        var IMP = window.IMP; // 생략가능
+        IMP.init('imp29292534'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+        IMP.request_pay({ // param
+          pg: "kcp",
+          pay_method: $('#pay_method').val(),
+          merchant_uid: generateUID(20),
+          customer_uid: "imp29292534",
+          name: '주문상품',
+          amount: parseInt($('#result-paid-price').val(), 10),
+          buyer_name: $('#name').val(),
+          buyer_tel: $('#number').val(),
+        }, function(res) {
           if(res.success) {
-            alert('주문이 완료되었습니다.\n수령까지 영업일 기준 2~3일정도 소요됩니다.\n특이사항은 ‘1:1 문의’ 혹은 사무실로 연락바랍니다');
-            location.href='/order/detail/' + res.result.id;
+            const data = {
+              currency: res.currency,
+              imp_uid: res.imp_uid,
+              merchant_uid: res.merchant_uid,
+              name: res.name,
+              paid_amount: res.paid_amount,
+              pay_method: res.pay_method,
+              receipt_url: res.receipt_url
+            };
+
+            $.ajax({
+              url: '/payments',
+              method: 'POST',
+              data: data
+            }).done(function(res) {
+              formdata.append('PaymentId', res.id);
+              $.ajax({
+                type: 'POST',
+                url: '/order',
+                data: formdata,
+                processData: false,
+                contentType: false,
+              }).done(function(res) {
+                if(res.success) {
+                  alert('주문이 완료되었습니다.\n수령까지 영업일 기준 2~3일정도 소요됩니다.\n특이사항은 ‘1:1 문의’ 혹은 사무실로 연락바랍니다');
+                  location.href='/order/detail/' + res.result.id;
+                }
+              });
+            })
+
+          } else {
+            alert('결제에 실패했습니다. 관리자에게 문의주세요.');
           }
         });
+
+
+        // ajax 주문서 생성 후 장바구니 orderId 넣기
+
       }
       function checkCart() {
         var totalCount = 0;
         var totalPrice = 0;
+        var paymentPrice = 0;
         $('.cart__item:not(".cart__item--header")').each(function(idx, el) {
-          var isChecked = $(el).find('.item-check').is(':checked')
+          var isChecked = $(el).find('.item-check').is(':checked');
+          var is_paymentItem = $(el).find('.is_paymentItem').is(':checked');
+
+          console.log(is_paymentItem);
+
           var count = $(el).find('.cnt').val();
           var price = $(el).find('.price-value').val();
 
@@ -188,12 +269,26 @@
           if(isChecked) {
             totalCount += parseInt(count, 10);
             totalPrice += parseInt(price, 10) * parseInt(count, 10);
+
+            if(is_paymentItem) {
+              paymentPrice += parseInt(price, 10) * parseInt(count, 10);
+            }
           }
         });
+
+
         $('#allCount').text(numberWithCommas(totalCount));
         $('#allPrice').text('￦ '+ numberWithCommas(totalPrice));
         $('#allPricePlusDeliver').text('￦ '+ numberWithCommas(totalPrice + 2500));
+
+        $('#paymentPrice').text('￦ '+ numberWithCommas(paymentPrice))
+        $('#next-paymentPrice').text('￦ '+ numberWithCommas(totalPrice - paymentPrice));
+
+        $('#result-total-price').val(totalPrice)
+        $('#result-paid-price').val(paymentPrice)
+        $('#result-balance-price').val(totalPrice - paymentPrice)
       };
+
       $(function(){
         $('#all').on('change', function(){
           $('[type="checkbox"]').prop('checked', $(this).prop("checked"));
