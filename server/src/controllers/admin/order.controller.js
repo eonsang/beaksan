@@ -2,6 +2,7 @@ import {
   User,
   Cart,
   Order,
+  Payment,
   Product,
   ProductOption,
   ProductOptionDetail,
@@ -19,6 +20,9 @@ export const order = {
   get: async (req, res, next) => {
     const objects = await OrderInstance.findAll({
       include: [
+        {
+          model: Payment,
+        },
         {
           model: Cart,
           include: [
@@ -109,6 +113,9 @@ export const detail = async (req, res, next) => {
       include: [
         {
           model: User,
+        },
+        {
+          model: Payment,
         },
         {
           model: Cart,

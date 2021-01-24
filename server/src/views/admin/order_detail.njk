@@ -2,6 +2,7 @@
 
 {% set count = 0 %}
 {% set totalPrice = 0 %}
+{% set paymentPrice = 0 %}
 {% block content %}
     <div class="container-fluid">
         <div class="row">
@@ -27,6 +28,7 @@
                                 <thead class="thead-light">
                                 <tr>
                                     <th>상품명</th>
+                                    <th>바로결제 여부</th>
                                     <th>옵션</th>
                                     <th>수량</th>
                                     <th>단가</th>
@@ -42,6 +44,13 @@
                                             <img src="{{ cart.ProductOptionDetail.path }}" alt="" class="mr-2" style="width: 60px;">
                                             {{ cart.Product.name }}
                                         </div>
+                                    </td>
+                                    <td>
+                                        {% if cart.is_payment == '1' %}
+                                            <span style="color:#00f">바로결제 </span>
+                                        {% else %}
+                                            <span style="color:#f00">나중결제 </span>
+                                        {% endif %}
                                     </td>
                                     <td style="vertical-align: middle">
                                         {% if cart.lens_option %}
@@ -61,6 +70,9 @@
                                 </tr>
                                 {% set count = count + cart.quantity %}
                                 {% set totalPrice = totalPrice + ((cart.Product.customer_price + cart.ProductOptionDetail.price) * cart.quantity) %}
+                                {% if cart.is_payment == '1' %}
+                                    {% set paymentPrice = paymentPrice + ((cart.Product.customer_price + cart.ProductOptionDetail.price) * cart.quantity) %}
+                                {% endif %}
                                 {% endfor %}
                                 {% else %}
                                     <tr>
@@ -95,11 +107,73 @@
                                     <td>{{ count }} 개</td>
                                 </tr>
                                 <tr>
+                                    <td>바로 결제 상품 총액 :</td>
+                                    <td>{{ paymentPrice|comma }} 원</td>
+                                </tr>
+                                <tr>
+                                    <td>나중 결제 상품 총액 :</td>
+                                    <td>{{ (totalPrice - paymentPrice)|comma }} 원</td>
+                                </tr>
+                                <tr>
                                     <td>전체 상품 총액 :</td>
                                     <td>{{ totalPrice|comma }} 원</td>
                                 </tr>
                                 </tbody>
                             </table>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col">
+                <div class="card">
+                    <div class="card-body">
+                        <h4 class="header-title mb-3">결제 정보</h4>
+                        <div>
+                            <strong>결제상태</strong>:
+                            {% if object.Payment.status == 'ready' %}
+                                <span style="color:#f00">결제 전</span>
+                            {% elseif object.Payment.status == 'paid' %}
+                                <span style="color:#00f">결제 완료</span>
+                            {% endif %}
+                        </div>
+                        <div>
+                            <strong>imp_uid</strong>: {{ object.Payment.imp_uid }}
+                        </div>
+                        <div>
+                            <strong>merchant_uid</strong>: BAEKSAN_{{ object.Payment.merchant_uid }}
+                        </div>
+                        <div>
+                            <strong>결제금액</strong>: {{ object.Payment.paid_amount | comma }} 원
+                        </div>
+                        <div>
+                            <strong>결제방법</strong>:
+                            {% if object.Payment.pay_method == 'phone' %}
+                                휴대폰
+                            {% elseif object.Payment.pay_method == 'card' %}
+                                신용카드
+                            {% elseif object.Payment.pay_method == 'vbank' %}
+                                가상계좌
+                            {% endif %}
+                        </div>
+                        {% if object.Payment.pay_method == 'vbank' %}
+                            <div>
+                                <strong>가상 계좌 은행명</strong>:
+                                {{ object.Payment.vbank_name }}
+                            </div>
+                            <div>
+                                <strong> 가상 계좌 번호</strong>:
+                                {{ object.Payment.vbank_num }}
+                            </div>
+                            <div>
+                                <strong> 가상 계좌 입금 제한 시간</strong>:
+                                {{ vbankDate | date("YYYY-MM-DD HH:mm:ss") }}
+                            </div>
+                        {% endif %}
+                        <div>
+                            <strong>결제시간</strong>: {{ object.Payment.updatedAt | date('YYYY-MM-DD HH:mm:ss') }}
                         </div>
                     </div>
                 </div>

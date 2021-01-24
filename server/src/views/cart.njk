@@ -45,7 +45,7 @@
                 {% if objects | length %}
                     {% for object in objects %}
                         <div class="cart__item {% if object.ProductOptionDetail.sold_out %} soldout {% endif %}">
-                            <input type="checkbox" class="is_paymentItem" {% if object.Product.is_payment %} checked {% endif %}>
+                            <input type="checkbox" hidden class="is_paymentItem" {% if object.is_payment == '1' %} checked {% endif %}>
                             <div class="row">
                                 <div class="check">
                                     <label for="{{ object.id }}" class="checkbox">
@@ -72,7 +72,7 @@
                                             {{ object.ProductOptionDetail.name }}
                                         {% endif %}
                                     </p>
-                                    {% if not object.Product.is_payment %}
+                                    {% if not object.is_payment %}
                                         <span style="font-size: 12px;color:#f00;">나중결제 상품</span>
                                     {% endif %}
                                 </div>
@@ -104,7 +104,7 @@
 {#                           총 주문 금액 #}
                             {% set totalPrice = totalPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
 
-                            {% if object.Product.is_payment %}
+                            {% if object.is_payment == '1' %}
                                 {% set paymentPrice = paymentPrice + ((object.Product.customer_price + object.ProductOptionDetail.price) * object.quantity) %}
                             {% endif %}
                         {% endif %}
@@ -115,9 +115,9 @@
             </div>
 
             <p class="text-sm text-gray-500">※ 배송비: 3장 이상 구매 시 무료배송, 3장 미만은 착불</p>
-            <input type="text" id="result-total-price" value="{{ totalPrice }}">
-            <input type="text" id="result-paid-price" value="{{ paymentPrice }}">
-            <input type="text" id="result-balance-price" value="{{ totalPrice - paymentPrice }}">
+            <input type="hidden" id="result-total-price" value="{{ totalPrice }}">
+            <input type="hidden" id="result-paid-price" value="{{ paymentPrice }}">
+            <input type="hidden" id="result-balance-price" value="{{ totalPrice - paymentPrice }}">
             <div class="cart__footer">
                 <div class="count">
                     <label for="" class="label">총 수량</label>
@@ -198,53 +198,70 @@
           return;
         }
 
-        var IMP = window.IMP; // 생략가능
-        IMP.init('imp29292534'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
-        IMP.request_pay({ // param
-          pg: "kcp",
-          pay_method: $('#pay_method').val(),
-          merchant_uid: generateUID(20),
-          customer_uid: "imp29292534",
-          name: '주문상품',
-          amount: parseInt($('#result-paid-price').val(), 10),
-          buyer_name: $('#name').val(),
-          buyer_tel: $('#number').val(),
-        }, function(res) {
-          if(res.success) {
-            const data = {
-              currency: res.currency,
-              imp_uid: res.imp_uid,
-              merchant_uid: res.merchant_uid,
-              name: res.name,
-              paid_amount: res.paid_amount,
-              pay_method: res.pay_method,
-              receipt_url: res.receipt_url
-            };
 
-            $.ajax({
-              url: '/payments',
-              method: 'POST',
-              data: data
-            }).done(function(res) {
-              formdata.append('PaymentId', res.id);
-              $.ajax({
-                type: 'POST',
-                url: '/order',
-                data: formdata,
-                processData: false,
-                contentType: false,
-              }).done(function(res) {
-                if(res.success) {
-                  alert('주문이 완료되었습니다.\n수령까지 영업일 기준 2~3일정도 소요됩니다.\n특이사항은 ‘1:1 문의’ 혹은 사무실로 연락바랍니다');
-                  location.href='/order/detail/' + res.result.id;
-                }
-              });
-            })
+        if($('#result-paid-price').val() === '0') {
+          $.ajax({
+            type: 'POST',
+            url: '/order',
+            data: formdata,
+            processData: false,
+            contentType: false,
+          }).done(function(res) {
+            if(res.success) {
+              alert('주문이 완료되었습니다.\n수령까지 영업일 기준 2~3일정도 소요됩니다.\n특이사항은 ‘1:1 문의’ 혹은 사무실로 연락바랍니다');
+              location.href='/order/detail/' + res.result.id;
+            }
+          });
+        } else {
+            var IMP = window.IMP; // 생략가능
+            IMP.init('imp29292534'); // 'iamport' 대신 부여받은 "가맹점 식별코드"를 사용
+            IMP.request_pay({ // param
+              pg: "kcp",
+              pay_method: $('#pay_method').val(),
+              merchant_uid: generateUID(20),
+              customer_uid: "imp29292534",
+              name: '주문상품',
+              amount: parseInt($('#result-paid-price').val(), 10),
+              buyer_name: $('#name').val(),
+              buyer_tel: $('#number').val(),
+            }, function(res) {
+              if(res.success) {
+                const data = {
+                  currency: res.currency,
+                  imp_uid: res.imp_uid,
+                  merchant_uid: res.merchant_uid,
+                  name: res.name,
+                  paid_amount: res.paid_amount,
+                  pay_method: res.pay_method,
+                  receipt_url: res.receipt_url
+                };
 
-          } else {
-            alert('결제에 실패했습니다. 관리자에게 문의주세요.');
-          }
-        });
+                $.ajax({
+                  url: '/payments',
+                  method: 'POST',
+                  data: data
+                }).done(function(res) {
+                  formdata.append('PaymentId', res.id);
+                  $.ajax({
+                    type: 'POST',
+                    url: '/order',
+                    data: formdata,
+                    processData: false,
+                    contentType: false,
+                  }).done(function(res) {
+                    if(res.success) {
+                      alert('주문이 완료되었습니다.\n수령까지 영업일 기준 2~3일정도 소요됩니다.\n특이사항은 ‘1:1 문의’ 혹은 사무실로 연락바랍니다');
+                      location.href='/order/detail/' + res.result.id;
+                    }
+                  });
+                })
+
+              } else {
+                alert('결제에 실패했습니다. 관리자에게 문의주세요.');
+              }
+            });
+
+        }
 
 
         // ajax 주문서 생성 후 장바구니 orderId 넣기
@@ -257,8 +274,6 @@
         $('.cart__item:not(".cart__item--header")').each(function(idx, el) {
           var isChecked = $(el).find('.item-check').is(':checked');
           var is_paymentItem = $(el).find('.is_paymentItem').is(':checked');
-
-          console.log(is_paymentItem);
 
           var count = $(el).find('.cnt').val();
           var price = $(el).find('.price-value').val();

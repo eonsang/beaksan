@@ -19,6 +19,10 @@
                             <tr>
                                 <th>주문번호</th>
                                 <th>발송여부</th>
+                                <th>결제상태</th>
+                                <th>총 금액</th>
+                                <th>바로결제 금액</th>
+                                <th>나중결제 금액</th>
                                 <th>상품</th>
                                 <th>이름</th>
                                 <th>연락처</th>
@@ -44,6 +48,18 @@
                                             </div>
                                         {% endif %}
                                     </td>
+                                    <td>
+                                        {% if object.Payment.status == 'ready' %}
+                                            <span style="color:#f00">결제 전</span>
+                                        {% else %}
+                                            <span style="color:#00f">결제 완료</span>
+                                        {% endif %}
+                                    </td>
+                                    <td>{{ object.total_price | comma }}</td>
+
+                                    <td>{{ object.paid_price | comma }}</td>
+
+                                    <td>{{ object.balance_price | comma }}</td>
                                     <td>
                                         <a href="/adm/order/detail/{{ object.id }}" class="text-body font-weight-semibold">
                                             {{ object.Carts[0].Product.name }} 등
@@ -96,6 +112,10 @@
           pageLength:10,
           order: [[ 6, "desc" ]],
           columns:[
+            { orderable: 1 },
+            { orderable: 1 },
+            { orderable: 1 },
+            { orderable: 1 },
             { orderable: 1 },
             { orderable: 1 },
             { orderable: 1 },

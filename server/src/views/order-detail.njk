@@ -41,11 +41,10 @@
                         </tbody>
                     </table>
                 </div>
+
+                {% if object.Payment %}
                 <hr class="mt-4 mb-8 ">
-
-
                 <h1 class="board__title">결제 내역</h1>
-
                 <div class="board__table2">
                     <table>
                         <colgroup>
@@ -95,7 +94,7 @@
                         {% endif %}
                         <tr>
                             <th>결제 금액</th>
-                            <td>{{ object.Payment.paid_amount }}</td>
+                            <td>{{ object.Payment.paid_amount | comma }} 원</td>
                         </tr>
                         <tr>
                             <th>매출전표 확인</th>
@@ -106,6 +105,9 @@
                         </tbody>
                     </table>
                 </div>
+                {% endif %}
+
+
                 <hr class="mt-4 mb-8 ">
                 <h1 class="board__title">주문 상품</h1>
                 {% for cart in object.Carts %}
@@ -119,6 +121,16 @@
                             <tr>
                                 <th>상품명</th>
                                 <td>{{ cart.Product.name }}</td>
+                            </tr>
+                            <tr>
+                                <th>상품명</th>
+                                <td>
+                                    {% if cart.is_payment == '1' %}
+                                        <span style="color:#00f">바로결제 상품</span>
+                                    {% else %}
+                                        <span style="color:#f00">나중결제 상품</span>
+                                    {% endif %}
+                                </td>
                             </tr>
                             <tr>
                                 <th>상품이미지</th>

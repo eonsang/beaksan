@@ -98,7 +98,7 @@ export const all = async (req, res, next) => {
 
 export const add = async (req, res, next) => {
   try {
-    console.log(req.body);
+    console.log(req.body.is_payment);
     const object = await CartInstance.create({
       UserId: req.user.id,
       ProductId: req.body.productId,
@@ -106,6 +106,7 @@ export const add = async (req, res, next) => {
       ProductOptionDetailId: req.body.optionDetailId,
       quantity: 1,
       lens_option: req.body.lens_option,
+      is_payment: req.body.is_payment === "true",
     });
     return res.json({
       success: true,
