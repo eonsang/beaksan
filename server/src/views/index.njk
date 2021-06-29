@@ -5,7 +5,17 @@
 
     {% include 'layout/header.njk' %}
 
-    <div class="container">
+    <style>
+    .detailOptions .row .cartlist .reglist{flex:none;height: 427px;overflow: auto;}
+    @media screen and (max-width: 768px) {
+        .detailOptions .row .cartlist .reglist{
+            height: auto;
+        }
+    }
+    </style>
+
+
+  <div class="container">
        <!-- depth 1 -->
       <div class="list-search">
         <div class="select">
