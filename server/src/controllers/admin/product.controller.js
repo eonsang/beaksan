@@ -395,6 +395,7 @@ export const detail = async (req, res, next) => {
       order: [
         [Category, "id", "ASC"],
         [ProductImage, "createdAt", "ASC"],
+        [ProductOption, ProductOptionDetail, "name", "ASC"],
       ],
       include: [
         {
